@@ -1,8 +1,4 @@
-Punto *punto_copiar(Punto * a) {
-  Punto *nuevoPunto = malloc(sizeof(Punto));
-  *nuevoPunto = *a;
-  return nuevoPunto;
-}
+#include "robot.h"
 
 Robot robot_crear(Punto pos, Punto dest) {
   Robot robot = malloc(sizeof(_Robot));
@@ -25,9 +21,7 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa) {
         printf("R");
       else if (punto_comparar(aux, robot->dest) == 0)
         printf("D");
-      else if (glist_include(robot->visitados, &(Punto) {
-                             i, j}
-                             , (FuncionComparadora) punto_compararp))
+      else if (glist_include(robot->visitados, &(Punto) { i, j }, (FuncionComparadora)punto_compararp))
         printf("_");
       else
         printf("%c", mapa->coord[i][j]);
@@ -105,21 +99,8 @@ void robot_destruir(Robot robot) {
   free(robot);
 }
 
-Direccion direccion_opuesta(Direccion direccion) {
-  if (direccion == UP)
-    return DOWN;
-  if (direccion == DOWN)
-    return UP;
-  if (direccion == RIGHT)
-    return LEFT;
-  return RIGHT;
-}
 
-void mapa_destruir(Mapa mapa) {
-  for (int i = 0; i < mapa->alto; i++)
-    free(mapa->coord[i]);
-  free(mapa->coord);
-}
+
 
 void robot_imprimir(Robot robot) {
   printf("Robot:");
@@ -127,94 +108,18 @@ void robot_imprimir(Robot robot) {
   printf("\tDestino: (%d, %d)\n", robot->dest.i, robot->dest.j);
 }
 
-void mapa_imprimir(Mapa mapa) {
-  printf("Mapa:\n");
-  printf("\tDimensiones: %dx%d\n", mapa->alto, mapa->ancho);
-  for (int i = 0; i < mapa->alto; i++) {
-    printf("\t");
-    for (int j = 0; j < mapa->ancho; j++)
-      printf("%c", mapa->coord[i][j]);
-    printf("\n");
-  }
-}
 
-/**
- * Devuelve 0 si los puntos son iguales, cualquier otro valor si son distintos
- */
-int punto_comparar(Punto a, Punto b) {
-  return !(a.i == b.i && a.j == b.j);
-}
+
 
 int robot_en_destino(Robot robot) {
   return punto_comparar(robot->pos, robot->dest) == 0;
 }
 
-/**
- * 
- */
 
-
-/**
- * Retorna 0 si estan alineados respecto al eje x.
- * Un valor positivo si b esta a la izquierda de a
- * Un valor negativo si b esta a la derecha de a
- */
-int punto_distancia_x(Punto a, Punto b) {
-  return a.j - b.j;
-}
-
-/**
- * Retorna 0 si estan alineados respecto al eje y.
- * Un valor positivo si b esta arriba de a
- * Un valor negativo si a esta arriba de b
- */
-int punto_distancia_y(Punto a, Punto b) {
-  return a.i - b.i;
-}
-
-void direccion_destruir(Direccion * a) {
-  free(a);
-}
-
-Direccion *direccion_copiar(Direccion * a) {
-  Direccion *copia = malloc(sizeof(Direccion));
-  *copia = *a;
-  return copia;
-}
-
-void punto_imprimir(Punto * punto) {
-  printf("(%d, %d) ", punto->i, punto->j);
-}
-
-int punto_compararp(Punto * a, Punto * b) {
-  return !(a->i == b->i && a->j == b->j);
-}
-
-void direccion_imprimir(Direccion * direccion) {
-  if (*direccion == UP)
-    printf("U");
-  else if (*direccion == DOWN)
-    printf("D");
-  else if (*direccion == LEFT)
-    printf("L");
-  else if (*direccion == RIGHT)
-    printf("R");
-}
 
 int robot_ir_a_destino(Robot robot, Mapa mapa) {
-  // glist_recorrer(robot->visitados, (FuncionVisitante) punto_imprimir);
   if (robot_en_destino(robot))
     return 1;
-
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, LEFT));
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, RIGHT));
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, RIGHT));
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, RIGHT));
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, RIGHT));
-  // printf("Retroceso %d\n", robot_retroceder(robot, mapa));
-  // printf("Movimiento %d\n", robot_mover(robot, mapa, RIGHT));
-  // printf("Retroceso %d\n", robot_retroceder(robot, mapa));
-
 
   Punto ultima_posicion = { -1, -1 };
   while (punto_comparar(ultima_posicion, robot->pos) != 0) {

@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "pila.h": "c",
+    "mapa.h": "c",
+    "assert.h": "c",
+    "string.h": "c",
+    "stdio.h": "c",
+    "robot.h": "c"
+  }
+}
