@@ -11,6 +11,7 @@ INPUT3 = laberinto3.txt
 INPUT4 = laberinto4.txt
 INPUT5 = laberinto5.txt
 INPUT6 = laberinto6.txt
+INPUT7 = laberinto7.txt
 BACKUP = *.c~
 
 # Fuentes
@@ -26,7 +27,7 @@ $(EXEC): $(SOURCES)
 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 exec: $(EXEC)
-	./$(EXEC) $(INPUT5)
+	./$(EXEC) $(INPUT7)
 
 clean:
 	rm -f $(BACKUP) $(EXEC)

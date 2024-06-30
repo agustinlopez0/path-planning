@@ -88,7 +88,7 @@ int robot_retroceder(Robot robot, Mapa mapa) {
   // Mover el robot en la dirección opuesta
   int mov = robot_mover(robot, mapa, direccion_opuesta(*ultima_direccion));
 
-  if (robot_mover(robot, mapa, direccion_opuesta(*ultima_direccion)))
+  if (mov)
     // Desapilo el movimiento que acabo de hacer
     robot->movimientos =
         pila_desapilar(robot->movimientos,
