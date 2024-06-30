@@ -82,13 +82,9 @@ int robot_retroceder(Robot robot, Mapa mapa) {
 
   // Obtener la última dirección desde la pila
   Direccion *ultima_direccion = pila_tope(robot->movimientos);
-  if (!ultima_direccion)
-    return 0;
 
   // Mover el robot en la dirección opuesta
-  int mov = robot_mover(robot, mapa, direccion_opuesta(*ultima_direccion));
-
-  if (mov)
+  if (robot_mover(robot, mapa, direccion_opuesta(*ultima_direccion)))
     // Desapilo el movimiento que acabo de hacer
     robot->movimientos =
         pila_desapilar(robot->movimientos,
@@ -99,7 +95,7 @@ int robot_retroceder(Robot robot, Mapa mapa) {
       pila_desapilar(robot->movimientos,
                      (FuncionDestructora) direccion_destruir);
 
-  return mov;
+  return 1;
 }
 
 int robot_ir_a_destino(Robot robot, Mapa mapa) {
