@@ -5,13 +5,13 @@ INDENT = indent
 INDENT_FLAGS = -kr -brf -i2 -nut
 SRC = main.c
 EXEC = robot
-INPUT1 = laberinto.txt
-INPUT2 = laberinto2.txt
-INPUT3 = laberinto3.txt
-INPUT4 = laberinto4.txt
-INPUT5 = laberinto5.txt
-INPUT6 = laberinto6.txt
-INPUT7 = laberinto7.txt
+INPUT1 = laberintos/laberinto.txt
+INPUT2 = laberintos/laberinto2.txt
+INPUT3 = laberintos/laberinto3.txt
+INPUT4 = laberintos/laberinto4.txt
+INPUT5 = laberintos/laberinto5.txt
+INPUT6 = laberintos/laberinto6.txt
+INPUT7 = laberintos/laberinto7.txt
 BACKUP = *.c~
 
 # Fuentes
