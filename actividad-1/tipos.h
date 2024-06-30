@@ -1,11 +1,5 @@
 #ifndef TIPOS_H
 #define TIPOS_H
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
 
 typedef void (*FuncionDestructora)(void *dato);
 typedef void *(*FuncionCopiadora)(void *dato);

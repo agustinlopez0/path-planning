@@ -1,0 +1,49 @@
+1. Como organizo mis archivos:
+  robot.c -> Funciones que interactuan solamente con el robot
+    (crear, destruir, imprimir, en_destino) 
+  mapa.c  -> Funciones que interactuan solamente con el mapa
+    (imprimir, crear, destruir)
+  direccion.c -> Funciones que interactuan solamente con direcciones
+    (imprimir, opuesta, copiar, destruir)
+  punto.c     -> Funciones que interactuan solamente con puntos
+    (comparar/p, copiar, distancia_x/y, imprimir)
+
+  Que hago con funciones que interactuan con 2 cosas?
+  simulacion.c ?
+    void mostrar_robot_mapa(Robot robot, Mapa mapa);
+    int robot_mover(Robot robot, Mapa mapa, Direccion direccion);
+    int robot_retroceder(Robot robot, Mapa mapa);
+    int robot_ir_a_destino(Robot robot, Mapa mapa);
+
+
+2. Que estructura usar para almacenar los nodos visitados.
+  Tabla Hash: ya que nunca tengo que borrar.
+  AVL: Tiempo de busqueda mejor a lista
+
+3. Como declarar estructuras en .h:
+  typedef struct {
+    Punto pos;
+    Punto dest;
+    Pila movimientos;
+    GList visitados;
+  } _Robot;
+
+  typedef _Robot *Robot;
+
+4. Esta bien tener tipos.h para guardar:
+  typedef void (*FuncionDestructora)(void *dato);
+  typedef void *(*FuncionCopiadora)(void *dato);
+  typedef int (*FuncionComparadora)(void *dato1, void *dato2);
+  typedef void (*FuncionVisitante)(void *dato);
+  typedef void (*FuncionVisitanteExtra)(void *dato, void *extra);
+  typedef int (*Predicado) (void *dato);
+
+  Para que mas puede servir?
+
+5. Metodos de glist o pila que no uso los elimino? Tambien con tipos.h: Predicado, etc.
+
+6. Achivo make
+
+7. Usar punteros a puntos en estructura robot
+
+Mi robot tiene un caso muy malo cuando se mete mucho por un camino incorrecto porque despues lo tiene que retroceder

@@ -2,21 +2,23 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 INDENT = indent
-INDENT_FLAGS1 = -kr -brf -i2 -l80 -nut
 INDENT_FLAGS = -kr -brf -i2 -nut
 SRC = main.c
 EXEC = robot
 INPUT = laberinto.txt
 BACKUP = $(SRC)~
 
+# Fuentes
+SOURCES = $(SRC) robot.c mapa.c pila.c glist.c simulacion.c punto.c direccion.c
+
 # Reglas
 all: indent $(EXEC) exec
 
-indent: $(SRC)
-	$(INDENT) $(INDENT_FLAGS) $(SRC)
+indent: $(SOURCES)
+	$(INDENT) $(INDENT_FLAGS) $(SOURCES)
 
-$(EXEC): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) robot.c mapa.c pila.c glist.c -o $(EXEC)
+$(EXEC): $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 exec: $(EXEC)
 	./$(EXEC) $(INPUT)

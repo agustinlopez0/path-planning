@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "robot.h"
-#include "mapa.h"
+#include "simulacion.h"
 
 int main(int argc, char *argv[]) {
   if (argc != 2) {
@@ -33,19 +32,16 @@ int main(int argc, char *argv[]) {
     fscanf(f, "%s", mapa->coord[i]);
   }
 
+  mostrar_robot_mapa(robot, mapa);
+
   fclose(f);
   /*Una vez cargados los datos cierra el archivo */
 
-
-  mostrar_robot_mapa(robot, mapa);
-  // robot_imprimir(robot);
-  // mapa_imprimir(mapa);
-
-  puts("Recorrido:\n");
+  puts("Recorrido:");
   robot_ir_a_destino(robot, mapa);
   puts("");
   mapa_destruir(mapa);
-  // robot_destruir(robot);
+  robot_destruir(robot);
 
 
   return 0;
