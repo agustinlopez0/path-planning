@@ -17,4 +17,5 @@ void mapa_destruir(Mapa mapa) {
   for (unsigned int i = 0; i < mapa->alto; i++)
     free(mapa->coord[i]);
   free(mapa->coord);
+  free(mapa);
 }

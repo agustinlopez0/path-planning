@@ -19,12 +19,6 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa);
 int robot_mover(Robot robot, Mapa mapa, Direccion direccion);
 
 /**
- * Vuelve a la posicion anterior utilizando la pila de movimientos.
- */
-//sacar mapa
-int robot_retroceder(Robot robot, Mapa mapa);
-
-/**
  * Mueve al robot hacia su destino.
  */
 int robot_ir_a_destino(Robot robot, Mapa mapa);

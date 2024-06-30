@@ -4,11 +4,12 @@
 #include <string.h>
 #include "simulacion.h"
 
-int validar_formato(FILE * f, size_t *alto, size_t *ancho, int *dummy,
+int validar_formato(FILE * f, size_t *alto, size_t *ancho,
                     Punto robotPos, Punto robotDest) {
 
   // Validar la primera línea
-  if (fscanf(f, "%ld %ld %d", alto, ancho, dummy) != 3) {
+  int dummy;
+  if (fscanf(f, "%ld %ld %d", alto, ancho, &dummy) != 3) {
     fprintf(stderr, "Formato de archivo inválido en la primera línea\n");
     return 1;
   }
@@ -35,9 +36,8 @@ int leer_archivo(const char *nombre_archivo, Mapa mapa, Punto robotPos,
     return 1;
   }
 
-  int dummy;
   if (validar_formato
-      (f, &mapa->alto, &mapa->ancho, &dummy, robotPos, robotDest) != 0) {
+      (f, &mapa->alto, &mapa->ancho, robotPos, robotDest) != 0) {
     fclose(f);
     return 1;
   }
@@ -83,10 +83,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  Robot robot =
-      robot_crear(robotPos, robotDest, (FuncionCopiadora) punto_copiar);
-  punto_destruir(robotPos);
-  punto_destruir(robotDest);
+  Robot robot = robot_crear(robotPos, robotDest);
 
   if (!robot) {
     mapa_destruir(mapa);
@@ -99,9 +96,9 @@ int main(int argc, char *argv[]) {
   puts("Recorrido:");
   robot_ir_a_destino(robot, mapa);
   puts("");
+
   mapa_destruir(mapa);
   robot_destruir(robot);
-
 
   return 0;
 }

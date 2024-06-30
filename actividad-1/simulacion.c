@@ -74,6 +74,7 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
   return 0;
 }
 
+// Analizar llevar a robot.c
 // sacar mapa
 static void retroceder(Robot robot, Mapa mapa, Direccion direccion) {
   if (direccion == DOWN)
@@ -88,7 +89,7 @@ static void retroceder(Robot robot, Mapa mapa, Direccion direccion) {
 }
 
 //sacar mapa
-int robot_retroceder(Robot robot, Mapa mapa) {
+static int robot_retroceder(Robot robot, Mapa mapa) {
   if (pila_es_vacia(robot->movimientos))
     return 0;
 
@@ -161,6 +162,7 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
     }
   } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
   puts("*");
+  punto_destruir(ultimaPosicion);
 
   // Una vez que no puedo avanzar por la ruta optimista
   if (!robot_en_destino(robot)) {
