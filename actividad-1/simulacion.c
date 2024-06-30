@@ -139,9 +139,10 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
     return 1;
 
   // Sigo la ruta optimista por nodos no visitado hasta que no puedo mas
-  Punto ultimaPosicion;
+  Punto ultimaPosicion = NULL;
   do {
-    ultimaPosicion = robot->pos;
+    punto_destruir(ultimaPosicion);
+    ultimaPosicion = punto_copiar(robot->pos);
     // Si el robot esta arriba del destino
     if (robot->pos->i < robot->dest->i && !posicion_visitada(robot, DOWN)) {
       robot_mover(robot, mapa, DOWN);
@@ -159,6 +160,7 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
       robot_mover(robot, mapa, RIGHT);
     }
   } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
+  puts("*");
 
   // Una vez que no puedo avanzar por la ruta optimista
   if (!robot_en_destino(robot)) {
