@@ -18,7 +18,7 @@ typedef _Robot *Robot;
  * Retorna un robot inicializado con los valores de posicion
  *  y destino.
  */
-Robot robot_crear(Punto pos, Punto dest);
+Robot robot_crear(Punto pos, Punto dest, FuncionCopiadora copy_punto);
 
 /**
  * Destruye un robot y libera la memoria.

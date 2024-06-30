@@ -3,20 +3,29 @@
 
 typedef struct {
   int i, j;
-} Punto;
+} _Punto;
 
-// typedef _Punto* Punto;
+typedef _Punto* Punto;
+
+/**
+ * Crea un nuevo punto con las coordenadas pasadas como argumento
+ */
+Punto punto_crear(int i, int j);
+
+/**
+ * Destruye un punto y libera la memoria
+ */
+void punto_destruir(Punto a);
 
 /**
  * Devuelve 0 si los puntos son iguales, cualquier otro valor si son distintos
  */
 int punto_comparar(Punto a, Punto b);
-int punto_compararp(Punto * a, Punto * b);
 
 /**
  * Realiza una copia fisica de un punto.
  */
-Punto *punto_copiar(Punto * a);
+Punto punto_copiar(Punto a);
 
 /**
  * Retorna 0 si estan alineados respecto al eje x.
@@ -35,6 +44,6 @@ int punto_distancia_y(Punto a, Punto b);
 /**
  * Imprime un punto
  */
-void punto_imprimir(Punto * punto);
+void punto_imprimir(Punto punto);
 
 #endif /* __PUNTO_H__ */

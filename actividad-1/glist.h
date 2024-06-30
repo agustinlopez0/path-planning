@@ -60,6 +60,9 @@ GList glist_eliminar_final(GList lista, FuncionDestructora destroy);
  */
 GList glist_eliminar_inicio(GList lista, FuncionDestructora destroy);
 
+/**
+ * Retorna 1 si el dato esta en la lista, 0 en caso contrario.
+ */
 int glist_include(GList lista, void * dato, FuncionComparadora comp);
 
 #endif /* __GLIST_H__ */

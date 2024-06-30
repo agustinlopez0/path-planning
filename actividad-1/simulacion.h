@@ -3,6 +3,7 @@
 #include "robot.h"
 #include "mapa.h"
 #include "direccion.h"
+#include "punto.h"
 
 /**
  * Imprime el mapa marcando las celdas visitadas por el robot,
@@ -20,6 +21,7 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion);
 /**
  * Vuelve a la posicion anterior utilizando la pila de movimientos.
  */
+//sacar mapa
 int robot_retroceder(Robot robot, Mapa mapa);
 
 /**

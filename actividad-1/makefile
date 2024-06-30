@@ -28,7 +28,7 @@ $(EXEC): $(SOURCES)
 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 exec: $(EXEC)
-	./$(EXEC) $(INPUT8)
+	./$(EXEC) $(INPUT1)
 
 clean:
 	rm -f $(BACKUP) $(EXEC)

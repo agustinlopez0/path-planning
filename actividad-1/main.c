@@ -5,7 +5,8 @@
 #include "simulacion.h"
 
 int validar_formato(FILE * f, size_t *alto, size_t *ancho, int *dummy,
-                    Punto * robotPos, Punto * robotDest) {
+                    Punto robotPos, Punto robotDest) {
+
   // Validar la primera línea
   if (fscanf(f, "%ld %ld %d", alto, ancho, dummy) != 3) {
     fprintf(stderr, "Formato de archivo inválido en la primera línea\n");
@@ -25,8 +26,9 @@ int validar_formato(FILE * f, size_t *alto, size_t *ancho, int *dummy,
   return 0;
 }
 
-int leer_archivo(const char *nombre_archivo, Mapa mapa, Punto * robotPos,
-                 Punto * robotDest) {
+int leer_archivo(const char *nombre_archivo, Mapa mapa, Punto robotPos,
+                 Punto robotDest) {
+
   FILE *f = fopen(nombre_archivo, "r");
   if (f == NULL) {
     fprintf(stderr, "No se pudo abrir el archivo %s\n", nombre_archivo);
@@ -71,17 +73,21 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
     return 1;
   }
-
   printf("Abriendo archivo: %s\n", argv[1]);
 
   Mapa mapa = malloc(sizeof(_Mapa));
-  Punto robotPos, robotDest;
+  Punto robotPos = punto_crear(0, 0);
+  Punto robotDest = punto_crear(0, 0);
 
-  if (leer_archivo(argv[1], mapa, &robotPos, &robotDest) != 0) {
+  if (leer_archivo(argv[1], mapa, robotPos, robotDest) != 0) {
     return 1;
   }
 
-  Robot robot = robot_crear(robotPos, robotDest);
+  Robot robot =
+      robot_crear(robotPos, robotDest, (FuncionCopiadora) punto_copiar);
+  punto_destruir(robotPos);
+  punto_destruir(robotDest);
+
   if (!robot) {
     mapa_destruir(mapa);
     return 1;
