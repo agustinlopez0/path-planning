@@ -40,9 +40,9 @@
 
   Para que mas puede servir?
 
-5. Metodos de glist o pila que no uso los elimino? Tambien con tipos.h: Predicado, etc.
+5. Metodos de glist o pila que no uso los elimino?
 
-6. Achivo make
+6. Archivo make
 
 7. Usar punteros a puntos en estructura robot
 

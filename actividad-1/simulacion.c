@@ -2,9 +2,9 @@
 #include "simulacion.h"
 
 void mostrar_robot_mapa(Robot robot, Mapa mapa) {
-  for (int i = 0; i < mapa->alto; i++) {
+  for (unsigned i = 0; i < mapa->alto; i++) {
     printf("\t");
-    for (int j = 0; j < mapa->ancho; j++) {
+    for (unsigned j = 0; j < mapa->ancho; j++) {
       Punto aux = { i, j };
       if (punto_comparar(aux, robot->pos) == 0)
         printf("R ");
@@ -22,20 +22,19 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa) {
   getchar();
 }
 
-static int es_movimiento_valido(Mapa mapa, int i, int j) {
-  return i >= 0 && i < mapa->alto && j >= 0 && j < mapa->ancho
-      && mapa->coord[i][j] != '#';
+static int es_movimiento_valido(Mapa mapa, unsigned int i, unsigned int j) {
+  return i < mapa->alto && j < mapa->ancho && mapa->coord[i][j] != '#';
 }
 
-static int actualizar_posicion(Robot robot, int nuevo_i, int nuevo_j) {
+static void actualizar_posicion(Robot robot, unsigned int nuevo_i,
+                                unsigned int nuevo_j) {
   robot->pos.i = nuevo_i;
   robot->pos.j = nuevo_j;
-  return 1;
 }
 
 int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
-  int nuevo_i = robot->pos.i;
-  int nuevo_j = robot->pos.j;
+  unsigned int nuevo_i = robot->pos.i;
+  unsigned int nuevo_j = robot->pos.j;
 
   switch (direccion) {
   case UP:

@@ -5,7 +5,7 @@
 
 typedef struct {
   char **coord;
-  int ancho, alto;
+  size_t ancho, alto;
 } _Mapa;
 
 typedef _Mapa *Mapa;
