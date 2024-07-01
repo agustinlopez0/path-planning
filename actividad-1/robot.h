@@ -36,6 +36,10 @@ void robot_imprimir(Robot robot);
  */
 int robot_en_destino(Robot robot);
 
+/**
+ * Vuelve a la posicion anterior utilizando la pila de movimientos.
+ */
+int robot_retroceder(Robot robot);
 
 
 #endif // __ROBOT_H__

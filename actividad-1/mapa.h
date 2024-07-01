@@ -20,6 +20,9 @@ void mapa_imprimir(Mapa mapa);
  */
 void mapa_destruir(Mapa mapa);
 
-// Mapa mapa_crear(int alto, int ancho);
+/**
+ * Crea un mapa
+ */
+Mapa mapa_crear(size_t alto, size_t ancho, char** coord);
 
 #endif // __MAPA_H__

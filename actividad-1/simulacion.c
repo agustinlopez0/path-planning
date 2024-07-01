@@ -2,10 +2,11 @@
 #include "simulacion.h"
 
 void mostrar_robot_mapa(Robot robot, Mapa mapa) {
+  Punto puntoAux;
   for (unsigned i = 0; i < mapa->alto; i++) {
     printf("\t");
     for (unsigned j = 0; j < mapa->ancho; j++) {
-      Punto puntoAux = punto_crear(i, j);
+      puntoAux = punto_crear(i, j);
       if (punto_comparar(puntoAux, robot->pos) == 0)
         printf("R ");
       else if (punto_comparar(puntoAux, robot->dest) == 0)
@@ -64,9 +65,9 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
                     (FuncionCopiadora) direccion_copiar);
 
     direccion_imprimir(&direccion);
-    mostrar_robot_mapa(robot, mapa);
-    glist_recorrer(robot->visitados, (FuncionVisitante) punto_imprimir);
-    puts("");
+    // mostrar_robot_mapa(robot, mapa);
+    // glist_recorrer(robot->visitados, (FuncionVisitante) punto_imprimir);
+    // puts("");
 
     return 1;
   }
@@ -76,34 +77,7 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
 
 // Analizar llevar a robot.c
 // sacar mapa
-static void retroceder(Robot robot, Mapa mapa, Direccion direccion) {
-  if (direccion == DOWN)
-    robot->pos->i++;
-  else if (direccion == UP)
-    robot->pos->i--;
-  else if (direccion == LEFT)
-    robot->pos->j--;
-  else if (direccion == RIGHT)
-    robot->pos->j++;
-  mostrar_robot_mapa(robot, mapa);
-}
 
-//sacar mapa
-static int robot_retroceder(Robot robot, Mapa mapa) {
-  if (pila_es_vacia(robot->movimientos))
-    return 0;
-
-  // Obtener la última dirección desde la pila
-  Direccion *ultima_direccion = pila_tope(robot->movimientos);
-  // Mover el robot en la dirección opuesta
-  retroceder(robot, mapa, direccion_opuesta(*ultima_direccion));
-
-  robot->movimientos =
-      pila_desapilar(robot->movimientos,
-                     (FuncionDestructora) direccion_destruir);
-
-  return 1;
-}
 
 static int posicion_visitada(Robot robot, Direccion direccion) {
   int visitado = 0;
@@ -161,7 +135,6 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
       robot_mover(robot, mapa, RIGHT);
     }
   } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
-  puts("*");
   punto_destruir(ultimaPosicion);
 
   // Una vez que no puedo avanzar por la ruta optimista
@@ -177,7 +150,8 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
     else {
       // Si no puedo moverme a ningun lugar donde no haya estado retrocedo
       //sacar mapa
-      robot_retroceder(robot, mapa);
+      robot_retroceder(robot);
+      // mostrar_robot_mapa(robot, mapa);
     }
   }
   return robot_ir_a_destino(robot, mapa);
