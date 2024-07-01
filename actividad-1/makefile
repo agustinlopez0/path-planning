@@ -3,6 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 INDENT = indent
 INDENT_FLAGS = -kr -brf -i2 -nut
+MEMCHECK_FLAGS = --leak-check=full -s --track-origins=yes
 EXEC = robot
 BACKUP = *.c~
 
@@ -15,10 +16,10 @@ SOURCES = main.c robot.c mapa.c pila.c glist.c simulacion.c punto.c direccion.c
 
 # Selección de archivo de entrada según índice
 INPUT_INDEX ?= 1
-SELECTED_INPUT := $(word $(INPUT_INDEX), $(INPUT_FILES))
+SELECTED_INPUT = $(INPUT_DIR)/laberinto$(INPUT_INDEX).txt
 
 # Reglas
-all: indent $(EXEC)
+all: indent $(EXEC) run
 
 indent: $(SOURCES)
 	$(INDENT) $(INDENT_FLAGS) $(SOURCES)
@@ -33,11 +34,11 @@ clean:
 	rm -f $(BACKUP) $(EXEC)
 
 memcheck: $(EXEC) $(SELECTED_INPUT)
-	valgrind --leak-check=full -s --track-origins=yes ./$(EXEC) $(SELECTED_INPUT)
+	valgrind $(MEMCHECK_FLAGS) ./$(EXEC) $(SELECTED_INPUT)
 
-.PHONY: all indent run clean memcheck
+# .PHONY: all indent run clean memcheck
 
-# Uso make run INPUT_INDEX=1
+# Uso make INPUT_INDEX=1
 
 
 # # Variables

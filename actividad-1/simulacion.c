@@ -65,7 +65,7 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
                     (FuncionCopiadora) direccion_copiar);
 
     direccion_imprimir(&direccion);
-    // mostrar_robot_mapa(robot, mapa);
+    mostrar_robot_mapa(robot, mapa);
     // glist_recorrer(robot->visitados, (FuncionVisitante) punto_imprimir);
     // puts("");
 
@@ -113,7 +113,7 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
   if (robot_en_destino(robot))
     return 1;
 
-  // Sigo la ruta optimista por nodos no visitado hasta que no puedo mas
+  // Sigo la ruta optimista por nodos no visitados hasta que no logro moverme mas
   Punto ultimaPosicion = NULL;
   do {
     punto_destruir(ultimaPosicion);
@@ -121,16 +121,16 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
     // Si el robot esta arriba del destino
     if (robot->pos->i < robot->dest->i && !posicion_visitada(robot, DOWN)) {
       robot_mover(robot, mapa, DOWN);
-    }
-    // Si el robot esta abajo del destino
+    } else
+      // Si el robot esta abajo del destino
     if (robot->pos->i > robot->dest->i && !posicion_visitada(robot, UP)) {
       robot_mover(robot, mapa, UP);
     }
     // Si el robot esta a la derecha del destino
     if (robot->pos->j > robot->dest->j && !posicion_visitada(robot, LEFT)) {
       robot_mover(robot, mapa, LEFT);
-    }
-    // Si el robot esta a la izquierda del destino
+    } else
+      // Si el robot esta a la izquierda del destino
     if (robot->pos->j < robot->dest->j && !posicion_visitada(robot, RIGHT)) {
       robot_mover(robot, mapa, RIGHT);
     }
@@ -151,7 +151,7 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
       // Si no puedo moverme a ningun lugar donde no haya estado retrocedo
       //sacar mapa
       robot_retroceder(robot);
-      // mostrar_robot_mapa(robot, mapa);
+      mostrar_robot_mapa(robot, mapa);
     }
   }
   return robot_ir_a_destino(robot, mapa);

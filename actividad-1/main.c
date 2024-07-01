@@ -13,10 +13,10 @@ typedef struct {
   char **coord;
 } FileData;
 
-void filedata_destruir(FileData *fileData){
+void filedata_destruir(FileData * fileData) {
   punto_destruir(fileData->posRobot);
   punto_destruir(fileData->destRobot);
-  for(unsigned int i = 0; i < fileData->alto; i++)
+  for (unsigned int i = 0; i < fileData->alto; i++)
     free(fileData->coord[i]);
   free(fileData->coord);
   free(fileData);
