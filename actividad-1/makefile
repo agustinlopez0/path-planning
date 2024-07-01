@@ -33,7 +33,7 @@ clean:
 	rm -f $(BACKUP) $(EXEC)
 
 memcheck: $(EXEC) $(SELECTED_INPUT)
-	valgrind --leak-check=full -s ./$(EXEC) $(SELECTED_INPUT)
+	valgrind --leak-check=full -s --track-origins=yes ./$(EXEC) $(SELECTED_INPUT)
 
 .PHONY: all indent run clean memcheck
 

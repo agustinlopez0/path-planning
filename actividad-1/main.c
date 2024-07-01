@@ -13,6 +13,15 @@ typedef struct {
   char **coord;
 } FileData;
 
+void filedata_destruir(FileData *fileData){
+  punto_destruir(fileData->posRobot);
+  punto_destruir(fileData->destRobot);
+  for(unsigned int i = 0; i < fileData->alto; i++)
+    free(fileData->coord[i]);
+  free(fileData->coord);
+  free(fileData);
+}
+
 /**
  * Si la cadena esta conformada unicamente por '#' y '.' retorna 1,
  *   retorna 0 en caso contrario
@@ -95,7 +104,7 @@ FileData *leer_archivo(const char *nombre_archivo) {
 
 
   FileData *fileData = malloc(sizeof(FileData));
-  if (fileData == NULL) {       // terminar
+  if (fileData == NULL) {
     fprintf(stderr, "Error: No se pudo asignar memoria %s\n",
             nombre_archivo);
     return NULL;
@@ -142,6 +151,8 @@ FileData *leer_archivo(const char *nombre_archivo) {
       || (size_t) fileData->posRobot->i >= fileData->alto
       || (size_t) fileData->posRobot->j >= fileData->ancho) {
     fprintf(stderr, "El robot se encuentra sobre un obstaculo\n");
+    filedata_destruir(fileData);
+    fclose(f);
     return NULL;
   }
   if (fileData->coord[fileData->destRobot->i][fileData->destRobot->j] ==
@@ -149,6 +160,8 @@ FileData *leer_archivo(const char *nombre_archivo) {
       || (size_t) fileData->destRobot->j >= fileData->ancho) {
     fprintf(stderr,
             "El destino del robot se encuentra sobre un obstaculo\n");
+    filedata_destruir(fileData);
+    fclose(f);
     return NULL;
   }
 
