@@ -1,3 +1,13 @@
+/**
+ * @file main.c
+ * @brief Programa principal para la simulación de navegación de un robot en un mapa.
+ *
+ * Este programa lee un archivo de configuración que describe las dimensiones del mapa,
+ * la posición inicial y destino del robot, así como la disposición del mapa con obstáculos
+ * y caminos libres. Luego, crea un robot y un mapa basados en estos datos y simula la
+ * navegación del robot hasta alcanzar su destino.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -6,12 +16,86 @@
 
 #define MAX_BUFFER_SIZE 100
 
+/**
+ * @brief Estructura que almacena los datos leídos desde el archivo de configuración.
+ */
 typedef struct {
   size_t alto, ancho;
   Punto posRobot;
   Punto destRobot;
   char **coord;
 } FileData;
+
+/**
+ * @brief Libera la memoria asignada a una estructura FileData y sus campos.
+ *
+ * @param fileData Puntero a la estructura FileData a destruir.
+ */
+void filedata_destruir(FileData * fileData);
+
+/**
+ * @brief Verifica si una cadena está compuesta únicamente por caracteres válidos ('#' y '.').
+ *
+ * @param cadena Cadena a verificar.
+ * @return 1 si la cadena es válida, 0 si no lo es.
+ */
+int es_cadena_valida(const char *cadena);
+
+/**
+ * @brief Cuenta la cantidad de espacios en blanco en una cadena.
+ *
+ * @param cadena Cadena en la que contar los espacios en blanco.
+ * @return Número de espacios en blanco encontrados.
+ */
+int cantidad_espacios(const char *cadena);
+
+/**
+ * @brief Valida el formato de un archivo de configuración y carga los datos en una estructura FileData.
+ *
+ * @param f Puntero al archivo de configuración abierto en modo lectura.
+ * @param fileData Estructura donde se almacenarán los datos leídos.
+ * @return 0 si el formato es válido y los datos se cargan correctamente, 1 si hay errores.
+ */
+int validar_formato(FILE * f, FileData * fileData);
+
+/**
+ * @brief Lee un archivo de configuración y carga los datos en una estructura FileData.
+ *
+ * @param nombre_archivo Nombre del archivo de configuración.
+ * @return Puntero a la estructura FileData creada con los datos del archivo, o NULL si hay errores.
+ */
+FileData *leer_archivo(const char *nombre_archivo);
+
+int main(int argc, char *argv[]) {
+  // Verificar la cantidad de argumentos
+  if (argc < 2) {
+    fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
+    return 1;
+  }
+  // Leer y validar el archivo de configuración
+  FileData *fileData = leer_archivo(argv[1]);
+  if (fileData == NULL) {
+    return 1;
+  }
+  // Crear el robot y el mapa con los datos del archivo
+  Robot robot = robot_crear(fileData->posRobot, fileData->destRobot);
+  Mapa mapa = mapa_crear(fileData->alto, fileData->ancho, fileData->coord);
+  free(fileData);               // Liberar la estructura FileData, ya no se necesita
+
+  // Mostrar el estado inicial del robot en el mapa
+  mostrar_robot_mapa(robot, mapa);
+
+  // Simular el movimiento del robot hacia su destino
+  puts("Recorrido:");
+  robot_ir_a_destino(robot, mapa);
+  puts("");
+
+  // Liberar la memoria utilizada por el mapa y el robot
+  mapa_destruir(mapa);
+  robot_destruir(robot);
+
+  return 0;
+}
 
 void filedata_destruir(FileData * fileData) {
   punto_destruir(fileData->posRobot);
@@ -22,10 +106,6 @@ void filedata_destruir(FileData * fileData) {
   free(fileData);
 }
 
-/**
- * Si la cadena esta conformada unicamente por '#' y '.' retorna 1,
- *   retorna 0 en caso contrario
- */
 int es_cadena_valida(const char *cadena) {
   while (*cadena) {
     if (*cadena != '#' && *cadena != '.')
@@ -35,9 +115,6 @@ int es_cadena_valida(const char *cadena) {
   return 1;
 }
 
-/**
- * Retorna la cantidad de espacios de una cadena
- */
 int cantidad_espacios(const char *cadena) {
   int cont = 0;
   while (*cadena) {
@@ -167,31 +244,4 @@ FileData *leer_archivo(const char *nombre_archivo) {
 
   fclose(f);
   return fileData;
-}
-
-int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
-    return 1;
-  }
-
-  FileData *fileData = leer_archivo(argv[1]);
-  if (fileData == NULL) {
-    return 1;
-  }
-
-  Robot robot = robot_crear(fileData->posRobot, fileData->destRobot);
-  Mapa mapa = mapa_crear(fileData->alto, fileData->ancho, fileData->coord);
-  free(fileData);
-
-  mostrar_robot_mapa(robot, mapa);
-
-  puts("Recorrido:");
-  robot_ir_a_destino(robot, mapa);
-  puts("");
-
-  mapa_destruir(mapa);
-  robot_destruir(robot);
-
-  return 0;
 }

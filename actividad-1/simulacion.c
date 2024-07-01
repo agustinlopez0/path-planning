@@ -109,9 +109,9 @@ static int posicion_visitada(Robot robot, Direccion direccion) {
   return visitado;
 }
 
-int robot_ir_a_destino(Robot robot, Mapa mapa) {
+void robot_ir_a_destino(Robot robot, Mapa mapa) {
   if (robot_en_destino(robot))
-    return 1;
+    return;
 
   // Sigo la ruta optimista por nodos no visitados hasta que no logro moverme mas
   Punto ultimaPosicion = NULL;
@@ -154,5 +154,6 @@ int robot_ir_a_destino(Robot robot, Mapa mapa) {
       mostrar_robot_mapa(robot, mapa);
     }
   }
-  return robot_ir_a_destino(robot, mapa);
+  // Intenta nuevamente llegar a destino desde la posicion actual
+  robot_ir_a_destino(robot, mapa);
 }

@@ -52,17 +52,6 @@ void glist_recorrer(GList list, FuncionVisitante visit) {
     visit(node->data);
 }
 
-GList glist_filtrar(GList lista, FuncionCopiadora c, Predicado p) {
-  GList lista_filtrada = glist_crear();
-  for (GNode * temp = lista; temp != NULL; temp = temp->next) {
-    p(temp->data);
-    if (p(temp->data)) {
-      lista_filtrada = glist_agregar_inicio(lista_filtrada, temp->data, c);
-    }
-  }
-  return lista_filtrada;
-}
-
 void *glist_primer_elemento(GList list) {
   return list->data;
 }

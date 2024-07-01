@@ -1,31 +1,50 @@
 #ifndef __DIRECCION_H__
 #define __DIRECCION_H__
 
+/**
+ * @file direccion.h
+ * @brief Definición y funciones relacionadas con la enumeración Direccion.
+ */
+
+/**
+ * @enum Direccion
+ * @brief Enumeración que representa las direcciones posibles: izquierda, derecha, arriba y abajo.
+ */
 typedef enum {
-  LEFT,
-  RIGHT,
-  UP,
-  DOWN
+  LEFT, 
+  RIGHT,  
+  UP,     
+  DOWN    
 } Direccion;
 
 /**
- * Destruye una direccion y libera la memoria.
+ * @brief Destruye una dirección.
+ *
+ * @param a Puntero a la dirección que se va a destruir.
  */
-void direccion_destruir(Direccion * a);
+void direccion_destruir(Direccion *a);
 
 /**
- * Realiza una copia fisica de una dirección.
+ * @brief Realiza una copia física de una dirección.
+ *
+ * @param a Dirección que se va a copiar.
+ * @return Direccion* Puntero a la dirección copiada.
  */
-Direccion *direccion_copiar(Direccion * a);
+Direccion *direccion_copiar(Direccion *a);
 
 /**
- * Dada una dirección retorna su opuesta.
+ * @brief Retorna la dirección opuesta a la dirección dada.
+ *
+ * @param direccion Dirección de la cual se desea obtener la dirección opuesta.
+ * @return Direccion Dirección opuesta.
  */
 Direccion direccion_opuesta(Direccion direccion);
 
 /**
- * Imprime una dirección.
+ * @brief Imprime una dirección.
+ *
+ * @param direccion Dirección que se va a imprimir.
  */
-void direccion_imprimir(Direccion * direccion);
+void direccion_imprimir(Direccion *direccion);
 
 #endif /* __DIRECCION_H__ */

@@ -1,48 +1,77 @@
 #ifndef __PUNTO_H__
 #define __PUNTO_H__
 
+/**
+ * @file punto.h
+ * @brief Definiciones y operaciones relacionadas con puntos en un plano cartesiano.
+ */
+
 typedef struct {
-  int i, j;
+  int i;
+  int j;
 } _Punto;
 
 typedef _Punto* Punto;
 
 /**
- * Crea un nuevo punto con las coordenadas pasadas como argumento
+ * @brief Crea un nuevo punto con las coordenadas especificadas.
+ *
+ * @param i Coordenada en el eje x.
+ * @param j Coordenada en el eje y.
+ * @return Puntero al nuevo punto creado.
  */
 Punto punto_crear(int i, int j);
 
 /**
- * Destruye un punto y libera la memoria
+ * @brief Destruye un punto y libera la memoria asociada.
+ *
+ * @param a Puntero al punto que se desea destruir.
  */
 void punto_destruir(Punto a);
 
 /**
- * Devuelve 0 si los puntos son iguales, cualquier otro valor si son distintos
+ * @brief Compara dos puntos para determinar si son iguales.
+ *
+ * @param a Primer punto a comparar.
+ * @param b Segundo punto a comparar.
+ * @return 0 si los puntos son iguales, cualquier otro valor si son diferentes.
  */
 int punto_comparar(Punto a, Punto b);
 
 /**
- * Realiza una copia fisica de un punto.
+ * @brief Realiza una copia física de un punto.
+ *
+ * @param a Punto que se desea copiar.
+ * @return Puntero a una copia del punto original.
  */
 Punto punto_copiar(Punto a);
 
 /**
- * Retorna 0 si estan alineados respecto al eje x.
- * Un valor positivo si b esta a la izquierda de a
- * Un valor negativo si b esta a la derecha de a
+ * @brief Calcula la distancia relativa en el eje x entre dos puntos.
+ *
+ * @param a Primer punto.
+ * @param b Segundo punto.
+ * @return 0 si los puntos están alineados respecto al eje x,
+ *         un valor positivo si b está a la izquierda de a,
+ *         un valor negativo si b está a la derecha de a.
  */
 int punto_distancia_x(Punto a, Punto b);
 
 /**
- * Retorna 0 si estan alineados respecto al eje y.
- * Un valor positivo si b esta arriba de a
- * Un valor negativo si a esta arriba de b
+ * @brief Calcula la distancia relativa en el eje y entre dos puntos.
+ *
+ * @param a Primer punto.
+ * @param b Segundo punto.
+ * @return 0 si los puntos están alineados respecto al eje y,
+ *         un valor positivo si b está arriba de a,
+ *         un valor negativo si b está abajo de a.
  */
 int punto_distancia_y(Punto a, Punto b);
 
 /**
- * Imprime un punto
+ * @brief Imprime las coordenadas de un punto en el formato "(i, j)".
+ *
+ * @param punto Punto que se desea imprimir.
  */
 void punto_imprimir(Punto punto);
 
