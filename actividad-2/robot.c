@@ -59,13 +59,35 @@ void destroy(char *a) {
   free(a);
 }
 
+int validar_movimiento(Robot robot, Direccion direccion){
+  if(direccion == UP)
+    return (robot->pos->i - 1 > 0) && 
+           (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) != '#');
+  if(direccion == DOWN)
+    return (robot->pos->i + 1 < (int)matriz_num_filas(robot->mapa)) &&
+           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) != '#');
+  if(direccion == LEFT)
+    return (robot->pos->j - 1 > 0) &&
+           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) != '#');
+  if(direccion == RIGHT)
+    return (robot->pos->j + 1 < (int)matriz_num_columnas(robot->mapa)) &&
+           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) != '#');
+  return 0;
+}
+
 void robot_mover(Robot robot, Direccion direccion) {
+  if(!validar_movimiento(robot, direccion)){
+    fprintf(stderr, "movimiento imposible");
+    return;
+  }
+  
   fprintf(stderr, "\nrobot_mover ");
   direccion_imprimir(&direccion);
   fprintf(stderr, ":");
 
   if (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) == '.')
     matriz_escribir(robot->mapa, robot->pos->i, robot->pos->j, '-');
+
 
   switch (direccion) {
   case UP:
@@ -126,8 +148,9 @@ void robot_ir_a_destino(Robot robot) {
       robot_mover(robot, RIGHT);
     }
   } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
+  usar_sensor(robot);
+  
   punto_destruir(ultimaPosicion);
-
   if (!robot_en_destino(robot)) {
     //Voy para donde pueda y no haya ido antes
     if ((size_t) robot->pos->i + 1 < matriz_num_filas(robot->mapa) &&
@@ -151,7 +174,7 @@ void robot_ir_a_destino(Robot robot) {
                               robot->pos->j + 1) == '.') {
 
       robot_mover(robot, RIGHT);
-    } else if (usar_sensor(robot) == 0) {
+    } else {
       robot_retroceder(robot);
     }
   }
