@@ -10,6 +10,7 @@ typedef struct {
     int sensor; 
     Pila movimientos; /**< Pila de movimientos realizados por el robot */
     Matriz* mapa;
+    GList usoSensor;
 } _Robot;
 
 typedef _Robot* Robot;

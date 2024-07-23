@@ -24,8 +24,8 @@
 # # Reglas
 # all: $(EXEC)
 
-# indent: $(SOURCES)
-# 	$(INDENT) $(INDENT_FLAGS) $(SOURCES)
+indent:
+	indent -kr -brf -i2 -nut robot.c pila.c punto.c matriz_bi.c glist.c direccion.c funcioneslistas.c
 
 # $(EXEC): $(SOURCES)
 # 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
@@ -40,7 +40,7 @@ sensor:
 # 	./$(EXEC) $(INPUT10)
 
 clean:
-	rm robot sensor feedback a.out
+	rm robot sensor feedback a.out *~
 
 # memcheck: $(EXEC)
 # 	valgrind --leak-check=full -s ./$(EXEC) $(INPUT5)

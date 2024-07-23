@@ -14,13 +14,13 @@ Direccion *direccion_copiar(Direccion * a) {
 
 void direccion_imprimir(Direccion * direccion) {
   if (*direccion == UP)
-    printf("U");
+    fprintf(stderr, "U");
   else if (*direccion == DOWN)
-    printf("D");
+    fprintf(stderr, "D");
   else if (*direccion == LEFT)
-    printf("L");
+    fprintf(stderr, "L");
   else if (*direccion == RIGHT)
-    printf("R");
+    fprintf(stderr, "R");
 }
 
 Direccion direccion_opuesta(Direccion direccion) {
