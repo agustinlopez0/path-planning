@@ -13,7 +13,6 @@ int main() {
   Robot robot = malloc(sizeof(_Robot));
   robot->pos = malloc(sizeof(_Punto));
   robot->dest = malloc(sizeof(_Punto));
-  robot->usoSensor = glist_crear();
 
   int N, M;
   scanf("%d%d%d", &N, &M, &robot->sensor);
@@ -43,7 +42,7 @@ int main() {
 
   printf("! RRRDDRRDD\n");
   fflush(stdout);
-  
+
   matriz_destruir(robot->mapa);
   free(robot);
   return 0;
@@ -59,28 +58,37 @@ void destroy(char *a) {
   free(a);
 }
 
-int validar_movimiento(Robot robot, Direccion direccion){
-  if(direccion == UP)
-    return (robot->pos->i - 1 > 0) && 
-           (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) != '#');
-  if(direccion == DOWN)
-    return (robot->pos->i + 1 < (int)matriz_num_filas(robot->mapa)) &&
-           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) != '#');
-  if(direccion == LEFT)
-    return (robot->pos->j - 1 > 0) &&
-           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) != '#');
-  if(direccion == RIGHT)
-    return (robot->pos->j + 1 < (int)matriz_num_columnas(robot->mapa)) &&
-           (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) != '#');
+int validar_movimiento(Robot robot, Direccion direccion) {
+  if (direccion == UP)
+    return (robot->pos->i - 1 >= 0) &&
+        (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) !=
+         '#') &&
+         (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) !=
+         '?');
+  if (direccion == DOWN)
+    return (robot->pos->i + 1 < (int) matriz_num_filas(robot->mapa)) &&
+        (matriz_leer(robot->mapa, robot->pos->i + 1, robot->pos->j) != '#') &&
+        (matriz_leer(robot->mapa, robot->pos->i + 1, robot->pos->j) != '?');
+  if (direccion == LEFT)
+    return (robot->pos->j - 1 >= 0) &&
+        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) !=
+         '#') &&
+         (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) !=
+         '?');
+  if (direccion == RIGHT)
+    return (robot->pos->j + 1 < (int) matriz_num_columnas(robot->mapa)) &&
+        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j + 1) != '#') &&
+        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j + 1) != '?');
   return 0;
 }
 
-void robot_mover(Robot robot, Direccion direccion) {
-  if(!validar_movimiento(robot, direccion)){
-    fprintf(stderr, "movimiento imposible");
-    return;
+int robot_mover(Robot robot, Direccion direccion) {
+  if (!validar_movimiento(robot, direccion)) {
+    return 0;
   }
-  
+
+
+
   fprintf(stderr, "\nrobot_mover ");
   direccion_imprimir(&direccion);
   fprintf(stderr, ":");
@@ -107,14 +115,13 @@ void robot_mover(Robot robot, Direccion direccion) {
   robot->movimientos =
       pila_apilar(robot->movimientos, &direccion,
                   (FuncionCopiadora) direccion_copiar);
+  return 1;
 }
 
 
 
 
 void robot_ir_a_destino(Robot robot) {
-
-
   if (robot_en_destino(robot))
     return;
 
@@ -123,33 +130,30 @@ void robot_ir_a_destino(Robot robot) {
   do {
     punto_destruir(ultimaPosicion);
     ultimaPosicion = punto_copiar(robot->pos);
-    // Si el robot esta arriba del destino
-    if (robot->pos->i < robot->dest->i &&
-        matriz_leer(robot->mapa, robot->pos->i + 1,
-                    robot->pos->j) == '.') {
-      robot_mover(robot, DOWN);
-    } else
-      // Si el robot esta abajo del destino
-    if (robot->pos->i > robot->dest->i &&
-          matriz_leer(robot->mapa, robot->pos->i - 1,
-                        robot->pos->j) == '.') {
-      robot_mover(robot, UP);
-    }
+    // Si el robot esta arriba del destino bajo hasta alinearme
+    while (robot->pos->i < robot->dest->i &&
+           matriz_leer(robot->mapa, robot->pos->i + 1,
+                       robot->pos->j) == '.' && robot_mover(robot, DOWN));
+
+    // Si el robot esta abajo del destino
+    while (robot->pos->i > robot->dest->i &&
+           matriz_leer(robot->mapa, robot->pos->i - 1,
+                       robot->pos->j) == '.' && robot_mover(robot, UP));
+
     // Si el robot esta a la derecha del destino
-    if (robot->pos->j > robot->dest->j &&
-        matriz_leer(robot->mapa, robot->pos->i,
-                    robot->pos->j - 1) == '.') {
-      robot_mover(robot, LEFT);
-    } else
-      // Si el robot esta a la izquierda del destino
-    if (robot->pos->j < robot->dest->j &&
-          matriz_leer(robot->mapa, robot->pos->i,
-                        robot->pos->j + 1) == '.') {
-      robot_mover(robot, RIGHT);
-    }
-  } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
-  usar_sensor(robot);
-  
+    while (robot->pos->j > robot->dest->j &&
+           matriz_leer(robot->mapa, robot->pos->i,
+                       robot->pos->j - 1) == '.' &&
+           robot_mover(robot, LEFT)
+        );
+    // Si el robot esta a la izquierda del destino
+    while (robot->pos->j < robot->dest->j &&
+           matriz_leer(robot->mapa, robot->pos->i,
+                       robot->pos->j + 1) == '.' &&
+           robot_mover(robot, RIGHT)
+        );
+  } while (punto_comparar(ultimaPosicion, robot->pos) != 0 || usar_sensor(robot));
+
   punto_destruir(ultimaPosicion);
   if (!robot_en_destino(robot)) {
     //Voy para donde pueda y no haya ido antes
@@ -177,8 +181,10 @@ void robot_ir_a_destino(Robot robot) {
     } else {
       robot_retroceder(robot);
     }
+    usar_sensor(robot);
   }
 
   robot_ir_a_destino(robot);
 }
+
 // NO TIENE QUE USAR SENSOR SI YA SABE LO QUE HAY ALREDEDOR. SOLO CUANDO HAY ALGUN ?

@@ -37,24 +37,30 @@ void matriz_destruir(Matriz * matriz) {
 }
 
 char matriz_leer(Matriz * matriz, size_t fil, size_t col) {
-  if(fil >= matriz_num_filas(matriz)){
-    fprintf(stderr, "\nmatriz_leer: FILA FUERA DE RANGO (%ld %ld)\n", fil, col);
+  if (fil >= matriz_num_filas(matriz)) {
+    fprintf(stderr, "\nmatriz_leer: FILA FUERA DE RANGO (%ld %ld)\n", fil,
+            col);
     return 0;
   }
-  if(col >= matriz_num_columnas(matriz)){
-    fprintf(stderr, "\nmatriz_leer: COLUMNA FUERA DE RANGO (%ld %ld)\n", fil, col);
+  if (col >= matriz_num_columnas(matriz)) {
+    fprintf(stderr, "\nmatriz_leer: COLUMNA FUERA DE RANGO (%ld %ld)\n",
+            fil, col);
     return 0;
   }
   return matriz->elem[fil][col];
 }
 
 void matriz_escribir(Matriz * matriz, size_t fil, size_t col, char val) {
-  if(fil >= matriz_num_filas(matriz)){
-    fprintf(stderr, "\nmatriz_escribir: FILA FUERA DE RANGO (%ld %ld)/val:%c\n", fil, col, val);
+  if (fil >= matriz_num_filas(matriz)) {
+    fprintf(stderr,
+            "\nmatriz_escribir: FILA FUERA DE RANGO (%ld %ld)/val:%c\n",
+            fil, col, val);
     return;
   }
-  if(col >= matriz_num_columnas(matriz)){
-    fprintf(stderr, "\nmatriz_escribir: COLUMNA FUERA DE RANGO (%ld %ld)/val:%c\n", fil, col, val);
+  if (col >= matriz_num_columnas(matriz)) {
+    fprintf(stderr,
+            "\nmatriz_escribir: COLUMNA FUERA DE RANGO (%ld %ld)/val:%c\n",
+            fil, col, val);
     return;
   } else {
     matriz->elem[fil][col] = val;
