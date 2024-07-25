@@ -1,190 +1,213 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pila.h"
-#include "punto.h"
+#include <limits.h>
 #include "matriz.h"
-#include "direccion.h"
-#include "funcioneslistas.h"
-#include "tipos.h"
+// #include "funcioneslistas.h"
+#include "tipos2.h"
 
-void robot_ir_a_destino(Robot robot);
+typedef struct {
+    int costo;
+    int prioridad;
+    Punto pos;
+} Nodo;
+
+typedef struct {
+    Nodo *nodos;
+    int capacidad;
+    int tamaño;
+} ColaPrioridad;
+
+typedef struct {
+    Punto padre;
+    int costo;
+} CeldaInfo;
+
+void intercambiar(Nodo *a, Nodo *b) {
+    Nodo temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void burbujeoHaciaArriba(ColaPrioridad *cola, int i) {
+    while (i > 0 && cola->nodos[i].prioridad < cola->nodos[(i - 1) / 2].prioridad) {
+        intercambiar(&cola->nodos[i], &cola->nodos[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+}
+
+void burbujeoHaciaAbajo(ColaPrioridad *cola, int i) {
+    int izq = 2 * i + 1;
+    int der = 2 * i + 2;
+    int menor = i;
+
+    if (izq < cola->tamaño && cola->nodos[izq].prioridad < cola->nodos[menor].prioridad) {
+        menor = izq;
+    }
+    if (der < cola->tamaño && cola->nodos[der].prioridad < cola->nodos[menor].prioridad) {
+        menor = der;
+    }
+    if (menor != i) {
+        intercambiar(&cola->nodos[i], &cola->nodos[menor]);
+        burbujeoHaciaAbajo(cola, menor);
+    }
+}
+
+void inicializarCola(ColaPrioridad *cola, int capacidad) {
+    cola->nodos = (Nodo *)malloc(capacidad * sizeof(Nodo));
+    cola->capacidad = capacidad;
+    cola->tamaño = 0;
+}
+
+void insertarNodo(ColaPrioridad *cola, Nodo nodo) {
+    if (cola->tamaño < cola->capacidad) {
+        cola->nodos[cola->tamaño] = nodo;
+        burbujeoHaciaArriba(cola, cola->tamaño);
+        cola->tamaño++;
+    }
+}
+
+Nodo extraerNodoConPrioridad(ColaPrioridad *cola) {
+    Nodo nodo = cola->nodos[0];
+    cola->tamaño--;
+    cola->nodos[0] = cola->nodos[cola->tamaño];
+    burbujeoHaciaAbajo(cola, 0);
+    return nodo;
+}
+
+#define INF INT_MAX
+
+void imprimirCamino(Punto destino, CeldaInfo** celdaInfo) {
+    Punto camino[25];
+    int longitud = 0;
+
+    for (Punto p = destino; p.x != -1 && p.y != -1; p = celdaInfo[p.x][p.y].padre) {
+        camino[longitud++] = p;
+    }
+
+    fprintf(stderr, "Camino encontrado:\n");
+    for (int i = longitud - 1; i >= 0; i--) {
+        fprintf(stderr, "(%d, %d)\n", camino[i].x, camino[i].y);
+    }
+}
+void liberarCeldaInfo(CeldaInfo **celdaInfo, int N) {
+    for (int i = 0; i < N; i++) {
+        free(celdaInfo[i]);
+    }
+    free(celdaInfo);
+}
+void inicializarCeldaInfo(CeldaInfo ***celdaInfo, int N, int M) {
+    *celdaInfo = (CeldaInfo **)malloc(N * sizeof(CeldaInfo *));
+    for (int i = 0; i < N; i++) {
+        (*celdaInfo)[i] = (CeldaInfo *)malloc(M * sizeof(CeldaInfo));
+    }
+}
+
+void d_star_lite(Robot robot) {
+    Punto inicio = *robot->pos;
+    Punto destino = *robot->dest;
+    int N = matriz_num_filas(robot->mapa);
+    int M = matriz_num_columnas(robot->mapa);
+    ColaPrioridad cola;
+    inicializarCola(&cola, N * M);
+
+    int costos[N][M];
+    CeldaInfo **celdaInfo;
+    inicializarCeldaInfo(&celdaInfo, N, M);
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            costos[i][j] = INF;
+            celdaInfo[i][j].costo = INF;
+            celdaInfo[i][j].padre = (Punto){-1, -1}; // Indica que no hay predecesor
+        }
+    }
+
+    costos[inicio.x][inicio.y] = 0;
+    celdaInfo[inicio.x][inicio.y].costo = 0;
+    celdaInfo[inicio.x][inicio.y].padre = (Punto){-1, -1}; // Nodo inicial sin padre
+
+    Nodo nodoInicio = {0, 0, inicio};
+    insertarNodo(&cola, nodoInicio);
+
+    while (cola.tamaño > 0) {
+        Nodo nodo = extraerNodoConPrioridad(&cola);
+
+        if (nodo.pos.x == destino.x && nodo.pos.y == destino.y) {
+            imprimirCamino(destino, celdaInfo);
+            free(cola.nodos); // Liberar memoria de la cola
+            liberarCeldaInfo(celdaInfo, N); // Liberar memoria de celdaInfo
+            return;
+        }
+
+        // Actualiza vecinos
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if ((dx == 0 && dy == 0) || (dx != 0 && dy != 0)) continue;
+                
+                int nx = nodo.pos.x + dx;
+                int ny = nodo.pos.y + dy;
+                
+                if (nx >= 0 && nx < N && ny >= 0 && ny < M && matriz_leer(robot->mapa, nx, ny) != '#') {
+                    int nuevoCosto = nodo.costo + 1; // Asumiendo costo uniforme
+                    if (nuevoCosto < costos[nx][ny]) {
+                        costos[nx][ny] = nuevoCosto;
+                        celdaInfo[nx][ny].costo = nuevoCosto;
+                        celdaInfo[nx][ny].padre = nodo.pos; // Establece el predecesor
+                        Nodo vecino = {nuevoCosto, nuevoCosto, {nx, ny}};
+                        insertarNodo(&cola, vecino);
+                    }
+                }
+            }
+        }
+    }
+
+    fprintf(stderr, "No se encontró un camino\n");
+    free(cola.nodos); // Liberar memoria de la cola
+    liberarCeldaInfo(celdaInfo, N); // Liberar memoria de celdaInfo
+}
+
 
 int main() {
-  Robot robot = malloc(sizeof(_Robot));
-  robot->pos = malloc(sizeof(_Punto));
-  robot->dest = malloc(sizeof(_Punto));
+    Robot robot = malloc(sizeof(_Robot));
+    Punto a = {0, 0}, b = {2, 2};
+    robot->pos = &a;
+    robot->dest = &b;
 
-  int N, M;
-  scanf("%d%d%d", &N, &M, &robot->sensor);
-  robot->mapa = matriz_crear(N, M);
+    int N, M;
+    scanf("%d%d%d", &N, &M, &robot->sensor);
+    robot->mapa = matriz_crear(N, M);
 
-  scanf("%d%d", &robot->pos->i, &robot->pos->j);
-  scanf("%d%d", &robot->dest->i, &robot->dest->j);
+    robot->mapa = matriz_crear(N, M);
+    matriz_escribir(robot->mapa, 0, 0, '.');
+    matriz_escribir(robot->mapa, 1, 0, '.');
+    matriz_escribir(robot->mapa, 2, 0, '.');
+    matriz_escribir(robot->mapa, 3, 0, '.');
+    matriz_escribir(robot->mapa, 4, 0, '.');
+    matriz_escribir(robot->mapa, 0, 1, '.');
+    matriz_escribir(robot->mapa, 1, 1, '#');
+    matriz_escribir(robot->mapa, 2, 1, '#');
+    matriz_escribir(robot->mapa, 3, 1, '#');
+    matriz_escribir(robot->mapa, 4, 1, '.');
+    matriz_escribir(robot->mapa, 0, 2, '.');
+    matriz_escribir(robot->mapa, 1, 2, '#');
+    matriz_escribir(robot->mapa, 2, 2, '.');
+    matriz_escribir(robot->mapa, 3, 2, '.');
+    matriz_escribir(robot->mapa, 4, 2, '.');
+    matriz_escribir(robot->mapa, 0, 3, '.');
+    matriz_escribir(robot->mapa, 1, 3, '#');
+    matriz_escribir(robot->mapa, 2, 3, '.');
+    matriz_escribir(robot->mapa, 3, 3, '#');
+    matriz_escribir(robot->mapa, 4, 3, '.');
+    matriz_escribir(robot->mapa, 0, 4, '.');
+    matriz_escribir(robot->mapa, 1, 4, '.');
+    matriz_escribir(robot->mapa, 2, 4, '.');
+    matriz_escribir(robot->mapa, 3, 4, '.');
+    matriz_escribir(robot->mapa, 4, 4, '.');
 
-  robot_set_mapa(robot);
-  Pila movimientos = pila_crear();
-  robot->movimientos = movimientos;
+    d_star_lite(robot);
 
-  fprintf(stderr, "%ld%ld%d %d%d %d%d",
-          matriz_num_filas(robot->mapa), matriz_num_columnas(robot->mapa),
-          robot->sensor, robot->pos->i, robot->pos->j, robot->dest->i,
-          robot->dest->j);
-
-  fprintf(stderr, "main:");
-  imprimir_mapa(robot);
-  fflush(stdout);
-
-
-
-  usar_sensor(robot);
-  robot_ir_a_destino(robot);
-
-
-  printf("! RRRDDRRDD\n");
-  fflush(stdout);
-
-  matriz_destruir(robot->mapa);
-  free(robot);
-  return 0;
-}
-
-char *copy(char *a) {
-  char *copia = malloc(sizeof(char));
-  *copia = *a;
-  return copia;
-}
-
-void destroy(char *a) {
-  free(a);
-}
-
-int validar_movimiento(Robot robot, Direccion direccion) {
-  if (direccion == UP)
-    return (robot->pos->i - 1 >= 0) &&
-        (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) !=
-         '#') &&
-         (matriz_leer(robot->mapa, robot->pos->i - 1, robot->pos->j) !=
-         '?');
-  if (direccion == DOWN)
-    return (robot->pos->i + 1 < (int) matriz_num_filas(robot->mapa)) &&
-        (matriz_leer(robot->mapa, robot->pos->i + 1, robot->pos->j) != '#') &&
-        (matriz_leer(robot->mapa, robot->pos->i + 1, robot->pos->j) != '?');
-  if (direccion == LEFT)
-    return (robot->pos->j - 1 >= 0) &&
-        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) !=
-         '#') &&
-         (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j - 1) !=
-         '?');
-  if (direccion == RIGHT)
-    return (robot->pos->j + 1 < (int) matriz_num_columnas(robot->mapa)) &&
-        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j + 1) != '#') &&
-        (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j + 1) != '?');
-  return 0;
-}
-
-int robot_mover(Robot robot, Direccion direccion) {
-  if (!validar_movimiento(robot, direccion)) {
+    // free(robot->mapa);
+    // free(robot);
+    printf("! RRRRDDLL\n");
     return 0;
-  }
-
-
-
-  fprintf(stderr, "\nrobot_mover ");
-  direccion_imprimir(&direccion);
-  fprintf(stderr, ":");
-
-  if (matriz_leer(robot->mapa, robot->pos->i, robot->pos->j) == '.')
-    matriz_escribir(robot->mapa, robot->pos->i, robot->pos->j, '-');
-
-
-  switch (direccion) {
-  case UP:
-    robot->pos->i--;
-    break;
-  case DOWN:
-    robot->pos->i++;
-    break;
-  case LEFT:
-    robot->pos->j--;
-    break;
-  case RIGHT:
-    robot->pos->j++;
-    break;
-  }
-  imprimir_mapa(robot);
-  robot->movimientos =
-      pila_apilar(robot->movimientos, &direccion,
-                  (FuncionCopiadora) direccion_copiar);
-  return 1;
 }
-
-
-
-
-void robot_ir_a_destino(Robot robot) {
-  if (robot_en_destino(robot))
-    return;
-
-  Punto ultimaPosicion = NULL;
-
-  do {
-    punto_destruir(ultimaPosicion);
-    ultimaPosicion = punto_copiar(robot->pos);
-    // Si el robot esta arriba del destino bajo hasta alinearme
-    while (robot->pos->i < robot->dest->i &&
-           matriz_leer(robot->mapa, robot->pos->i + 1,
-                       robot->pos->j) == '.' && robot_mover(robot, DOWN));
-
-    // Si el robot esta abajo del destino
-    while (robot->pos->i > robot->dest->i &&
-           matriz_leer(robot->mapa, robot->pos->i - 1,
-                       robot->pos->j) == '.' && robot_mover(robot, UP));
-
-    // Si el robot esta a la derecha del destino
-    while (robot->pos->j > robot->dest->j &&
-           matriz_leer(robot->mapa, robot->pos->i,
-                       robot->pos->j - 1) == '.' &&
-           robot_mover(robot, LEFT)
-        );
-    // Si el robot esta a la izquierda del destino
-    while (robot->pos->j < robot->dest->j &&
-           matriz_leer(robot->mapa, robot->pos->i,
-                       robot->pos->j + 1) == '.' &&
-           robot_mover(robot, RIGHT)
-        );
-  } while (punto_comparar(ultimaPosicion, robot->pos) != 0 || usar_sensor(robot));
-
-  punto_destruir(ultimaPosicion);
-  if (!robot_en_destino(robot)) {
-    //Voy para donde pueda y no haya ido antes
-    if ((size_t) robot->pos->i + 1 < matriz_num_filas(robot->mapa) &&
-        matriz_leer(robot->mapa, robot->pos->i + 1,
-                    robot->pos->j) == '.') {
-
-      robot_mover(robot, DOWN);
-    } else if (robot->pos->i - 1 >= 0 &&
-               matriz_leer(robot->mapa, robot->pos->i - 1,
-                           robot->pos->j) == '.') {
-
-      robot_mover(robot, UP);
-    } else if (robot->pos->j - 1 >= 0 &&
-               matriz_leer(robot->mapa, robot->pos->i,
-                           robot->pos->j - 1) == '.') {
-
-      robot_mover(robot, LEFT);
-    } else if ((size_t) robot->pos->j + 1 <
-               matriz_num_columnas(robot->mapa)
-               && matriz_leer(robot->mapa, robot->pos->i,
-                              robot->pos->j + 1) == '.') {
-
-      robot_mover(robot, RIGHT);
-    } else {
-      robot_retroceder(robot);
-    }
-    usar_sensor(robot);
-  }
-
-  robot_ir_a_destino(robot);
-}
-
-// NO TIENE QUE USAR SENSOR SI YA SABE LO QUE HAY ALREDEDOR. SOLO CUANDO HAY ALGUN ?
