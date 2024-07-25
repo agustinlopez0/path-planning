@@ -124,9 +124,19 @@ void imprimirCamino(Punto destino, CeldaInfo** celdaInfo, Robot robot) {
         Punto *p = malloc(sizeof(Punto)); 
         p->x = camino[i].x;
         p->y = camino[i].y;
-        robot->pos = p;
+        if(matriz_leer(robot->mapa, p->x, p->y) == '.'){
+          robot->pos = p;
+        } 
+        else {
+          usar_sensor(robot);
+          
+        }
+          // usar_sensor(robot);
+          // d_star_lite(robot);
+          // return;
+        // } 
         imprimir_mapa(robot);
-        fprintf(stderr, "(%d, %d)\n", camino[i].x, camino[i].y);
+        fprintf(stderr, "(%d, %d) - (%c)\n", camino[i].x, camino[i].y, matriz_leer(robot->mapa, camino[i].x, camino[i].y));
     }
 }
 int usar_sensor(Robot robot) {
@@ -151,7 +161,7 @@ int usar_sensor(Robot robot) {
     for (int i = 1; i < d1; i++) {
       if ((robot->pos->x - i) >= 0) {
         if (matriz_leer(robot->mapa, robot->pos->x - i, robot->pos->y) ==
-            '#') {
+            '?') {
           cambios++;
           matriz_escribir(robot->mapa, robot->pos->x - i, robot->pos->y,
                           '.');
@@ -160,15 +170,15 @@ int usar_sensor(Robot robot) {
     }
   }
 
-  // if (d1 <= robot->sensor && (robot->pos->x - d1) >= 0) {
-  //   matriz_escribir(robot->mapa, robot->pos->x - d1, robot->pos->y, '#');
-  // }
+  if (d1 <= robot->sensor && (robot->pos->x - d1) >= 0) {
+    matriz_escribir(robot->mapa, robot->pos->x - d1, robot->pos->y, '#');
+  }
   // Actualizar posiciones hacia abajo
   if (d2 > 1) {
     for (int i = 1; i < d2; i++) {
       if ((size_t) (robot->pos->x + i) < num_filas) {
         if (matriz_leer(robot->mapa, robot->pos->x + i, robot->pos->y) ==
-            '#') {
+            '?') {
           cambios++;
           matriz_escribir(robot->mapa, robot->pos->x + i, robot->pos->y,
                           '.');
@@ -176,16 +186,16 @@ int usar_sensor(Robot robot) {
       }
     }
   }
-  // if (d2 <= robot->sensor && (size_t) (robot->pos->x + d2) < num_filas) {
-  //   matriz_escribir(robot->mapa, robot->pos->x + d2, robot->pos->y, '#');
-  // }
+  if (d2 <= robot->sensor && (size_t) (robot->pos->x + d2) < num_filas) {
+    matriz_escribir(robot->mapa, robot->pos->x + d2, robot->pos->y, '#');
+  }
 
   // Actualizar posiciones hacia la izquierda
   if (d3 > 1) {
     for (int i = 1; i < d3; i++) {
       if ((robot->pos->y - i) >= 0) {
         if (matriz_leer(robot->mapa, robot->pos->x, robot->pos->y - i) ==
-            '#') {
+            '?') {
           cambios++;
           matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y - i,
                           '.');
@@ -194,15 +204,15 @@ int usar_sensor(Robot robot) {
     }
   }
 
-  // if (d3 <= robot->sensor && (robot->pos->y - d3) >= 0) {
-  //   matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y - d3, '#');
-  // }
+  if (d3 <= robot->sensor && (robot->pos->y - d3) >= 0) {
+    matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y - d3, '#');
+  }
   // Actualizar posiciones hacia la derecha
   if (d4 > 1) {
     for (int i = 1; i < d4; i++) {
       if ((size_t) (robot->pos->y + i) < num_columnas) {
         if (matriz_leer(robot->mapa, robot->pos->x, robot->pos->y + i) ==
-            '#') {
+            '?') {
           cambios++;
           matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y + i,
                           '.');
@@ -211,9 +221,9 @@ int usar_sensor(Robot robot) {
     }
   }
 
-  // if (d4 <= robot->sensor && (size_t) (robot->pos->y + d4) < num_columnas) {
-  //   matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y + d4, '#');
-  // }
+  if (d4 <= robot->sensor && (size_t) (robot->pos->y + d4) < num_columnas) {
+    matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y + d4, '#');
+  }
   // Imprimir el mapa actualizado
   imprimir_mapa(robot);
   return cambios;
@@ -231,6 +241,7 @@ void d_star_lite(Robot robot) {
     CeldaInfo **celdaInfo;
     inicializarCeldaInfo(&celdaInfo, N, M);
 
+    // Inicialización de costos y celdaInfo
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {
             costos[i][j] = INF;
@@ -239,6 +250,7 @@ void d_star_lite(Robot robot) {
         }
     }
 
+    // Inicialización del nodo de inicio
     costos[inicio.x][inicio.y] = 0;
     celdaInfo[inicio.x][inicio.y].costo = 0;
     celdaInfo[inicio.x][inicio.y].padre = (Punto){-1, -1}; // Nodo inicial sin padre
@@ -249,6 +261,7 @@ void d_star_lite(Robot robot) {
     while (cola.tamaño > 0) {
         Nodo nodo = extraerNodoConPrioridad(&cola);
 
+        // Verifica si se ha llegado al destino
         if (nodo.pos.x == destino.x && nodo.pos.y == destino.y) {
             imprimirCamino(destino, celdaInfo, robot);
             free(cola.nodos); // Liberar memoria de la cola
@@ -276,36 +289,6 @@ void d_star_lite(Robot robot) {
                 }
             }
         }
-
-        // Para evitar la búsqueda infinita, revisa si estamos en un bucle
-        if (cola.tamaño == 0) {
-            fprintf(stderr, "No se encontró un camino completo ni un punto cercano. Fin de búsqueda.\n");
-            break;
-        }
-    }
-
-    // Encuentra el punto más cercano al destino
-    int puntoCercanoX = -1;
-    int puntoCercanoY = -1;
-    int mejorCosto = INF;
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            if (costos[i][j] < mejorCosto && costos[i][j] != INF) {
-                mejorCosto = costos[i][j];
-                puntoCercanoX = i;
-                puntoCercanoY = j;
-            }
-        }
-    }
-
-    if (mejorCosto < INF) {
-        fprintf(stderr, "No se encontró un camino completo, pero el punto más cercano al destino es (%d, %d)\n", puntoCercanoX, puntoCercanoY);
-        imprimirCamino((Punto){puntoCercanoX, puntoCercanoY}, celdaInfo, robot);
-        usar_sensor(robot);
-        d_star_lite(robot);
-    } else {
-        fprintf(stderr, "No se encontró un camino ni un punto cercano\n");
     }
 
     free(cola.nodos); // Liberar memoria de la cola
@@ -320,7 +303,35 @@ void robot_set_mapa(Robot robot) {
   int m = (int) matriz_num_columnas(robot->mapa);
   for (int i = 0; i < n; i++)
     for (int j = 0; j < m; j++)
-      matriz_escribir(robot->mapa, i, j, '#');
+      matriz_escribir(robot->mapa, i, j, '?');
+  matriz_escribir(robot->mapa, robot->pos->x, robot->pos->y, '.');
+  matriz_escribir(robot->mapa, robot->dest->x, robot->dest->y, '.');
+  
+      // matriz_escribir(robot->mapa, 0, 0, '.');
+      // matriz_escribir(robot->mapa, 1, 0, '.');
+      // matriz_escribir(robot->mapa, 2, 0, '.');
+      // matriz_escribir(robot->mapa, 3, 0, '.');
+      // matriz_escribir(robot->mapa, 4, 0, '.');
+      // matriz_escribir(robot->mapa, 0, 1, '.');
+      // matriz_escribir(robot->mapa, 1, 1, '#');
+      // matriz_escribir(robot->mapa, 2, 1, '#');
+      // matriz_escribir(robot->mapa, 3, 1, '#');
+      // matriz_escribir(robot->mapa, 4, 1, '.');
+      // matriz_escribir(robot->mapa, 0, 2, '.');
+      // matriz_escribir(robot->mapa, 1, 2, '#');
+      // matriz_escribir(robot->mapa, 2, 2, '.');
+      // matriz_escribir(robot->mapa, 3, 2, '.');
+      // matriz_escribir(robot->mapa, 4, 2, '.');
+      // matriz_escribir(robot->mapa, 0, 3, '.');
+      // matriz_escribir(robot->mapa, 1, 3, '#');
+      // matriz_escribir(robot->mapa, 2, 3, '.');
+      // matriz_escribir(robot->mapa, 3, 3, '#');
+      // matriz_escribir(robot->mapa, 4, 3, '.');
+      // matriz_escribir(robot->mapa, 0, 4, '.');
+      // matriz_escribir(robot->mapa, 1, 4, '.');
+      // matriz_escribir(robot->mapa, 2, 4, '.');
+      // matriz_escribir(robot->mapa, 3, 4, '#');
+      // matriz_escribir(robot->mapa, 4, 4, '.');
 }
 
 int main() {
@@ -367,7 +378,7 @@ int main() {
     // matriz_escribir(robot->mapa, 3, 4, '.');
     // matriz_escribir(robot->mapa, 4, 4, '.');
 
-    imprimir_mapa(robot);
+    // imprimir_mapa(robot);
     usar_sensor(robot);
     // imprimir_mapa(robot);
 

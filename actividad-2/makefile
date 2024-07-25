@@ -32,6 +32,9 @@ indent:
 
 robot:
 	gcc -Wall -Wextra robot.c matriz_bi.c -o robot
+	
+robot2:
+	gcc -Wall -Wextra robot2.c matriz_bi.c -o robot2
 
 sensor: 
 	gcc -Wall -Wextra sensor.c -o sensor
