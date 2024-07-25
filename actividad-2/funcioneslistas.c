@@ -27,7 +27,6 @@ int usar_sensor(Robot robot) {
       )) {
     return 0;
   }
-
   // Enviar la posición actual del robot para usar el sensor
   fprintf(stderr, "? %d %d\n", robot->pos->i, robot->pos->j);
   printf("? %d %d\n", robot->pos->i, robot->pos->j);
