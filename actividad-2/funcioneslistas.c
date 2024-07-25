@@ -142,26 +142,7 @@ void robot_set_mapa(Robot robot) {
 }
 
 
-void imprimir_mapa(Robot robot) {
-  fprintf(stderr, "\n-------------------\n");
-  for (size_t i = 0; i < matriz_num_filas(robot->mapa); i++) {
-    for (size_t j = 0; j < matriz_num_columnas(robot->mapa); j++) {
-      if (i == (size_t) robot->pos->i && j == (size_t) robot->pos->j) {
-        fprintf(stderr, "R ");
-      } else if (i == (size_t) robot->dest->i
-                 && j == (size_t) robot->dest->j) {
-        fprintf(stderr, "D ");
-      } else {
-        fprintf(stderr, "%c ", matriz_leer(robot->mapa, i, j));
-      }
-    }
-    fprintf(stderr, " |\n");
-  }
-  fprintf(stderr, "-------------------\n");
 
-  usleep(500000);
-
-}
 
 int robot_retroceder(Robot robot) {
   if (pila_es_vacia(robot->movimientos))
