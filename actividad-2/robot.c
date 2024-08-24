@@ -242,77 +242,82 @@ int usar_sensor(Robot robot) {
   imprimir_mapa(robot);
   return cambios;
 }
-#include <math.h> // Para la función fabs()
+
+#include <math.h>               // Para la función fabs()
 
 void d_star_lite(Robot robot) {
-    Punto inicio = *robot->pos;
-    Punto destino = *robot->dest;
-    int N = matriz_num_filas(robot->mapa);
-    int M = matriz_num_columnas(robot->mapa);
-    ColaPrioridad cola;
-    inicializarCola(&cola, N * M);
+  Punto inicio = *robot->pos;
+  Punto destino = *robot->dest;
+  int N = matriz_num_filas(robot->mapa);
+  int M = matriz_num_columnas(robot->mapa);
+  ColaPrioridad cola;
+  inicializarCola(&cola, N * M);
+  int costos[N][M];
+  CeldaInfo **celdaInfo;
+  inicializarCeldaInfo(&celdaInfo, N, M);
 
-    int costos[N][M];
-    CeldaInfo **celdaInfo;
-    inicializarCeldaInfo(&celdaInfo, N, M);
+  // Inicialización de costos y celdaInfo
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < M; j++) {
+      costos[i][j] = INF;
+      celdaInfo[i][j].costo = INF;
+      celdaInfo[i][j].padre = (Punto) {
+      -1, -1};                  // Indica que no hay predecesor
+    }
+  }
 
-    // Inicialización de costos y celdaInfo
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            costos[i][j] = INF;
-            celdaInfo[i][j].costo = INF;
-            celdaInfo[i][j].padre = (Punto) {-1, -1}; // Indica que no hay predecesor
-        }
+  // Inicialización del nodo de inicio
+  costos[inicio.x][inicio.y] = 0;
+  celdaInfo[inicio.x][inicio.y].costo = 0;
+  celdaInfo[inicio.x][inicio.y].padre = (Punto) {
+  -1, -1};                      // Nodo inicial sin padre
+  Nodo nodoInicio = { 0, 0, inicio };
+  insertarNodo(&cola, nodoInicio);
+
+  while (cola.size > 0) {
+    Nodo nodo = extraerNodoConPrioridad(&cola);
+
+    // Verifica si se ha llegado al destino
+    if (nodo.pos.x == destino.x && nodo.pos.y == destino.y) {
+      if (!imprimirCamino(celdaInfo, robot)) {
+        usar_sensor(robot);
+        d_star_lite(robot);
+        return;
+      }
+      free(cola.nodos);         // Liberar memoria de la cola
+      liberarCeldaInfo(celdaInfo, N);   // Liberar memoria de celdaInfo
+      return;
     }
 
-    // Inicialización del nodo de inicio
-    costos[inicio.x][inicio.y] = 0;
-    celdaInfo[inicio.x][inicio.y].costo = 0;
-    celdaInfo[inicio.x][inicio.y].padre = (Punto) {-1, -1}; // Nodo inicial sin padre
-
-    Nodo nodoInicio = {0, 0, inicio};
-    insertarNodo(&cola, nodoInicio);
-
-    while (cola.size > 0) {
-        Nodo nodo = extraerNodoConPrioridad(&cola);
-
-        // Verifica si se ha llegado al destino
-        if (nodo.pos.x == destino.x && nodo.pos.y == destino.y) {
-            if (!imprimirCamino(celdaInfo, robot)) {
-                usar_sensor(robot);
-                d_star_lite(robot);
-                return;
-            }
-            free(cola.nodos);         // Liberar memoria de la cola
-            liberarCeldaInfo(celdaInfo, N);   // Liberar memoria de celdaInfo
-            return;
+    // Actualiza vecinos
+    int dx[4] = { 0, 0, -1, 1 };        // Movimiento horizontal y vertical
+    int dy[4] = { -1, 1, 0, 0 };        // Movimiento vertical y horizontal
+    for (int i = 0; i < 4; i++) {
+      int nx = nodo.pos.x + dx[i];
+      int ny = nodo.pos.y + dy[i];
+      if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
+        char celda = matriz_leer(robot->mapa, nx, ny);
+        if (celda != '#') {
+          int distanciaEstimado =
+              fabs(destino.x - nx) + fabs(destino.y - ny);
+          int nuevoCosto = nodo.costo + 1 + distanciaEstimado;  // Costo uniforme más heurística
+          if (celda == '?') {
+            nuevoCosto += 10;   // Penalización para celdas con '?'
+          }
+          if (nuevoCosto < costos[nx][ny]) {
+            costos[nx][ny] = nuevoCosto;
+            celdaInfo[nx][ny].costo = nuevoCosto;
+            celdaInfo[nx][ny].padre = nodo.pos; // Establece el predecesor
+            Nodo vecino = { nuevoCosto, nuevoCosto, { nx, ny }
+            };
+            insertarNodo(&cola, vecino);
+          }
         }
-
-        // Actualiza vecinos preferentemente en línea recta y alineación con el destino
-        int dx[4] = {0, 0, -1, 1}; // Movimiento horizontal y vertical
-        int dy[4] = {-1, 1, 0, 0}; // Movimiento vertical y horizontal
-
-        for (int i = 0; i < 4; i++) {
-            int nx = nodo.pos.x + dx[i];
-            int ny = nodo.pos.y + dy[i];
-
-            if (nx >= 0 && nx < N && ny >= 0 && ny < M && matriz_leer(robot->mapa, nx, ny) != '#') {
-                // Calcular costo teniendo en cuenta la distancia estimada al destino
-                int distanciaEstimado = fabs(destino.x - nx) + fabs(destino.y - ny);
-                int nuevoCosto = nodo.costo + 1 + distanciaEstimado; // Costo uniforme más heurística
-                if (nuevoCosto < costos[nx][ny]) {
-                    costos[nx][ny] = nuevoCosto;
-                    celdaInfo[nx][ny].costo = nuevoCosto;
-                    celdaInfo[nx][ny].padre = nodo.pos; // Establece el predecesor
-                    Nodo vecino = {nuevoCosto, nuevoCosto, {nx, ny}};
-                    insertarNodo(&cola, vecino);
-                }
-            }
-        }
+      }
     }
-
-    free(cola.nodos);             // Liberar memoria de la cola
-    liberarCeldaInfo(celdaInfo, N);       // Liberar memoria de celdaInfo
+  }
+  free(cola.nodos);             // Liberar memoria de la cola
+  liberarCeldaInfo(celdaInfo, N);       // Liberar memoria de celdaInfo
 }
 
 
