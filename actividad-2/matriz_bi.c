@@ -25,16 +25,33 @@ Matriz *matriz_crear(size_t numFilas, size_t numColumnas) {
   return matriz;
 }
 
-void matriz_destruir(Matriz * matriz) {
-  for (unsigned int i = 0; i < matriz_num_filas(matriz); i++) {
-    free(matriz->elem[i]);
-  }
-
-  free(matriz->elem);
-  free(matriz);
-
-  // printf("- Matriz destruida -\n");
+size_t matriz_num_filas(Matriz * matriz) {
+  return matriz->fil;
 }
+
+size_t matriz_num_columnas(Matriz * matriz) {
+  return matriz->col;
+}
+
+void matriz_destruir(Matriz *matriz) {
+
+    if (matriz) {
+
+        if (matriz->elem) {
+
+            for (size_t i = 0; i < matriz_num_filas(matriz); i++) {
+
+                free(matriz->elem[i]);
+
+            }
+            free(matriz->elem);
+
+        }
+        free(matriz);
+
+    }
+}
+
 
 char matriz_leer(Matriz * matriz, size_t fil, size_t col) {
   if (fil >= matriz_num_filas(matriz)) {
@@ -68,13 +85,7 @@ void matriz_escribir(Matriz * matriz, size_t fil, size_t col, char val) {
   // printf("- Valor %f ingresado en la posicion (%zu, %zu) -\n", matriz_leer(matriz, fil, col), fil, col);
 }
 
-size_t matriz_num_filas(Matriz * matriz) {
-  return matriz->fil;
-}
 
-size_t matriz_num_columnas(Matriz * matriz) {
-  return matriz->col;
-}
 
 void matriz_intercambiar_filas(Matriz * matriz, size_t fil1, size_t fil2) {
   if (fil1 <= matriz_num_filas(matriz) && fil2 <= matriz_num_filas(matriz)
