@@ -1,11 +1,21 @@
 #!/bin/bash
 
-# Seleccionar un archivo aleatorio de la carpeta tableros
-random_file=$(ls tableros/ | shuf -n 1)
+# Verificar si se ha proporcionado un argumento
+if [ $# -eq 1 ]; then
+  # Usar el archivo proporcionado como argumento
+  archivo="$1"
+else
+  # Seleccionar un archivo aleatorio de la carpeta tableros
+  archivo=tableros/$(ls tableros/ | shuf -n 1)
+fi
+
+# Mostrar el contenido del archivo seleccionado
+cat "$archivo"
+
+# Esperar a que el usuario presione Enter
+read -p "Presiona Enter para continuar..."
 
 # Ejecutar ./correr.sh con el archivo seleccionado
-make clean
-./correr.sh "tableros/$random_file"
+./correr.sh "$archivo"
 
-echo "tableros/$random_file"
-cat "tableros/$random_file"
+echo "Archivo seleccionado: $archivo"

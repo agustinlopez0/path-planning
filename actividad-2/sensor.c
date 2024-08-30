@@ -188,12 +188,12 @@ int main(int argc, char** argv) {
 			int d[4] = {};
 			correr_sensor(mapa, n, m, i, j, d, max_d);
 
-			fprintf(stderr, "sensor: ");
+			// fprintf(stderr, "sensor: ");
 			for (int i = 0; i < 4; ++i) {
-				fprintf(stderr, "%d%c", d[i], i == 3 ? '\n' : ' ');
+				// fprintf(stderr, "%d%c", d[i], i == 3 ? '\n' : ' ');
 				printf("%d%c", d[i], i == 3 ? '\n' : ' ');
 			}
-			fprintf(stderr, "\n");
+			// fprintf(stderr, "\n");
 			fflush(stdout);
 
 		} else if (c == '!') {

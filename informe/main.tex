@@ -1,0 +1,176 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\renewcommand{\footrulewidth}{0.8 pt}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+
+\pagestyle{fancy}
+
+
+
+\newenvironment{problem}[2][Problem]
+    { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2} \\}
+    {  \end{mdframed}}
+
+    \fancyfoot[C]{} % Esto elimina la numeración de página en el pie de página
+    
+
+\newenvironment{solution}{\textbf{Solution}}
+
+
+\lhead{Grupo 6}
+\rhead{Comisión 1} 
+\chead{\textbf{}}
+% \lfoot{Alejandro Rodríguez Costello}
+\rfoot{Facultad de Ciencias Exactas Ingeniería y Agrimensura}
+
+
+\begin{document}
+\input{coverPage}
+
+\begin{enumerate}[start=8]
+    \item \textbf{Analice la existencia de los siguientes límites:}
+\end{enumerate}
+
+\begin{center}
+    \begin{minipage}{0.45\textwidth} % Ajusta el ancho según tus preferencias
+    \begin{align*}
+        d) \lim_{(x,y) \to (0,0)} (1-cos(x^2+y^2))(x^2+y^2)^{-1}
+    \end{align*}
+    \end{minipage}%
+\end{center}
+    
+\textbf{Resolución:}
+
+\begin{enumerate}[label=\alph*), start=4]
+    
+
+    \item 
+    Sea \(f(x, y) = \)
+    \( (1-\cos(x^2+y^2))(x^2+y^2)^{-1} =\)
+    \( \frac{1-\cos(x^2+y^2)}{x^2+y^2} \)
+    
+    
+    
+    
+    Queremos calcular:
+    \begin{align}
+         \lim_{(x,y) \to (0,0)} f(x, y)
+    \end{align}
+
+    $i)$ Definimos funciones auxiliares:
+
+    \begin{center}
+        \begin{minipage}[t]{0.45\textwidth}
+            \begin{align*}
+                g(x, y) &= x^2+y^2 \\
+                &\vphantom{\begin{cases}x^2\\2x\end{cases}}
+            \end{align*}
+        \end{minipage}%
+        \begin{minipage}[t]{0.45\textwidth}
+            \[
+                h(x) = \begin{cases}
+                    \frac{1-cos(x)}{x}, & \text{si } x \neq 0 \\
+                    0, & \text{si } x = 0
+                \end{cases}
+            \]
+        \end{minipage}
+    \end{center}
+    
+
+    $ii)$ Por el ejemplo 130 de la unidad 9 sabemos que: \( \lim\limits_{(x, y) \to (0,0)}
+    g(x, y) = 0\)
+
+    El único valor $(x,y)$ donde $g(x,y) = 0$ es $(0,0)$, pues $\forall x, y \in \mathbb{R} $ resulta $ x^2 \geq 0, y^2 \geq 0$
+
+    $\implies x^2+y^2=0 \iff x = y = 0$
+
+    Por lo tanto para toda tupla $(x,y) \neq (0,0)$ vale $f(x, y) = (h \circ g)(x, y)$
+
+    Esto significa que si existe \( \lim\limits_{(x, y) \to (0,0)} f(x, y) = 0\) también existe y es igual a
+    \( \lim\limits_{(x, y) \to (0,0)} (h \circ g)(x, y)\)
+
+    $iii)$ Luego por el teorema 139 (Límite de la funcion compuesta) como \( \lim\limits_{(x, y) \to (0,0)}
+    g(x, y) = 0\) y $h(x)$ está definida de manera tal que sea continua en x = 0
+
+    \begin{center}
+        
+        \( \lim\limits_{(x, y) \to (0,0)} f(x, y) = \lim\limits_{(x, y) \to (0,0)} (h \circ g)(x, y) = h(0) = 0 \)
+    \end{center}
+
+\end{enumerate}
+
+
+
+% 14) Dada la función definida en el intervalo $[0, 1]$ por la ley:
+% \[ 
+% f(x) = 
+% \begin{cases} 
+% \left[{x}^{-1}\right]^{-1} & \text{si } x \neq 0 \\
+% 0 & \text{si } x = 0 
+% \end{cases}
+% \]
+
+
+
+
+% Decida si ésta se trata o no de una función continua salvo una cantidad finita de puntos, y si la misma es o no integrable.\\
+% \begin{figure}[h!]
+%         \includegraphics[width=6cm]{geogebra-export.png}
+%         \centering
+%         \caption{Gráfica de $f(x)$}
+% \end{figure}
+
+% $i)$ Primero tenemos que probar que es no continua en una cantidad infinita de puntos en el intervalo $[0,1]$. 
+% Para esto, calculamos los límites de $f(x)$ por izquierda y por derecha para $x \to \frac{1}{n}$, donde $n \in \mathbb{N}$:
+
+% \[
+% \lim_{{x \to \frac{1}{n}^+}} \left[\frac{1}{x}\right]^{-1} = 
+%  \left[\left(\frac{1}{n^+}\right)^{-1}\right]^{-1}
+% = 
+% \left[n^-\right]^{-1} = \frac{1}{n-1}
+% \]
+
+% \[
+% \lim_{{x \to \frac{1}{n}^-}} \left[\frac{1}{x}\right]^{-1} = \left[\left(\frac{1}{n^-}\right)^{-1}\right]^{-1}
+% = \left[n^+\right]^{-1} = \frac{1}{n}
+% \]\\
+
+% Luego como:
+% \[
+% \lim_{{x \to \frac{1}{n}^+}} \left[{x}^{-1}\right]^{-1} \neq \lim_{{x \to \frac{1}{n}^-}} \left[{x}^{-1}\right]^{-1}
+% \]
+
+% Podemos comprobar que los límites laterales son distintos cuando $x \to \frac{1}{n}$  con  $n \in \mathbb{N}$, entonces $f$ es discontinua en $\frac{1}{n}$ con $n \in \mathbb{N}$
+
+% Por el corolario de la Propiedad Arquimediana, para todo $x \in (0,1]$ existe $n \in \mathbb{N}$ tal que $\frac{1}{n}<x$. Por lo tanto,
+% existen infinitos puntos de discontinuidad en $f$\\
+
+
+% $ii)$ Ahora vamos a mostrar que $f(x)$ es no decreciente para poder concluir que es integrable (Por la demostración del ejercicio 13). Empezamos con $x_1,x_2 \in (0,1]$ tales que $x_1<x_2$. Luego:
+
+% \begin{align*}
+% 0<x_1 &< x_2 \leq 1 \implies 0 < \frac{1}{x_2} < \frac{1}{x_1} \implies 0\leq \left[\frac{1}{x_2}\right] \leq \left[\frac{1}{x_1}\right] \implies 0 \leq \frac{1}{\left[\frac{1}{x_1}\right]} \leq \frac{1}{\left[\frac{1}{x_2}\right]} \implies 0 \leq f(x_1) \leq f(x_2)
+% \end{align*}
+
+
+% Además como $f(0)=0$, podemos concluir que si $x_1,x_2 \in [0,1]$ tales que $x_1<x_2$ entonces $f(x_1) \leq f(x_2)$\\
+
+
+% Por lo tanto, $f$ es no decreciente. Luego, por la demostración del ejercicio 13 ítem c, $f$ es integrable.
+
+
+
+\end{document}

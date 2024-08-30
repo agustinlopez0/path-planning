@@ -32,7 +32,6 @@ indent:
 
 robot:
 	gcc -Wall -Wextra robot.c matriz_bi.c colaprioridad.c bheap.c -o robot
-# gcc -Wall -Wextra robot.c matriz_bi.c -o robot
 	
 robot2:
 	gcc -Wall -Wextra robot2.c matriz_bi.c -o robot2
@@ -47,5 +46,5 @@ clean:
 	rm robot sensor feedback a.out *~
 
 # memcheck: $(EXEC)
-# 	valgrind --leak-check=full -s ./$(EXEC) $(INPUT5)
+# valgrind --leak-check=full -s ./$(EXEC) $(INPUT5)
 
