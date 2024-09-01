@@ -77,23 +77,19 @@ static int posicion_visitada(Robot robot, Direccion direccion) {
   int visitado = 0;
   if (direccion == UP) {
     Punto puntoAux = punto_crear(robot->pos->i - 1, robot->pos->j);
-    visitado =
-        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
+    visitado = (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == DOWN) {
     Punto puntoAux = punto_crear(robot->pos->i + 1, robot->pos->j);
-    visitado =
-        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
+    visitado = (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == LEFT) {
     Punto puntoAux = punto_crear(robot->pos->i, robot->pos->j - 1);
-    visitado =
-        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
+    visitado = (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == RIGHT) {
     Punto puntoAux = punto_crear(robot->pos->i, robot->pos->j + 1);
-    visitado =
-        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
+    visitado = (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   }
 
@@ -115,8 +111,7 @@ void robot_ir_a_destino(Robot robot, Mapa mapa) {
            && robot_mover(robot, mapa, DOWN));
 
     // Si el robot esta abajo del destino
-    while (robot->pos->i > robot->dest->i 
-           && !posicion_visitada(robot, UP)
+    while (robot->pos->i > robot->dest->i && !posicion_visitada(robot, UP)
            && robot_mover(robot, mapa, UP));
 
     // Si el robot esta a la derecha del destino

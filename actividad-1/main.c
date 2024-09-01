@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
     return 1;
   }
-
   // Leer y validar el archivo de configuración
   char *nombreArchivo = argv[1];
   FileData fileData = leer_archivo(nombreArchivo);

@@ -12,7 +12,7 @@ Robot robot_crear(Punto pos, Punto dest) {
   robot->pos = pos;
   robot->dest = dest;
   robot->movimientos = pila_crear();
-  robot->visitados = tablahash_crear(100, (FuncionCopiadora) punto_copiar,
+  robot->visitados = tablahash_crear(500, (FuncionCopiadora) punto_copiar,
                                      (FuncionComparadora) punto_comparar,
                                      (FuncionDestructora) punto_destruir,
                                      (FuncionHash) punto_hash);
