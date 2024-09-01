@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "simulacion.h"
+#include "tablahash.h"
 #include <unistd.h>
 
 
@@ -13,9 +14,7 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa) {
         printf("R ");
       else if (punto_comparar(puntoAux, robot->dest) == 0)
         printf("D ");
-      else if (glist_include
-               (robot->visitados, puntoAux,
-                (FuncionComparadora) punto_comparar))
+      else if (tablahash_buscar(robot->visitados, puntoAux) != NULL)
         printf("_ ");
       else
         printf("%c ", mapa->coord[i][j]);
@@ -59,9 +58,7 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
   if (es_movimiento_valido(mapa, nuevoI, nuevoJ)) {
     actualizar_posicion(robot, nuevoI, nuevoJ);
 
-    robot->visitados =
-        glist_agregar_inicio(robot->visitados, robot->pos,
-                             (FuncionCopiadora) punto_copiar);
+    tablahash_insertar(robot->visitados, robot->pos);
 
     robot->movimientos =
         pila_apilar(robot->movimientos, &direccion,
@@ -81,28 +78,25 @@ static int posicion_visitada(Robot robot, Direccion direccion) {
   if (direccion == UP) {
     Punto puntoAux = punto_crear(robot->pos->i - 1, robot->pos->j);
     visitado =
-        glist_include(robot->visitados, puntoAux,
-                      (FuncionComparadora) punto_comparar);
+        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == DOWN) {
     Punto puntoAux = punto_crear(robot->pos->i + 1, robot->pos->j);
     visitado =
-        glist_include(robot->visitados, puntoAux,
-                      (FuncionComparadora) punto_comparar);
+        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == LEFT) {
     Punto puntoAux = punto_crear(robot->pos->i, robot->pos->j - 1);
     visitado =
-        glist_include(robot->visitados, puntoAux,
-                      (FuncionComparadora) punto_comparar);
+        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   } else if (direccion == RIGHT) {
     Punto puntoAux = punto_crear(robot->pos->i, robot->pos->j + 1);
     visitado =
-        glist_include(robot->visitados, puntoAux,
-                      (FuncionComparadora) punto_comparar);
+        (tablahash_buscar(robot->visitados, puntoAux) != NULL);
     punto_destruir(puntoAux);
   }
+
   return visitado;
 }
 

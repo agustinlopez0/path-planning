@@ -12,7 +12,7 @@ INPUT_DIR = laberintos
 INPUT_FILES = $(wildcard $(INPUT_DIR)/*.txt)
 
 # Fuentes del proyecto
-SOURCES = main.c robot.c mapa.c pila.c glist.c simulacion.c punto.c direccion.c
+SOURCES = main.c robot.c mapa.c pila.c glist.c simulacion.c punto.c direccion.c tablahash.c
 
 # Selección de archivo de entrada según índice
 INPUT_INDEX ?= 1

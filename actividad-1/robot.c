@@ -3,20 +3,26 @@
 #include "robot.h"
 #include "direccion.h"
 
+unsigned punto_hash(Punto punto) {
+  return punto->i * 31 + punto->j;
+}
+
 Robot robot_crear(Punto pos, Punto dest) {
   Robot robot = malloc(sizeof(_Robot));
   robot->pos = pos;
   robot->dest = dest;
   robot->movimientos = pila_crear();
-  robot->visitados = glist_crear();
-  robot->visitados =
-      glist_agregar_inicio(robot->visitados, pos,
-                           (FuncionCopiadora) punto_copiar);
+  robot->visitados = tablahash_crear(100, (FuncionCopiadora) punto_copiar,
+                                     (FuncionComparadora) punto_comparar,
+                                     (FuncionDestructora) punto_destruir,
+                                     (FuncionHash) punto_hash);
+  tablahash_insertar(robot->visitados, pos);
+
   return robot;
 }
 
 void robot_destruir(Robot robot) {
-  glist_destruir(robot->visitados, (FuncionDestructora) punto_destruir);
+  tablahash_destruir(robot->visitados);
   pila_destruir(robot->movimientos,
                 (FuncionDestructora) direccion_destruir);
   punto_destruir(robot->pos);

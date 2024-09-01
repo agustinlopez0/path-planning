@@ -13,7 +13,7 @@ fi
 cat "$archivo"
 
 # Esperar a que el usuario presione Enter
-read -p "Presiona Enter para continuar..."
+# read -p "Presiona Enter para continuar..."
 
 make clean
 make robot

@@ -4,6 +4,7 @@
 #include "punto.h"
 #include "pila.h"
 #include "glist.h"
+#include "tablahash.h"
 
 /**
  * @file robot.h
@@ -14,7 +15,7 @@ typedef struct {
   Punto pos; /**< Posición actual del robot */
   Punto dest; /**< Destino del robot */
   Pila movimientos; /**< Pila de movimientos realizados por el robot */
-  GList visitados; /**< Lista de celdas visitadas por el robot */
+  TablaHash visitados; /**< Lista de celdas visitadas por el robot */
 } _Robot;
 
 typedef _Robot *Robot;
