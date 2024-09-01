@@ -20,9 +20,7 @@ int punto_comparar(Punto a, Punto b) {
 }
 
 Punto punto_copiar(Punto a) {
-  Punto nuevoPunto = malloc(sizeof(_Punto));
-  nuevoPunto->i = a->i;
-  nuevoPunto->j = a->j;
+  Punto nuevoPunto = punto_crear(a->i, a->j);
   return nuevoPunto;
 }
 

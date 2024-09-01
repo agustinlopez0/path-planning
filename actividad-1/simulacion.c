@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "simulacion.h"
+#include <unistd.h>
+
 
 void mostrar_robot_mapa(Robot robot, Mapa mapa) {
   Punto puntoAux;
@@ -21,7 +23,8 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa) {
     }
     printf("\n");
   }
-  getchar();
+  printf("\n");
+  usleep(200000);
 }
 
 static int es_movimiento_valido(Mapa mapa, unsigned int i, unsigned int j) {
@@ -66,18 +69,12 @@ int robot_mover(Robot robot, Mapa mapa, Direccion direccion) {
 
     direccion_imprimir(&direccion);
     mostrar_robot_mapa(robot, mapa);
-    // glist_recorrer(robot->visitados, (FuncionVisitante) punto_imprimir);
-    // puts("");
 
     return 1;
   }
 
   return 0;
 }
-
-// Analizar llevar a robot.c
-// sacar mapa
-
 
 static int posicion_visitada(Robot robot, Direccion direccion) {
   int visitado = 0;
@@ -119,21 +116,24 @@ void robot_ir_a_destino(Robot robot, Mapa mapa) {
     punto_destruir(ultimaPosicion);
     ultimaPosicion = punto_copiar(robot->pos);
     // Si el robot esta arriba del destino
-    if (robot->pos->i < robot->dest->i && !posicion_visitada(robot, DOWN)) {
-      robot_mover(robot, mapa, DOWN);
-    } else
-      // Si el robot esta abajo del destino
-    if (robot->pos->i > robot->dest->i && !posicion_visitada(robot, UP)) {
-      robot_mover(robot, mapa, UP);
-    }
+    while (robot->pos->i < robot->dest->i
+           && !posicion_visitada(robot, DOWN)
+           && robot_mover(robot, mapa, DOWN));
+
+    // Si el robot esta abajo del destino
+    while (robot->pos->i > robot->dest->i 
+           && !posicion_visitada(robot, UP)
+           && robot_mover(robot, mapa, UP));
+
     // Si el robot esta a la derecha del destino
-    if (robot->pos->j > robot->dest->j && !posicion_visitada(robot, LEFT)) {
-      robot_mover(robot, mapa, LEFT);
-    } else
-      // Si el robot esta a la izquierda del destino
-    if (robot->pos->j < robot->dest->j && !posicion_visitada(robot, RIGHT)) {
-      robot_mover(robot, mapa, RIGHT);
-    }
+    while (robot->pos->j > robot->dest->j
+           && !posicion_visitada(robot, LEFT)
+           && robot_mover(robot, mapa, LEFT));
+
+    // Si el robot esta a la izquierda del destino
+    while (robot->pos->j < robot->dest->j
+           && !posicion_visitada(robot, RIGHT)
+           && robot_mover(robot, mapa, RIGHT));
   } while (punto_comparar(ultimaPosicion, robot->pos) != 0);
   punto_destruir(ultimaPosicion);
 

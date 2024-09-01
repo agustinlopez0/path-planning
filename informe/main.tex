@@ -2,12 +2,11 @@
 \usepackage[margin=1in]{geometry} 
 \usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
 \usepackage{xcolor}
-\usepackage{amsmath, amssymb}
 \usepackage{mdframed}
 \usepackage[shortlabels]{enumitem}
 \usepackage{indentfirst}
 \usepackage{hyperref}
-\renewcommand{\footrulewidth}{0.8 pt}
+\renewcommand{\footrulewidth}{0.8pt}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -15,162 +14,93 @@
     urlcolor=blue,
 }
 
-
 \pagestyle{fancy}
-
-
 
 \newenvironment{problem}[2][Problem]
     { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2} \\}
     {  \end{mdframed}}
 
-    \fancyfoot[C]{} % Esto elimina la numeración de página en el pie de página
-    
+\fancyfoot[C]{} % Esto elimina la numeración de página en el pie de página
 
 \newenvironment{solution}{\textbf{Solution}}
 
-
-\lhead{Grupo 6}
-\rhead{Comisión 1} 
+\lhead{Agustín López}
+\rhead{Licenciatura en Ciencias de la Computación} 
 \chead{\textbf{}}
-% \lfoot{Alejandro Rodríguez Costello}
-\rfoot{Facultad de Ciencias Exactas Ingeniería y Agrimensura}
-
+\rfoot{Facultad de Ciencias Exactas, Ingeniería y Agrimensura}
 
 \begin{document}
 \input{coverPage}
 
-\begin{enumerate}[start=8]
-    \item \textbf{Analice la existencia de los siguientes límites:}
+\section{Actividad 1: Algoritmo de Navegación en Entorno Desconocido}
+
+En esta actividad, se presenta el desarrollo e implementación de un algoritmo de navegación para un robot en un entorno desconocido. El objetivo es explorar y mapear el entorno de manera eficiente utilizando estrategias para evitar obstáculos y explorar nuevas áreas de forma sistemática. A continuación, se detallan los pasos del algoritmo y su implementación.
+
+\begin{problem}{Descripción del Algoritmo} 
+El algoritmo para la navegación del robot sigue los siguientes pasos:
+
+\begin{enumerate}
+    \item \textbf{Paso 1:} El robot comienza su movimiento en una dirección diagonal hacia la posición objetivo. Este enfoque inicial permite que el robot avance rápidamente y cubra una gran parte del entorno, reduciendo el tiempo necesario para la búsqueda inicial y evitando movimientos repetitivos en áreas ya conocidas.
+
+    \item \textbf{Paso 2:} Cuando el robot llega a una posición en la que no puede avanzar más, se dirige hacia una celda no visitada previamente. Esto asegura que el robot explore nuevas áreas del mapa y evita el movimiento redundante en regiones ya descubiertas.
+
+    \item \textbf{Paso 3:} Si no existen celdas sin visitar, el robot retrocede por la ruta previamente recorrida. Esta estrategia permite al robot volver a celdas anteriores solo cuando es necesario, optimizando así la cobertura del área explorada y evitando caminos redundantes.
 \end{enumerate}
 
-\begin{center}
-    \begin{minipage}{0.45\textwidth} % Ajusta el ancho según tus preferencias
-    \begin{align*}
-        d) \lim_{(x,y) \to (0,0)} (1-cos(x^2+y^2))(x^2+y^2)^{-1}
-    \end{align*}
-    \end{minipage}%
-\end{center}
-    
-\textbf{Resolución:}
+Este enfoque permite al robot explorar el entorno de manera eficiente y adaptativa, maximizando la cobertura y minimizando el tiempo de búsqueda.
+\end{problem}
 
-\begin{enumerate}[label=\alph*), start=4]
-    
+\begin{solution}
+El código para la actividad 1 está organizado en varias partes clave, cada una con una función específica en la simulación del robot. A continuación, se detalla cada componente del código:
 
-    \item 
-    Sea \(f(x, y) = \)
-    \( (1-\cos(x^2+y^2))(x^2+y^2)^{-1} =\)
-    \( \frac{1-\cos(x^2+y^2)}{x^2+y^2} \)
-    
-    
-    
-    
-    Queremos calcular:
-    \begin{align}
-         \lim_{(x,y) \to (0,0)} f(x, y)
-    \end{align}
+\begin{enumerate}
+    \item \textbf{Lectura de Datos:} El archivo \texttt{main.c} incluye funciones dedicadas a leer y validar un archivo de configuración que describe el mapa, la posición inicial del robot y el destino. La función \texttt{leer\_archivo} carga estos datos en una estructura \texttt{FileData}, mientras que \texttt{validar\_formato} se encarga de verificar que el archivo tenga el formato correcto y sea válido para la simulación.
 
-    $i)$ Definimos funciones auxiliares:
+    \item \textbf{Creación del Mapa y Robot:} La función \texttt{mapa\_crear} inicializa el mapa con las dimensiones y coordenadas proporcionadas. La función \texttt{robot\_crear} inicializa el robot con su posición inicial y destino. Además, las funciones \texttt{robot\_destruir} y \texttt{mapa\_destruir} liberan la memoria asociada al robot y al mapa, respectivamente, asegurando una correcta gestión de los recursos.
 
-    \begin{center}
-        \begin{minipage}[t]{0.45\textwidth}
-            \begin{align*}
-                g(x, y) &= x^2+y^2 \\
-                &\vphantom{\begin{cases}x^2\\2x\end{cases}}
-            \end{align*}
-        \end{minipage}%
-        \begin{minipage}[t]{0.45\textwidth}
-            \[
-                h(x) = \begin{cases}
-                    \frac{1-cos(x)}{x}, & \text{si } x \neq 0 \\
-                    0, & \text{si } x = 0
-                \end{cases}
-            \]
-        \end{minipage}
-    \end{center}
-    
+    \item \textbf{Simulación del Movimiento:} En \texttt{main.c}, el movimiento del robot hacia su destino se simula mediante la función \texttt{robot\_ir\_a\_destino}. Esta función contiene la lógica necesaria para el movimiento del robot, considerando tanto la exploración de nuevas celdas como el retroceso cuando es necesario.
 
-    $ii)$ Por el ejemplo 130 de la unidad 9 sabemos que: \( \lim\limits_{(x, y) \to (0,0)}
-    g(x, y) = 0\)
-
-    El único valor $(x,y)$ donde $g(x,y) = 0$ es $(0,0)$, pues $\forall x, y \in \mathbb{R} $ resulta $ x^2 \geq 0, y^2 \geq 0$
-
-    $\implies x^2+y^2=0 \iff x = y = 0$
-
-    Por lo tanto para toda tupla $(x,y) \neq (0,0)$ vale $f(x, y) = (h \circ g)(x, y)$
-
-    Esto significa que si existe \( \lim\limits_{(x, y) \to (0,0)} f(x, y) = 0\) también existe y es igual a
-    \( \lim\limits_{(x, y) \to (0,0)} (h \circ g)(x, y)\)
-
-    $iii)$ Luego por el teorema 139 (Límite de la funcion compuesta) como \( \lim\limits_{(x, y) \to (0,0)}
-    g(x, y) = 0\) y $h(x)$ está definida de manera tal que sea continua en x = 0
-
-    \begin{center}
-        
-        \( \lim\limits_{(x, y) \to (0,0)} f(x, y) = \lim\limits_{(x, y) \to (0,0)} (h \circ g)(x, y) = h(0) = 0 \)
-    \end{center}
-
+    \item \textbf{Visualización y Depuración:} La función \texttt{mostrar\_robot\_mapa} imprime el estado actual del robot y el mapa, facilitando la depuración y el seguimiento del progreso del robot durante la simulación. Esta función es crucial para identificar y solucionar posibles problemas durante la ejecución del código.
 \end{enumerate}
 
+\textbf{Estructura de Archivos:}
+La estructura de archivos se diseñó para reflejar una lógica orientada a objetos, donde cada archivo tiene una responsabilidad específica. La organización es la siguiente:
 
+\begin{enumerate}
+    \item \texttt{main.c}: Contiene la función principal \texttt{main} que orquesta la simulación del robot.
+    \item \texttt{robot.c}: Contiene las funciones relacionadas con la creación, destrucción y movimiento de la estructura \texttt{Robot}.
+    \item \texttt{mapa.c}: Contiene las funciones relacionadas con la creación, destrucción y visualización de la estructura \texttt{Mapa}.
+    \item \texttt{simulacion.c}: Contiene las funciones que gestionan la interacción entre las estructuras \texttt{Robot} y \texttt{Mapa}.
+\end{enumerate}
 
-% 14) Dada la función definida en el intervalo $[0, 1]$ por la ley:
-% \[ 
-% f(x) = 
-% \begin{cases} 
-% \left[{x}^{-1}\right]^{-1} & \text{si } x \neq 0 \\
-% 0 & \text{si } x = 0 
-% \end{cases}
-% \]
+\textbf{Uso de Tabla Hash para Celdas Visitadas:}
+Para registrar las celdas visitadas, se empleó una tabla hash que mapea las coordenadas de las celdas a un valor booleano. Esta estructura permite una búsqueda eficiente de celdas visitadas y evita el movimiento redundante en áreas ya exploradas. La elección de una tabla hash se debe a su eficiencia en la búsqueda y la inserción de elementos, proporcionando un acceso rápido a la información de celdas visitadas. Dado que no se requiere eliminar elementos en esta implementación, la tabla hash es una opción adecuada.
 
+El enfoque adoptado en esta actividad proporciona una solución práctica y efectiva para la navegación en un entorno desconocido, equilibrando exploración y retroceso para cubrir el área de manera óptima.
+\end{solution}
 
+Este informe cubre los aspectos esenciales del algoritmo de navegación del robot, mostrando cómo se implementa y se pone en práctica para enfrentar un entorno desconocido de manera eficiente.
 
+\section{Actividad 2: Algoritmo de Navegación en Entorno Parcialmente Desconocido}
 
-% Decida si ésta se trata o no de una función continua salvo una cantidad finita de puntos, y si la misma es o no integrable.\\
-% \begin{figure}[h!]
-%         \includegraphics[width=6cm]{geogebra-export.png}
-%         \centering
-%         \caption{Gráfica de $f(x)$}
-% \end{figure}
+En esta actividad, se implementa un algoritmo de navegación para un robot en un entorno parcialmente desconocido utilizando una variante del algoritmo A*. El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando un sensor que proporciona información limitada sobre su entorno.
 
-% $i)$ Primero tenemos que probar que es no continua en una cantidad infinita de puntos en el intervalo $[0,1]$. 
-% Para esto, calculamos los límites de $f(x)$ por izquierda y por derecha para $x \to \frac{1}{n}$, donde $n \in \mathbb{N}$:
+\subsection{Descripción del Código}
 
-% \[
-% \lim_{{x \to \frac{1}{n}^+}} \left[\frac{1}{x}\right]^{-1} = 
-%  \left[\left(\frac{1}{n^+}\right)^{-1}\right]^{-1}
-% = 
-% \left[n^-\right]^{-1} = \frac{1}{n-1}
-% \]
+El código desarrollado se divide en varias funciones clave:
 
-% \[
-% \lim_{{x \to \frac{1}{n}^-}} \left[\frac{1}{x}\right]^{-1} = \left[\left(\frac{1}{n^-}\right)^{-1}\right]^{-1}
-% = \left[n^+\right]^{-1} = \frac{1}{n}
-% \]\\
+\begin{enumerate}
+    \item \textbf{Estructuras de Datos:} Se definen estructuras para representar el estado del robot (\texttt{\_Robot}) y la información de cada celda del mapa (\texttt{CeldaInfo}). La estructura \texttt{\_Nodo} se utiliza para manejar los nodos en la cola de prioridad, esencial para la implementación del algoritmo A*.
 
-% Luego como:
-% \[
-% \lim_{{x \to \frac{1}{n}^+}} \left[{x}^{-1}\right]^{-1} \neq \lim_{{x \to \frac{1}{n}^-}} \left[{x}^{-1}\right]^{-1}
-% \]
+    \item \textbf{Creación y Destrucción del Robot:} La función \texttt{robot\_crear} inicializa la posición y el destino del robot, así como la memoria para la matriz que representa el mapa. La función \texttt{robot\_destruir} libera la memoria utilizada por el robot, asegurando una correcta gestión de los recursos.
 
-% Podemos comprobar que los límites laterales son distintos cuando $x \to \frac{1}{n}$  con  $n \in \mathbb{N}$, entonces $f$ es discontinua en $\frac{1}{n}$ con $n \in \mathbb{N}$
+    \item \textbf{Uso del Sensor:} La función \texttt{usar\_sensor} simula la interacción con un sensor que proporciona las distancias a los obstáculos en las cuatro direcciones cardinales (arriba, abajo, izquierda, derecha). Esta función actualiza la matriz del mapa con la información obtenida, marcando las celdas exploradas y los obstáculos detectados.
 
-% Por el corolario de la Propiedad Arquimediana, para todo $x \in (0,1]$ existe $n \in \mathbb{N}$ tal que $\frac{1}{n}<x$. Por lo tanto,
-% existen infinitos puntos de discontinuidad en $f$\\
+    \item \textbf{Algoritmo A*:} La función \texttt{calcular\_ruta} implementa una variante del algoritmo A* para encontrar el camino más corto desde la posición actual del robot hasta el destino. Se emplea una cola de prioridad para explorar las celdas con el menor costo estimado y se actualiza la información de cada celda en función de los costos de movimiento y la heurística (distancia Manhattan al destino).
 
+    \item \textbf{Movimiento del Robot:} La función \texttt{ir\_a\_destino} reconstruye el camino óptimo encontrado por el algoritmo A* y mueve el robot a lo largo de ese camino, actualizando su posición en el mapa y gestionando las celdas visitadas.
+\end{enumerate}
 
-% $ii)$ Ahora vamos a mostrar que $f(x)$ es no decreciente para poder concluir que es integrable (Por la demostración del ejercicio 13). Empezamos con $x_1,x_2 \in (0,1]$ tales que $x_1<x_2$. Luego:
-
-% \begin{align*}
-% 0<x_1 &< x_2 \leq 1 \implies 0 < \frac{1}{x_2} < \frac{1}{x_1} \implies 0\leq \left[\frac{1}{x_2}\right] \leq \left[\frac{1}{x_1}\right] \implies 0 \leq \frac{1}{\left[\frac{1}{x_1}\right]} \leq \frac{1}{\left[\frac{1}{x_2}\right]} \implies 0 \leq f(x_1) \leq f(x_2)
-% \end{align*}
-
-
-% Además como $f(0)=0$, podemos concluir que si $x_1,x_2 \in [0,1]$ tales que $x_1<x_2$ entonces $f(x_1) \leq f(x_2)$\\
-
-
-% Por lo tanto, $f$ es no decreciente. Luego, por la demostración del ejercicio 13 ítem c, $f$ es integrable.
-
-
+El enfoque adoptado en esta actividad permite al robot navegar en un entorno parcialmente desconocido utilizando un algoritmo eficiente y adaptativo, maximizando la cobertura y minimizando el tiempo de búsqueda.
 
 \end{document}
