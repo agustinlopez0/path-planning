@@ -5,12 +5,14 @@
 #include "colaprioridad.h"
 #include "glist.h"
 #include <unistd.h>
+
 void imprimir_char(char* a){
   printf("%c", *a);
 }
 void imprimir_char_stderr(char* a){
   fprintf(stderr, "%c", *a);
 }
+
 typedef struct {
   int x, y;
 } Punto;
@@ -67,7 +69,6 @@ Robot robot_crear(Punto pos, Punto dest, int N, int M) {
 
 typedef struct {
   unsigned int costo;
-  int prioridad;
   Punto pos;
 } _Nodo;
 
@@ -157,8 +158,6 @@ int ir_a_destino(CeldaInfo ** celdaInfo, Robot robot) {
     Punto p = *(Punto*)node->data;
     if (matriz_leer(robot->mapa, p.x, p.y) == '.'
         || matriz_leer(robot->mapa, p.x, p.y) == 's') {
-          
-
       if (p.y < robot->pos->y) {
         char a = 'L';
         robot->camino = glist_agregar_final(robot->camino, &a, (FuncionCopiadora)char_copiar);
@@ -179,6 +178,7 @@ int ir_a_destino(CeldaInfo ** celdaInfo, Robot robot) {
       glist_destruir(camino, free);
       return 0;
     }
+    imprimir_celdaInfo(celdaInfo, matriz_num_filas(robot->mapa), matriz_num_columnas(robot->mapa));
     imprimir_mapa(robot);
   }
 
@@ -250,13 +250,17 @@ int usar_sensor(Robot robot) {
 }
 
 int comparar_nodos(Nodo nodoA, Nodo nodoB) {
-  return nodoB->prioridad - nodoA->prioridad;
+  return nodoB->costo - nodoA->costo;
 }
 
 #define UNUSED(x) (void)(x)
 
 void no_hacer_nada(Nodo a) {
   UNUSED(a);
+}
+
+unsigned int distancia_manhattan(Punto a, Punto b) {
+  return abs(a.x - b.x) + abs(a.y - b.y);
 }
 
 int calcular_ruta(Robot robot) {
@@ -275,15 +279,12 @@ int calcular_ruta(Robot robot) {
 
   CeldaInfo **celdaInfo = inicializarCeldaInfo(N, M);
 
-
-
   // Inicialización del nodo de inicio
   celdaInfo[inicio.x][inicio.y].costo = 0;
   celdaInfo[inicio.x][inicio.y].padre = (Punto) {
   -1, -1};                      // Nodo inicial sin padre
   Nodo nodoInicio = malloc(sizeof(_Nodo));
   nodoInicio->costo = 0;
-  nodoInicio->prioridad = 0;
   nodoInicio->pos = inicio;
 
   cola_prioridad_insertar(cola, nodoInicio);
@@ -305,16 +306,14 @@ int calcular_ruta(Robot robot) {
       if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
         char celda = matriz_leer(robot->mapa, nx, ny);
         if (celda != '#') {
-          int distanciaEstimado =
-              abs(destino.x - nx) + abs(destino.y - ny);
-          int nuevoCosto = nodo->costo + 1 + distanciaEstimado + (celda == '?' ? 1000 : 0);     // Costo base uniforme
+          int distanciaEstimado = abs(destino.x - nx) + abs(destino.y - ny);
+          int nuevoCosto = nodo->costo + 1 + distancia_manhattan(destino, (Punto){nx, ny}) + (celda == '?' ? 1000 : 0);    
 
           if (nuevoCosto < celdaInfo[nx][ny].costo) {
             celdaInfo[nx][ny].costo = nuevoCosto;
-            celdaInfo[nx][ny].padre = nodo->pos;        // Establece el predecesor
+            celdaInfo[nx][ny].padre = nodo->pos;   
             Nodo vecino = malloc(sizeof(_Nodo));
             vecino->costo = nuevoCosto;
-            vecino->prioridad = nuevoCosto;
             vecino->pos = (Punto) {
             nx, ny};
 
@@ -328,11 +327,8 @@ int calcular_ruta(Robot robot) {
       }
     }
 
-
     llegoADestino = nodo->pos.x == destino.x && nodo->pos.y == destino.y;
-
     free(nodo);
-
   }
 
 
@@ -341,11 +337,13 @@ int calcular_ruta(Robot robot) {
     cola_prioridad_eliminar_maximo(cola);
     free(nodo);
   }
-  cola_prioridad_destruir(cola);        // Liberar memoria de cola
 
+  cola_prioridad_destruir(cola); 
+
+  // Verifica si siguiendo la ruta calculada se llega al destino o se descubre algun obstaculo
   int ret = !ir_a_destino(celdaInfo, robot);
 
-  liberarCeldaInfo(celdaInfo, N);       // Liberar memoria de celdaInfo
+  liberarCeldaInfo(celdaInfo, N);
 
   return ret;
 }
