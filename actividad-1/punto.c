@@ -11,10 +11,6 @@ Punto punto_crear(int i, int j) {
   return nuevoPunto;
 }
 
-void punto_destruir(Punto punto) {
-  free(punto);
-}
-
 unsigned punto_hash(Punto punto) {
   return (punto->i * 73856093) + (punto->j * 19349663);
 }
@@ -36,6 +32,6 @@ int punto_distancia_y(Punto a, Punto b) {
   return a->i - b->i;
 }
 
-void punto_imprimir(Punto punto) {
-  printf("(%d, %d) ", punto->i, punto->j);
+void punto_destruir(Punto punto) {
+  free(punto);
 }

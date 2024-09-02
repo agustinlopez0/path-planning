@@ -1,12 +1,7 @@
-#include <assert.h>
 #include "pila.h"
 
 Pila pila_crear(void) {
   return glist_crear();
-}
-
-void pila_destruir(Pila pila, FuncionDestructora destroy) {
-  glist_destruir(pila, destroy);
 }
 
 int pila_es_vacia(Pila pila) {
@@ -14,7 +9,6 @@ int pila_es_vacia(Pila pila) {
 }
 
 void *pila_tope(Pila pila) {
-  assert(!pila_es_vacia(pila));
   return glist_primer_elemento(pila);
 }
 
@@ -28,4 +22,8 @@ Pila pila_desapilar(Pila pila, FuncionDestructora destroy) {
 
 void pila_recorrer(Pila pila, FuncionVisitante visit) {
   glist_recorrer(pila, visit);
+}
+
+void pila_destruir(Pila pila, FuncionDestructora destroy) {
+  glist_destruir(pila, destroy);
 }

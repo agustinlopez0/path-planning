@@ -11,11 +11,15 @@
  * @brief Definición y funciones relacionadas con la estructura Robot.
  */
 
+/**
+ * @struct _Robot
+ * @brief Estructura que representa un robot en un mapa y la información que tiene/recolecta de su entorno.
+ */
 typedef struct {
-  Punto pos; /**< Posición actual del robot */
-  Punto dest; /**< Destino del robot */
-  Pila movimientos; /**< Pila de movimientos realizados por el robot */
-  TablaHash visitados; /**< Lista de celdas visitadas por el robot */
+  Punto pos; 
+  Punto dest; 
+  Pila movimientos;
+  TablaHash visitados; 
 } _Robot;
 
 typedef _Robot *Robot;
@@ -28,20 +32,6 @@ typedef _Robot *Robot;
  * @return Robot inicializado.
  */
 Robot robot_crear(Punto pos, Punto dest);
-
-/**
- * @brief Destruye un robot y libera la memoria ocupada por él.
- *
- * @param robot Robot a destruir.
- */
-void robot_destruir(Robot robot);
-
-/**
- * @brief Imprime los detalles del robot: posición y destino.
- *
- * @param robot Robot a imprimir.
- */
-void robot_imprimir(Robot robot);
 
 /**
  * @brief Verifica si el robot ha alcanzado su destino.
@@ -58,5 +48,12 @@ int robot_en_destino(Robot robot);
  * @return 1 si se pudo retroceder, 0 si la pila de movimientos está vacía.
  */
 int robot_retroceder(Robot robot);
+
+/**
+ * @brief Destruye un robot y libera la memoria ocupada por él.
+ *
+ * @param robot Robot a destruir.
+ */
+void robot_destruir(Robot robot);
 
 #endif // __ROBOT_H__

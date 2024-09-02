@@ -105,6 +105,7 @@ void robot_ir_a_destino(Robot robot, Mapa mapa) {
   do {
     punto_destruir(ultimaPosicion);
     ultimaPosicion = punto_copiar(robot->pos);
+
     // Si el robot esta arriba del destino
     while (robot->pos->i < robot->dest->i
            && !posicion_visitada(robot, DOWN)
@@ -138,7 +139,6 @@ void robot_ir_a_destino(Robot robot, Mapa mapa) {
              && robot_mover(robot, mapa, RIGHT));
     else {
       // Si no puedo moverme a ningun lugar donde no haya estado retrocedo
-      //sacar mapa
       robot_retroceder(robot);
       mostrar_robot_mapa(robot, mapa);
     }

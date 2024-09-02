@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include "direccion.h"
 
-void direccion_destruir(Direccion * a) {
-  free(a);
-}
-
 Direccion *direccion_copiar(Direccion * a) {
   Direccion *copia = malloc(sizeof(Direccion));
   *copia = *a;
@@ -31,4 +27,8 @@ Direccion direccion_opuesta(Direccion direccion) {
   if (direccion == RIGHT)
     return LEFT;
   return RIGHT;
+}
+
+void direccion_destruir(Direccion * a) {
+  free(a);
 }

@@ -18,13 +18,6 @@ typedef enum {
 } Direccion;
 
 /**
- * @brief Destruye una dirección.
- *
- * @param a Puntero a la dirección que se va a destruir.
- */
-void direccion_destruir(Direccion *a);
-
-/**
  * @brief Realiza una copia física de una dirección.
  *
  * @param a Dirección que se va a copiar.
@@ -33,18 +26,26 @@ void direccion_destruir(Direccion *a);
 Direccion *direccion_copiar(Direccion *a);
 
 /**
+ * @brief Imprime una dirección.
+ *
+ * @param direccion puntero a la Dirección que se va a imprimir.
+ */
+void direccion_imprimir(Direccion *direccion);
+
+/**
  * @brief Retorna la dirección opuesta a la dirección dada.
  *
  * @param direccion Dirección de la cual se desea obtener la dirección opuesta.
- * @return Direccion Dirección opuesta.
+ * @return Direccion opuesta.
  */
 Direccion direccion_opuesta(Direccion direccion);
 
+
 /**
- * @brief Imprime una dirección.
+ * @brief Destruye una dirección.
  *
- * @param direccion Dirección que se va a imprimir.
+ * @param a Puntero a la dirección que se va a destruir.
  */
-void direccion_imprimir(Direccion *direccion);
+void direccion_destruir(Direccion *a);
 
 #endif /* __DIRECCION_H__ */

@@ -16,20 +16,19 @@ typedef _Punto* Punto;
 /**
  * @brief Crea un nuevo punto con las coordenadas especificadas.
  *
- * @param i Coordenada en el eje x.
- * @param j Coordenada en el eje y.
+ * @param i Coordenada en el eje vertical.
+ * @param j Coordenada en el eje horizontal.
  * @return Puntero al nuevo punto creado.
  */
 Punto punto_crear(int i, int j);
 
-unsigned int punto_hash(Punto punto);
-
 /**
- * @brief Destruye un punto y libera la memoria asociada.
- *
- * @param a Puntero al punto que se desea destruir.
+ * @brief Calcula el hash de un punto.
+ * 
+ * @param punto Punto del cual se desea calcular el hash.
+ * @return Valor hash del punto.
  */
-void punto_destruir(Punto a);
+unsigned int punto_hash(Punto punto);
 
 /**
  * @brief Compara dos puntos para determinar si son iguales.
@@ -71,10 +70,10 @@ int punto_distancia_x(Punto a, Punto b);
 int punto_distancia_y(Punto a, Punto b);
 
 /**
- * @brief Imprime las coordenadas de un punto en el formato "(i, j)".
+ * @brief Destruye un punto y libera la memoria asociada.
  *
- * @param punto Punto que se desea imprimir.
+ * @param a Puntero al punto que se desea destruir.
  */
-void punto_imprimir(Punto punto);
+void punto_destruir(Punto a);
 
 #endif /* __PUNTO_H__ */

@@ -9,6 +9,10 @@
  * @brief Definición y funciones relacionadas con la estructura Pila.
  */
 
+/**
+ * @typedef Pila
+ * @brief Definición de pila como utilizando una lista general.
+ */
 typedef GList Pila;
 
 /**
@@ -17,14 +21,6 @@ typedef GList Pila;
  * @return Pila vacía.
  */
 Pila pila_crear(void);
-
-/**
- * @brief Destruye una pila y libera la memoria ocupada por sus elementos.
- *
- * @param pila Pila a destruir.
- * @param destroy Función para destruir los elementos de la pila.
- */
-void pila_destruir(Pila pila, FuncionDestructora destroy);
 
 /**
  * @brief Verifica si la pila está vacía.
@@ -68,5 +64,13 @@ Pila pila_desapilar(Pila pila, FuncionDestructora destroy);
  * @param visit Función que será aplicada a cada elemento de la pila.
  */
 void pila_recorrer(Pila pila, FuncionVisitante visit);
+
+/**
+ * @brief Destruye una pila y libera la memoria ocupada por sus elementos.
+ *
+ * @param pila Pila a destruir.
+ * @param destroy Función para destruir los elementos de la pila.
+ */
+void pila_destruir(Pila pila, FuncionDestructora destroy);
 
 #endif // __PILA_H__

@@ -1,13 +1,3 @@
-/**
- * @file main.c
- * @brief Programa principal para la simulación de navegación de un robot en un mapa.
- *
- * Este programa lee un archivo de configuración que describe las dimensiones del mapa,
- * la posición inicial y destino del robot, así como la disposición del mapa con obstáculos
- * y caminos libres. Luego, crea un robot y un mapa basados en estos datos y simula la
- * navegación del robot hasta alcanzar su destino.
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -73,22 +63,19 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
     return 1;
   }
-  // Leer y validar el archivo de configuración
+
   char *nombreArchivo = argv[1];
   FileData fileData = leer_archivo(nombreArchivo);
 
   if (!fileData)
     return 1;
 
-  // Crear el robot y el mapa con los datos del archivo
   Robot robot = robot_crear(fileData->posRobot, fileData->destRobot);
   Mapa mapa = mapa_crear(fileData->alto, fileData->ancho, fileData->coord);
   free(fileData);
 
-  // Mostrar el estado inicial del robot en el mapa
   mostrar_robot_mapa(robot, mapa);
 
-  // Simular el movimiento del robot hacia su destino
   puts("Recorrido:");
   robot_ir_a_destino(robot, mapa);
   puts("");

@@ -6,20 +6,10 @@ INDENT_FLAGS = -kr -brf -i2 -nut
 MEMCHECK_FLAGS = --leak-check=full -s --track-origins=yes
 EXEC = robot
 BACKUP = *.c~
-
-# Archivos de entrada
-INPUT_DIR = laberintos
-INPUT_FILES = $(wildcard $(INPUT_DIR)/*.txt)
-
-# Fuentes del proyecto
 SOURCES = main.c robot.c mapa.c pila.c glist.c simulacion.c punto.c direccion.c tablahash.c
 
-# Selección de archivo de entrada según índice
-INPUT_INDEX ?= 1
-SELECTED_INPUT = $(INPUT_DIR)/laberinto$(INPUT_INDEX).txt
-
 # Reglas
-all: indent $(EXEC) run
+all: $(EXEC) run
 
 indent: $(SOURCES)
 	$(INDENT) $(INDENT_FLAGS) $(SOURCES)

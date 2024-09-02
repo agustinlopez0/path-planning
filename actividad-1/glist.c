@@ -1,19 +1,8 @@
 #include <stdlib.h>
-#include <assert.h>
 #include "glist.h"
 
-GList glist_crear() {
+GList glist_crear(void) {
   return NULL;
-}
-
-void glist_destruir(GList list, FuncionDestructora destroy) {
-  GNode *nodeToDelete;
-  while (list != NULL) {
-    nodeToDelete = list;
-    list = list->next;
-    destroy(nodeToDelete->data);
-    free(nodeToDelete);
-  }
 }
 
 int glist_vacia(GList list) {
@@ -22,7 +11,6 @@ int glist_vacia(GList list) {
 
 GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy) {
   GNode *newNode = malloc(sizeof(GNode));
-  assert(newNode != NULL);
   newNode->next = list;
   newNode->data = copy(data);
 
@@ -31,13 +19,11 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy) {
 
 GList glist_agregar_final(GList list, void *data, FuncionCopiadora copy) {
   GNode *newNode = malloc(sizeof(GNode));
-  assert(newNode != NULL);
   newNode->next = NULL;
   newNode->data = copy(data);
 
-  if (glist_vacia(list)) {
+  if (glist_vacia(list))
     return newNode;
-  }
 
   GNode *node = list;
   for (; node->next; node = node->next);
@@ -53,37 +39,27 @@ void glist_recorrer(GList list, FuncionVisitante visit) {
 }
 
 void *glist_primer_elemento(GList list) {
+  if (glist_vacia(list))
+    return NULL;
   return list->data;
 }
 
-GList glist_eliminar_final(GList lista, FuncionDestructora destroy) {
-  if (glist_vacia(lista))
+GList glist_eliminar_inicio(GList list, FuncionDestructora destroy) {
+  if (glist_vacia(list))
     return NULL;
-  if (lista->next == NULL) {
-    destroy(lista);
-    return NULL;
+  GNode *nodeToDelete = list;
+  list = list->next;
+  destroy(nodeToDelete->data);
+  free(nodeToDelete);
+  return list;
+}
+
+void glist_destruir(GList list, FuncionDestructora destroy) {
+  GNode *nodeToDelete;
+  while (list != NULL) {
+    nodeToDelete = list;
+    list = list->next;
+    destroy(nodeToDelete->data);
+    free(nodeToDelete);
   }
-  GNode *nodo = lista;
-  for (; nodo->next->next; nodo = nodo->next);
-  destroy(nodo->next);
-  nodo->next = NULL;
-  return lista;
-}
-
-GList glist_eliminar_inicio(GList lista, FuncionDestructora destroy) {
-  if (glist_vacia(lista))
-    return NULL;
-  GNode *nodoAEliminar = lista;
-  lista = lista->next;
-  destroy(nodoAEliminar->data);
-  free(nodoAEliminar);
-  return lista;
-}
-
-int glist_include(GList lista, void *dato, FuncionComparadora comp) {
-  if (glist_vacia(lista))
-    return 0;
-  if (comp(lista->data, dato) == 0)
-    return 1;
-  return glist_include(lista->next, dato, comp);
 }

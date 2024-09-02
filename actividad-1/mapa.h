@@ -15,20 +15,6 @@ typedef struct {
 typedef _Mapa *Mapa;
 
 /**
- * @brief Imprime los datos del mapa y dibuja el tablero.
- *
- * @param mapa El mapa que se va a imprimir.
- */
-void mapa_imprimir(Mapa mapa);
-
-/**
- * @brief Destruye un mapa y libera la memoria que ocupa.
- *
- * @param mapa El mapa que se va a destruir.
- */
-void mapa_destruir(Mapa mapa);
-
-/**
  * @brief Crea un nuevo mapa con las dimensiones y la configuración dadas.
  *
  * @param alto Altura del mapa.
@@ -37,5 +23,12 @@ void mapa_destruir(Mapa mapa);
  * @return Mapa creado.
  */
 Mapa mapa_crear(size_t alto, size_t ancho, char **coord);
+
+/**
+ * @brief Destruye un mapa y libera la memoria que ocupa.
+ *
+ * @param mapa El mapa que se va a destruir.
+ */
+void mapa_destruir(Mapa mapa);
 
 #endif // __MAPA_H__

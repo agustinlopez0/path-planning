@@ -17,21 +17,6 @@ Robot robot_crear(Punto pos, Punto dest) {
   return robot;
 }
 
-void robot_destruir(Robot robot) {
-  tablahash_destruir(robot->visitados);
-  pila_destruir(robot->movimientos,
-                (FuncionDestructora) direccion_destruir);
-  punto_destruir(robot->pos);
-  punto_destruir(robot->dest);
-  free(robot);
-}
-
-void robot_imprimir(Robot robot) {
-  printf("Robot:");
-  printf("\tPosicion: (%d, %d)\n", robot->pos->i, robot->pos->j);
-  printf("\tDestino: (%d, %d)\n", robot->dest->i, robot->dest->j);
-}
-
 int robot_en_destino(Robot robot) {
   return punto_comparar(robot->pos, robot->dest) == 0;
 }
@@ -59,4 +44,13 @@ int robot_retroceder(Robot robot) {
                      (FuncionDestructora) direccion_destruir);
 
   return 1;
+}
+
+void robot_destruir(Robot robot) {
+  tablahash_destruir(robot->visitados);
+  pila_destruir(robot->movimientos,
+                (FuncionDestructora) direccion_destruir);
+  punto_destruir(robot->pos);
+  punto_destruir(robot->dest);
+  free(robot);
 }

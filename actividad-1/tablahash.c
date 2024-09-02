@@ -23,9 +23,7 @@ TablaHash tablahash_crear(unsigned capacidad, FuncionCopiadora copia,
                           FuncionDestructora destr, FuncionHash hash) {
 
   TablaHash tabla = malloc(sizeof(struct _TablaHash));
-  assert(tabla != NULL);
   tabla->elems = malloc(sizeof(CasillaHash) * capacidad);
-  assert(tabla->elems != NULL);
   tabla->numElems = 0;
   tabla->capacidad = capacidad;
   tabla->copia = copia;
@@ -33,7 +31,7 @@ TablaHash tablahash_crear(unsigned capacidad, FuncionCopiadora copia,
   tabla->destr = destr;
   tabla->hash = hash;
 
-  for (unsigned idx = 0; idx < capacidad; ++idx) {
+  for (unsigned idx = 0; idx < capacidad; idx++) {
     tabla->elems[idx].dato = NULL;
   }
 
@@ -59,14 +57,15 @@ void tablahash_destruir(TablaHash tabla) {
 }
 
 void tablahash_rehash(TablaHash tabla) {
+  if (tabla == NULL)
+    return;
+
   unsigned nueva_capacidad = tabla->capacidad * 2;
   CasillaHash *nuevas_casillas =
       malloc(sizeof(CasillaHash) * nueva_capacidad);
-  assert(nuevas_casillas != NULL);
 
-  for (unsigned idx = 0; idx < nueva_capacidad; ++idx) {
+  for (unsigned idx = 0; idx < nueva_capacidad; ++idx)
     nuevas_casillas[idx].dato = NULL;
-  }
 
   CasillaHash *antiguas_casillas = tabla->elems;
   unsigned antigua_capacidad = tabla->capacidad;
@@ -75,14 +74,13 @@ void tablahash_rehash(TablaHash tabla) {
   tabla->capacidad = nueva_capacidad;
   tabla->numElems = 0;
 
-  for (unsigned idx = 0; idx < antigua_capacidad; ++idx) {
-    if (antiguas_casillas[idx].dato != NULL) {
+  for (unsigned idx = 0; idx < antigua_capacidad; ++idx)
+    if (antiguas_casillas[idx].dato != NULL)
       tablahash_insertar(tabla, antiguas_casillas[idx].dato);
-    }
-  }
 
   free(antiguas_casillas);
 }
+
 
 void tablahash_insertar(TablaHash tabla, void *dato) {
   if ((double) tabla->numElems / tabla->capacidad > FACTOR_CARGA_UMBRAL) {
