@@ -101,7 +101,13 @@ CeldaInfo **inicializarCeldaInfo(int N, int M) {
   CeldaInfo **celdaInfo = malloc(N * sizeof(CeldaInfo *));
   for (int i = 0; i < N; i++) {
     celdaInfo[i] = malloc(M * sizeof(CeldaInfo));
+    for (int j = 0; j < M; j++) {
+      celdaInfo[i][j].costo = INT_MAX;
+      celdaInfo[i][j].padre = (Punto) {
+      -1, -1};                  // Indica que no hay predecesor
+    }
   }
+
   return celdaInfo;
 }
 
@@ -269,14 +275,7 @@ int calcular_ruta(Robot robot) {
 
   CeldaInfo **celdaInfo = inicializarCeldaInfo(N, M);
 
-  // Inicialización de celdaInfo
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < M; j++) {
-      celdaInfo[i][j].costo = INT_MAX;
-      celdaInfo[i][j].padre = (Punto) {
-      -1, -1};                  // Indica que no hay predecesor
-    }
-  }
+
 
   // Inicialización del nodo de inicio
   celdaInfo[inicio.x][inicio.y].costo = 0;
