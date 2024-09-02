@@ -306,7 +306,6 @@ int calcular_ruta(Robot robot) {
       if (nx >= 0 && nx < N && ny >= 0 && ny < M) {
         char celda = matriz_leer(robot->mapa, nx, ny);
         if (celda != '#') {
-          int distanciaEstimado = abs(destino.x - nx) + abs(destino.y - ny);
           int nuevoCosto = nodo->costo + 1 + distancia_manhattan(destino, (Punto){nx, ny}) + (celda == '?' ? 1000 : 0);    
 
           if (nuevoCosto < celdaInfo[nx][ny].costo) {
