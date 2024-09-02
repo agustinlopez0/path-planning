@@ -3,8 +3,6 @@
 #include "robot.h"
 #include "direccion.h"
 
-
-
 Robot robot_crear(Punto pos, Punto dest) {
   Robot robot = malloc(sizeof(_Robot));
   robot->pos = pos;

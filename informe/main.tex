@@ -6,6 +6,21 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{indentfirst}
 \usepackage{hyperref}
+\usepackage{listings}
+\lstset{
+%   backgroundcolor=\color{lightgray}, % color de fondo
+  basicstyle=\ttfamily\small, % estilo básico
+  breaklines=true, % ajustar línea automáticamente
+  frame=single, % marco alrededor del código
+  language=C, % lenguaje de programación
+  numbers=left, % número de líneas a la izquierda
+  numberstyle=\tiny\color{gray}, % estilo de números de línea
+  keywordstyle=\color{violet}, % color de palabras clave
+%   commentstyle=\color{green}, % color de comentarios
+  stringstyle=\color{red}, % color de cadenas
+  captionpos=b, % título en la parte inferior
+  showstringspaces=false % no mostrar espacios en las cadenas
+}
 \renewcommand{\footrulewidth}{0.8pt}
 \hypersetup{
     colorlinks=true,
@@ -20,70 +35,80 @@
     { \begin{mdframed}[backgroundcolor=gray!20] \textbf{#1 #2} \\}
     {  \end{mdframed}}
 
-\fancyfoot[C]{} % Esto elimina la numeración de página en el pie de página
+% \fancyfoot[C]{} % Esto elimina la numeración de página en el pie de página
 
 \newenvironment{solution}{\textbf{Solution}}
 
 \lhead{Agustín López}
 \rhead{Licenciatura en Ciencias de la Computación} 
 \chead{\textbf{}}
-\rfoot{Facultad de Ciencias Exactas, Ingeniería y Agrimensura}
+\rfoot{FCEIA}
 
 \begin{document}
 \input{coverPage}
 
-\section{Actividad 1: Algoritmo de Navegación en Entorno Desconocido}
+\section{Actividad 1}
 
-En esta actividad, se presenta el desarrollo e implementación de un algoritmo de navegación para un robot en un entorno desconocido. El objetivo es explorar y mapear el entorno de manera eficiente utilizando estrategias para evitar obstáculos y explorar nuevas áreas de forma sistemática. A continuación, se detallan los pasos del algoritmo y su implementación.
+En esta actividad, se presenta el desarrollo e implementación de un algoritmo de navegación para un robot en un entorno desconocido. En este entorno, el robot se mueve a ciegas y solo puede detectar los obstáculos al "chocarse" con ellos. El objetivo es que el robot llegue a la posición objetivo de manera eficiente, evitando obstáculos y explorando nuevas áreas de forma sistemática.
 
-\begin{problem}{Descripción del Algoritmo} 
-El algoritmo para la navegación del robot sigue los siguientes pasos:
+A continuación, se detallan los pasos del algoritmo y su implementación.
 
-\begin{enumerate}
-    \item \textbf{Paso 1:} El robot comienza su movimiento en una dirección diagonal hacia la posición objetivo. Este enfoque inicial permite que el robot avance rápidamente y cubra una gran parte del entorno, reduciendo el tiempo necesario para la búsqueda inicial y evitando movimientos repetitivos en áreas ya conocidas.
+\subsection{Descripción del Algoritmo}
+\begin{problem}{Algoritmo}
+    El algoritmo para la navegación del robot sigue los siguientes pasos:
 
-    \item \textbf{Paso 2:} Cuando el robot llega a una posición en la que no puede avanzar más, se dirige hacia una celda no visitada previamente. Esto asegura que el robot explore nuevas áreas del mapa y evita el movimiento redundante en regiones ya descubiertas.
+    \begin{enumerate}
+        \item \textbf{Paso 1:} El robot comienza moviéndose en una dirección vertical hasta intentar alcanzar la altura de la posición objetivo. Cuando el robot logra llegar a la esa altura o se encuentra con algun obstaculo intenta moverse en dirección horizontal siguiendo el mismo principio. Este proceso se repite en bucle hasta que el robot no pueda acercarse más al objetivo utilizando este método.
 
-    \item \textbf{Paso 3:} Si no existen celdas sin visitar, el robot retrocede por la ruta previamente recorrida. Esta estrategia permite al robot volver a celdas anteriores solo cuando es necesario, optimizando así la cobertura del área explorada y evitando caminos redundantes.
-\end{enumerate}
+        \item \textbf{Paso 2:} Cuando el robot llega a una posición en la que no puede avanzar más, debe dirigirse hacia una celda que no haya sido visitada previamente. Este paso asegura que el robot explora nuevas áreas del mapa y evita el movimiento redundante en regiones ya descubiertas. Después, el robot vuelve al paso 1.
 
-Este enfoque permite al robot explorar el entorno de manera eficiente y adaptativa, maximizando la cobertura y minimizando el tiempo de búsqueda.
+        \item \textbf{Paso 3:} Si no hay celdas no visitadas disponibles, el robot retrocede una posición por la ruta previamente recorrida y regresa al paso 1.
+    \end{enumerate}
+
+    Este enfoque permite al robot explorar el entorno sin quedar atascado en un bucle infinito y llegar a la posición objetivo de manera eficiente, maximizando la cobertura del área y minimizando el tiempo de búsqueda.
 \end{problem}
 
-\begin{solution}
-El código para la actividad 1 está organizado en varias partes clave, cada una con una función específica en la simulación del robot. A continuación, se detalla cada componente del código:
+\subsection{Estructuras de Datos Utilizadas}
 
-\begin{enumerate}
-    \item \textbf{Lectura de Datos:} El archivo \texttt{main.c} incluye funciones dedicadas a leer y validar un archivo de configuración que describe el mapa, la posición inicial del robot y el destino. La función \texttt{leer\_archivo} carga estos datos en una estructura \texttt{FileData}, mientras que \texttt{validar\_formato} se encarga de verificar que el archivo tenga el formato correcto y sea válido para la simulación.
+\textbf{Estructura \texttt{Robot:}}
+Para la implementación del algoritmo, una de las estructuras más importantes es \texttt{Robot}, que representa la información con la que cuenta el robot y que luego utiliza para seguir el algoritmo descripto.
 
-    \item \textbf{Creación del Mapa y Robot:} La función \texttt{mapa\_crear} inicializa el mapa con las dimensiones y coordenadas proporcionadas. La función \texttt{robot\_crear} inicializa el robot con su posición inicial y destino. Además, las funciones \texttt{robot\_destruir} y \texttt{mapa\_destruir} liberan la memoria asociada al robot y al mapa, respectivamente, asegurando una correcta gestión de los recursos.
+\begin{lstlisting}[language=C]
+ typedef struct {
+     int i;
+     int j;
+ } _Punto;
+ typedef _Punto* Punto;
+ 
+ typedef enum {
+     LEFT, 
+     RIGHT,  
+     UP,     
+     DOWN    
+ } Direccion;
+ 
+ typedef struct {
+     Punto pos; 
+     Punto dest; 
+     Pila movimientos; 
+     TablaHash visitados;
+ } _Robot;
+ typedef _Robot *Robot;
+\end{lstlisting}
 
-    \item \textbf{Simulación del Movimiento:} En \texttt{main.c}, el movimiento del robot hacia su destino se simula mediante la función \texttt{robot\_ir\_a\_destino}. Esta función contiene la lógica necesaria para el movimiento del robot, considerando tanto la exploración de nuevas celdas como el retroceso cuando es necesario.
+\textbf{Descripción de los campos:}
+\begin{itemize}
+    \item \textbf{Punto \texttt{pos} y \texttt{dest}:} Representan la posición actual y la posición destino del robot, respectivamente.
 
-    \item \textbf{Visualización y Depuración:} La función \texttt{mostrar\_robot\_mapa} imprime el estado actual del robot y el mapa, facilitando la depuración y el seguimiento del progreso del robot durante la simulación. Esta función es crucial para identificar y solucionar posibles problemas durante la ejecución del código.
-\end{enumerate}
+    \item \textbf{Pila \texttt{movimientos}:} Una pila implementada con una lista enlazada que almacena elementos de tipo \texttt{*Direccion}. Cuando el robot realiza un movimiento que no sea un retroceso (por ejemplo, hacia la izquierda), se agrega el movimiento a la pila. De este modo, al realizar un retroceso, el movimiento que se ejecute será el opuesto al almacenado en el tope de la pila.
 
-\textbf{Estructura de Archivos:}
-La estructura de archivos se diseñó para reflejar una lógica orientada a objetos, donde cada archivo tiene una responsabilidad específica. La organización es la siguiente:
+    \item \textbf{TablaHash \texttt{visitados}:} Una tabla hash que almacena las posiciones visitadas por el robot. Esta tabla se utiliza para evitar que el robot visite una celda más de una vez y para determinar si hay celdas sin visitar en el mapa. La elección de una tabla hash se basa en su eficiencia en la búsqueda en tiempo constante y en el hecho de que no se necesita eliminar elementos de la tabla.
+\end{itemize}
 
-\begin{enumerate}
-    \item \texttt{main.c}: Contiene la función principal \texttt{main} que orquesta la simulación del robot.
-    \item \texttt{robot.c}: Contiene las funciones relacionadas con la creación, destrucción y movimiento de la estructura \texttt{Robot}.
-    \item \texttt{mapa.c}: Contiene las funciones relacionadas con la creación, destrucción y visualización de la estructura \texttt{Mapa}.
-    \item \texttt{simulacion.c}: Contiene las funciones que gestionan la interacción entre las estructuras \texttt{Robot} y \texttt{Mapa}.
-\end{enumerate}
-
-\textbf{Uso de Tabla Hash para Celdas Visitadas:}
-Para registrar las celdas visitadas, se empleó una tabla hash que mapea las coordenadas de las celdas a un valor booleano. Esta estructura permite una búsqueda eficiente de celdas visitadas y evita el movimiento redundante en áreas ya exploradas. La elección de una tabla hash se debe a su eficiencia en la búsqueda y la inserción de elementos, proporcionando un acceso rápido a la información de celdas visitadas. Dado que no se requiere eliminar elementos en esta implementación, la tabla hash es una opción adecuada.
-
-El enfoque adoptado en esta actividad proporciona una solución práctica y efectiva para la navegación en un entorno desconocido, equilibrando exploración y retroceso para cubrir el área de manera óptima.
-\end{solution}
-
-Este informe cubre los aspectos esenciales del algoritmo de navegación del robot, mostrando cómo se implementa y se pone en práctica para enfrentar un entorno desconocido de manera eficiente.
 
 \section{Actividad 2: Algoritmo de Navegación en Entorno Parcialmente Desconocido}
 
-En esta actividad, se implementa un algoritmo de navegación para un robot en un entorno parcialmente desconocido utilizando una variante del algoritmo A*. El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando un sensor que proporciona información limitada sobre su entorno.
+En esta actividad el objetivo sigue siendo el mismo que en la actividad anterior, pero en este caso el robot cuenta con un sensor que le permite detectar los obstáculos en las cuatro direcciones cardinales (arriba, abajo, izquierda, derecha). El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando el sensor para obtener información sobre su entorno e intentando optimizar el uso del mismo dado que se considera costoso.
 
 \subsection{Descripción del Código}
 

@@ -11,7 +11,7 @@ all: $(BUILD_DIR)/$(BASE).pdf
 $(BUILD_DIR)/$(BASE).pdf: $(BASE).tex
 	mkdir -p $(BUILD_DIR)
 	pdflatex -output-directory=$(BUILD_DIR) $(BASE).tex
-	pdflatex -output-directory=$(BUILD_DIR) $(BASE).tex  # Ejecutar de nuevo para asegurar referencias
+	pdflatex --shell-escape -output-directory=$(BUILD_DIR) $(BASE).tex  # Ejecutar de nuevo para asegurar referencias
 
 # Regla para limpiar archivos generados
 clean:
