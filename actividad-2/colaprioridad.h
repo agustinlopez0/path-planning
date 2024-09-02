@@ -1,50 +1,65 @@
 #ifndef __COLAPRIORIDAD_H__
 #define __COLAPRIORIDAD_H__
-#include "tipos.h"
-#include "bheap.h"
 
+#include "bheap.h"
+#include "tipos.h"
+
+/**
+ * @file colaprioridad.h
+ * @brief Definición y funciones relacionadas con la estructura ColaPrioridad.
+ */
+
+/**
+ * @typedef BHeap ColaPrioridad
+ * @brief Definición de una cola de prioridad a partir de un heap binario.
+ */
 typedef BHeap ColaPrioridad;
 
 /**
- * Retorna 1 si la cola esta vacia, 0 en caso contrario
- */
-int cola_prioridad_es_vacia(ColaPrioridad cola);
-
-/**
- * Retorna el elemento prioritario de la cola
- */
-void* cola_prioridad_maximo(ColaPrioridad cola);
-
-/**
- * Elimina el elemento prioritario de la cola
- */
-void cola_prioridad_eliminar_maximo(ColaPrioridad cola);
-
-/**
- * Inserta un elemento en la cola con una determinada prioridad
- */
-void cola_prioridad_insertar(ColaPrioridad cola, void* elemento);
-
-/**
- * Destruye la cola de prioridad y sus elementos
- */
-void cola_prioridad_destruir(ColaPrioridad cola);
-
-/**
- * Crea una cola de prioridad vacia
+ * @brief Crea una cola de prioridad vacía.
+ * 
+ * @param capacidad Capacidad inicial de la cola.
+ * @param comp Funcion comparadora de los elementos de la cola.
  */
 ColaPrioridad cola_prioridad_crear(size_t capacidad, 
   FuncionComparadora comp, FuncionDestructora destr);
 
 /**
- * Recorre la cola de prioridad con la funcion pasada como argumento
+ * @brief Retorna 1 si la cola de prioridad esta vacia, 0 en caso contrario.
+ * 
+ * @param cola Cola de prioridad a verificar.
+ * @return 1 si la cola de prioridad esta vacia, 0 en caso contrario.
  */
-void cola_prioridad_recorrer(ColaPrioridad cola, FuncionVisitante visit);
+int cola_prioridad_es_vacia(ColaPrioridad cola);
 
 /**
- * A partir de un arreglo arbitrario crea un heap binario.
-*/
-ColaPrioridad cola_prioridad_crear_desde_arr(void** arr, int len, 
-  FuncionCopiadora copy, FuncionDestructora destr, FuncionComparadora comp);
-  
+ * @brief Retorna el elemento prioritario de la cola.
+ * 
+ * @param cola Cola de prioridad de la que se quiere obtener el elemento prioritario.
+ * @return Elemento prioritario de la cola.
+ */
+void* cola_prioridad_maximo(ColaPrioridad cola);
+
+/**
+ * @brief Elimina el elemento prioritario de la cola.
+ * 
+ * @param cola Cola de prioridad de la que se quiere eliminar el elemento prioritario.
+ */
+void cola_prioridad_eliminar_maximo(ColaPrioridad cola);
+
+/**
+ * @brief Inserta un elemento en la cola de prioridad.
+ * 
+ * @param cola Cola de prioridad donde se insertara el elemento.
+ * @param elemento Elemento a insertar.
+ */
+void cola_prioridad_insertar(ColaPrioridad cola, void* elemento);
+
+/**
+ * @brief Destruye la cola de prioridad.
+ * 
+ * @param cola Cola de prioridad a destruir.
+ */
+void cola_prioridad_destruir(ColaPrioridad cola);
+
 #endif /* __COLAPRIORIDAD_H__ */

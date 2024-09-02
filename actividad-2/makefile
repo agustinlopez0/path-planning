@@ -25,13 +25,13 @@
 # all: $(EXEC)
 
 indent:
-	indent -kr -brf -i2 -nut robot.c pila.c punto.c matriz.c glist.c direccion.c funcioneslistas.c
+	indent -kr -brf -i2 -nut robot.c  mapa.c glist.c colaprioridad.c bheap.c
 
 # $(EXEC): $(SOURCES)
 # 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 robot:
-	gcc -Wall -Wextra robot.c matriz.c colaprioridad.c bheap.c glist.c -o robot
+	gcc -Wall -Wextra robot.c mapa.c colaprioridad.c bheap.c glist.c -o robot
 	
 robot2:
 	gcc -Wall -Wextra robot2.c matriz_bi.c -o robot2

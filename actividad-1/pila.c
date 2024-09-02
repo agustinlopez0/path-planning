@@ -20,10 +20,6 @@ Pila pila_desapilar(Pila pila, FuncionDestructora destroy) {
   return glist_eliminar_inicio(pila, destroy);
 }
 
-void pila_recorrer(Pila pila, FuncionVisitante visit) {
-  glist_recorrer(pila, visit);
-}
-
 void pila_destruir(Pila pila, FuncionDestructora destroy) {
   glist_destruir(pila, destroy);
 }

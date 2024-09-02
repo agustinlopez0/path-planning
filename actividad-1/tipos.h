@@ -3,7 +3,7 @@
 
 /**
  * @file tipos.h
- * @brief Definición de tipos de datos comunes.
+ * @brief Definición de tipos de datos comunes utilizados en el proyecto.
  */
 
 typedef void (*FuncionDestructora)(void *dato);

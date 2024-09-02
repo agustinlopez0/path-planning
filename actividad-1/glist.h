@@ -9,7 +9,7 @@
  */
 
 /**
- * @struct GList
+ * @struct GNode
  * @brief Estructura de un nodo de una lista general simplemente enlazada.
  */
 typedef struct _GNode {
@@ -43,24 +43,6 @@ int glist_vacia(GList list);
  * @return GList Lista general con el elemento agregado al inicio.
  */
 GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy);
-
-/**
- * @brief Agrega un elemento al final de la lista.
- *
- * @param list Lista general a la que se va a agregar el elemento.
- * @param data Dato que se va a agregar.
- * @param copy Función que se utilizará para copiar el dato.
- * @return GList Lista general con el elemento agregado al final.
- */
-GList glist_agregar_final(GList list, void *data, FuncionCopiadora copy);
-
-/**
- * @brief Recorre todos los elementos de la lista aplicando una función de visita.
- *
- * @param list Lista general que se va a recorrer.
- * @param visit Función que se aplicará a cada elemento de la lista.
- */
-void glist_recorrer(GList list, FuncionVisitante visit);
 
 /**
  * @brief Retorna el primer elemento de la lista.

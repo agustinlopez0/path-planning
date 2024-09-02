@@ -8,6 +8,10 @@
  * @brief Definición y funciones relacionadas con la estructura GList.
  */
 
+/**
+ * @struct GNode
+ * @brief Estructura de un nodo de una lista general simplemente enlazada.
+ */
 typedef struct _GNode {
     void *data;
     struct _GNode *next;
@@ -20,86 +24,67 @@ typedef GNode *GList;
  *
  * @return GList Lista general vacía.
  */
-GList glist_crear();
-
-/**
- * @brief Destruye una lista general y sus datos utilizando la función pasada como argumento.
- *
- * @param lista Lista general que se va a destruir.
- * @param destruir Función que se utilizará para destruir los datos de cada nodo.
- */
-void glist_destruir(GList lista, FuncionDestructora destruir);
+GList glist_crear(void);
 
 /**
  * @brief Retorna 1 si la lista está vacía, 0 en caso contrario.
  *
- * @param lista Lista general que se va a verificar.
+ * @param list Lista general que se va a verificar.
  * @return int 1 si la lista está vacía, 0 si no lo está.
  */
-int glist_vacia(GList lista);
+int glist_vacia(GList list);
 
 /**
  * @brief Agrega un elemento al inicio de la lista.
  *
- * @param lista Lista general a la que se va a agregar el elemento.
- * @param dato Dato que se va a agregar.
- * @param copiar Función que se utilizará para copiar el dato.
+ * @param list Lista general a la que se va a agregar el elemento.
+ * @param data Dato que se va a agregar.
+ * @param copy Función que se utilizará para copiar el dato.
  * @return GList Lista general con el elemento agregado al inicio.
  */
-GList glist_agregar_inicio(GList lista, void *dato, FuncionCopiadora copiar);
+GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy);
 
 /**
  * @brief Agrega un elemento al final de la lista.
  *
- * @param lista Lista general a la que se va a agregar el elemento.
- * @param dato Dato que se va a agregar.
+ * @param list Lista general a la que se va a agregar el elemento.
+ * @param data Dato que se va a agregar.
  * @param copy Función que se utilizará para copiar el dato.
  * @return GList Lista general con el elemento agregado al final.
  */
-GList glist_agregar_final(GList lista, void *dato, FuncionCopiadora copy);
+GList glist_agregar_final(GList list, void *data, FuncionCopiadora copy);
 
 /**
- * @brief Recorre la lista aplicando la función de visitante a cada elemento.
+ * @brief Recorre todos los elementos de la lista aplicando una función de visita.
  *
- * @param lista Lista general que se va a recorrer.
- * @param visitar Función que se aplicará a cada elemento de la lista.
+ * @param list Lista general que se va a recorrer.
+ * @param visit Función que se aplicará a cada elemento de la lista.
  */
-void glist_recorrer(GList lista, FuncionVisitante visitar);
+void glist_recorrer(GList list, FuncionVisitante visit);
 
 /**
  * @brief Retorna el primer elemento de la lista.
  *
- * @param lista Lista general de la que se quiere obtener el primer elemento.
+ * @param list Lista general de la que se quiere obtener el primer elemento.
  * @return void* Primer elemento de la lista.
  */
-void* glist_primer_elemento(GList lista);
-
-/**
- * @brief Elimina el último elemento de la lista.
- *
- * @param lista Lista general de la que se va a eliminar el último elemento.
- * @param destroy Función que se utilizará para destruir el dato del último nodo.
- * @return GList Lista general con el último elemento eliminado.
- */
-GList glist_eliminar_final(GList lista, FuncionDestructora destroy);
+void* glist_primer_elemento(GList list);
 
 /**
  * @brief Elimina el primer elemento de la lista.
  *
- * @param lista Lista general de la que se va a eliminar el primer elemento.
+ * @param list Lista general de la que se va a eliminar el primer elemento.
  * @param destroy Función que se utilizará para destruir el dato del primer nodo.
  * @return GList Lista general con el primer elemento eliminado.
  */
-GList glist_eliminar_inicio(GList lista, FuncionDestructora destroy);
+GList glist_eliminar_inicio(GList list, FuncionDestructora destroy);
 
 /**
- * @brief Busca si un dato está en la lista utilizando una función comparadora.
+ * @brief Destruye una lista general y sus datos utilizando la función pasada como argumento.
  *
- * @param lista Lista general en la que se va a buscar el dato.
- * @param dato Dato que se va a buscar.
- * @param comp Función que se utilizará para comparar el dato.
- * @return int 1 si el dato está en la lista, 0 si no lo está.
+ * @param list Lista general que se va a destruir.
+ * @param destruir Función que se utilizará para destruir los datos de cada nodo.
  */
-int glist_include(GList lista, void *dato, FuncionComparadora comp);
+void glist_destruir(GList list, FuncionDestructora destruir);
 
 #endif /* __GLIST_H__ */

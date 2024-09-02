@@ -58,14 +58,6 @@ Pila pila_apilar(Pila pila, void* dato, FuncionCopiadora copy);
 Pila pila_desapilar(Pila pila, FuncionDestructora destroy);
 
 /**
- * @brief Recorre todos los elementos de la pila aplicando una función de visita.
- *
- * @param pila Pila a recorrer.
- * @param visit Función que será aplicada a cada elemento de la pila.
- */
-void pila_recorrer(Pila pila, FuncionVisitante visit);
-
-/**
  * @brief Destruye una pila y libera la memoria ocupada por sus elementos.
  *
  * @param pila Pila a destruir.
