@@ -15,6 +15,10 @@ void punto_destruir(Punto punto) {
   free(punto);
 }
 
+unsigned punto_hash(Punto punto) {
+  return (punto->i * 73856093) + (punto->j * 19349663);
+}
+
 int punto_comparar(Punto a, Punto b) {
   return !(a->i == b->i && a->j == b->j);
 }

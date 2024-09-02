@@ -22,6 +22,8 @@ typedef _Punto* Punto;
  */
 Punto punto_crear(int i, int j);
 
+unsigned int punto_hash(Punto punto);
+
 /**
  * @brief Destruye un punto y libera la memoria asociada.
  *

@@ -3,16 +3,14 @@
 #include "robot.h"
 #include "direccion.h"
 
-unsigned punto_hash(Punto punto) {
-  return punto->i * 31 + punto->j;
-}
+
 
 Robot robot_crear(Punto pos, Punto dest) {
   Robot robot = malloc(sizeof(_Robot));
   robot->pos = pos;
   robot->dest = dest;
   robot->movimientos = pila_crear();
-  robot->visitados = tablahash_crear(500, (FuncionCopiadora) punto_copiar,
+  robot->visitados = tablahash_crear(503, (FuncionCopiadora) punto_copiar,
                                      (FuncionComparadora) punto_comparar,
                                      (FuncionDestructora) punto_destruir,
                                      (FuncionHash) punto_hash);

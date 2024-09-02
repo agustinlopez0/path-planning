@@ -18,9 +18,7 @@ void tablahash_insertar(TablaHash tabla, void *dato);
 
 void *tablahash_buscar(TablaHash tabla, void *dato);
 
-/**
- * Redimensiona la tabla cuando el factor de carga es muy alto.
- */
+
 void tablahash_rehash(TablaHash tabla);
 
 #endif /* __TABLAHASH_H__ */
