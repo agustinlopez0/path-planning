@@ -106,10 +106,38 @@ Para la implementación del algoritmo, una de las estructuras más importantes e
 \end{itemize}
 
 
-\section{Actividad 2: Algoritmo de Navegación en Entorno Parcialmente Desconocido}
+\section{Actividad 2}
 
 En esta actividad el objetivo sigue siendo el mismo que en la actividad anterior, pero en este caso el robot cuenta con un sensor que le permite detectar los obstáculos en las cuatro direcciones cardinales (arriba, abajo, izquierda, derecha). El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando el sensor para obtener información sobre su entorno e intentando optimizar el uso del mismo dado que se considera costoso.
 
+\subsection{Descripción del Algoritmo}
+\begin{problem}{Algoritmo}
+    El algoritmo para la navegación del robot con sensor sigue los siguientes pasos:
+
+    \begin{enumerate}
+        \item \textbf{Paso 0:} En este momento el robot no cuenta con nada de información, por lo que usa el sensor para detectar obstaculos y/o casillas libres a su alrederdor.
+        
+        \item \textbf{Paso 1:} El robot siempre conoce su posicón inicial y la posicion destino, entonces utilizando el algoritmo A* calcula la ruta mas corta hacia el destino asumiendo que las casillas desconocidas estan libres pero tienen un costo mayor que las casillas conocidas para optimizar el uso del sensor eligiendo una ruta quizás más larga pero que necesite menos usos del sensor.
+
+        \item \textbf{Paso 2:} Una vez que se construye el camino optimo, el robot se mueve a lo largo de este camino mientras las casillas sean conocidas, si la siguiente casilla del camino es desconocida utiliza el sensor para asegurarse de que no hay un obstaculo y luego continua moviendose, hasta llegar al destino o que efectivamente haya un obstaculo en la casilla desconocida.
+
+        \item \textbf{Paso 3:} Cuando encuentra un obstaculo en la ruta calculada vuelve al paso 1.
+    \end{enumerate}
+
+    Este enfoque permite al robot explorar el entorno de manera más eficiente y segura, utilizando la información del sensor para evitar obstáculos y encontrar el camino más corto hacia el destino.
+\end{problem}
+
+\subsection{Estructuras de Datos Utilizadas}
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------
 \subsection{Descripción del Código}
 
 El código desarrollado se divide en varias funciones clave:

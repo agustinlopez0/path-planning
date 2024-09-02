@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1725240767 "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex" "main.pdf" "main" 1725240768
+["pdflatex"] 1725241474 "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex" "main.pdf" "main" 1725241474
   "/etc/texmf/web2c/texmf.cnf" 1719803492 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/agustin/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1719803603 11524 06fe25d35f2081030905d7cde66f2c81 ""
-  "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex" 1725240767 7818 97790ae72ebde1860fc6ba57bacbaf57 ""
+  "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex" 1725241474 9377 b111514cf951220a74e7f6acce2b59de ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -108,9 +108,9 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1724986251 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1724986255 1405645 175fcb3c25f67229901021b651d99df2 ""
   "coverPage.tex" 1724986417 671 42bb86b484ff9942e825f31a4eb66aae ""
-  "main.aux" 1725240768 1401 2dc18f6a7cf60f9207668780f4e02136 "pdflatex"
-  "main.out" 1725240768 1122 e393bab426b5663e52006e50ec0474dd "pdflatex"
-  "main.tex" 1725240767 7818 97790ae72ebde1860fc6ba57bacbaf57 ""
+  "main.aux" 1725241474 1610 05ea799cde4be223202644b1d5a4ed76 "pdflatex"
+  "main.out" 1725241474 1205 8ef945d948d713b037f7c7af78979f87 "pdflatex"
+  "main.tex" 1725241474 9377 b111514cf951220a74e7f6acce2b59de ""
   "unr.png" 1724976225 83550 1e5d2882a7c07b90a0ed2d57e5f9f248 ""
   (generated)
   "main.aux"

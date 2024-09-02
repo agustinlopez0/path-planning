@@ -31,7 +31,7 @@ indent:
 # 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 robot:
-	gcc -Wall -Wextra robot.c matriz.c colaprioridad.c bheap.c -o robot
+	gcc -Wall -Wextra robot.c matriz.c colaprioridad.c bheap.c glist.c -o robot
 	
 robot2:
 	gcc -Wall -Wextra robot2.c matriz_bi.c -o robot2

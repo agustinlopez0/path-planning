@@ -2,9 +2,15 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "matriz.h"
-#include <unistd.h>
 #include "colaprioridad.h"
-
+#include "glist.h"
+#include <unistd.h>
+void imprimir_char(char* a){
+  printf("%c", *a);
+}
+void imprimir_char_stderr(char* a){
+  fprintf(stderr, "%c", *a);
+}
 typedef struct {
   int x, y;
 } Punto;
@@ -13,7 +19,7 @@ typedef struct {
   Punto *pos;
   Punto *dest;
   Matriz *mapa;
-  char *camino;
+  GList camino;
 } _Robot;
 
 typedef _Robot *Robot;
@@ -21,7 +27,7 @@ typedef _Robot *Robot;
 void robot_destruir(Robot robot) {
   free(robot->pos);
   free(robot->dest);
-  free(robot->camino);
+  glist_destruir(robot->camino, free);
   matriz_destruir(robot->mapa);
   free(robot);
 }
@@ -51,8 +57,7 @@ Robot robot_crear(Punto pos, Punto dest, int N, int M) {
   robot->dest->x = dest.x;
   robot->dest->y = dest.y;
 
-  robot->camino = malloc(1000 * sizeof(char));
-  robot->camino[0] = '\0';
+  robot->camino = glist_crear();
 
   robot->mapa = matriz_crear(N, M);
   robot_set_mapa(robot);
@@ -120,43 +125,58 @@ void imprimir_mapa(Robot robot) {
   usleep(200000);
 }
 
-int ir_a_destino(CeldaInfo ** celdaInfo, Robot robot) {
+Punto* punto_copiar(Punto* a){
+  Punto* b = malloc(sizeof(Punto));
+  b->x = a->x;
+  b->y = a->y;
+  return b;
+}
 
-  Punto camino[100000];
-  int longitud = 0;
+char* char_copiar(char* a){
+  char* b = malloc(sizeof(char));
+  *b = *a;
+  return b;
+}
+
+int ir_a_destino(CeldaInfo ** celdaInfo, Robot robot) {
+  GList camino = glist_crear();
 
   Punto destino = *robot->dest;
-  for (Punto p = destino; p.x != -1 && p.y != -1;
-       p = celdaInfo[p.x][p.y].padre) {
-    camino[longitud++] = p;
+
+  for (Punto p = destino; p.x != -1 && p.y != -1; p = celdaInfo[p.x][p.y].padre) {
+    camino = glist_agregar_inicio(camino, &p, (FuncionCopiadora)punto_copiar);
   }
 
-  for (int i = longitud - 1; i >= 0; i--) {
-    Punto p;
-    p.x = camino[i].x;
-    p.y = camino[i].y;
+  for(GNode* node = camino; node != NULL; node = node->next){
+    Punto p = *(Punto*)node->data;
     if (matriz_leer(robot->mapa, p.x, p.y) == '.'
         || matriz_leer(robot->mapa, p.x, p.y) == 's') {
-      // Si la celda a la que me muevo esta a la izquierda agrego una 'L' al camino
+          
+
       if (p.y < robot->pos->y) {
-        strcat(robot->camino, "L");
+        char a = 'L';
+        robot->camino = glist_agregar_final(robot->camino, &a, (FuncionCopiadora)char_copiar);
       } else if (p.y > robot->pos->y) {
-        strcat(robot->camino, "R");
+        char a = 'R';
+        robot->camino = glist_agregar_final(robot->camino, &a, (FuncionCopiadora)char_copiar);
       } else if (p.x < robot->pos->x) {
-        strcat(robot->camino, "U");
+        char a = 'U';
+        robot->camino = glist_agregar_final(robot->camino, &a, (FuncionCopiadora)char_copiar);
       } else if (p.x > robot->pos->x) {
-        strcat(robot->camino, "D");
+        char a = 'D';
+        robot->camino = glist_agregar_final(robot->camino, &a, (FuncionCopiadora)char_copiar);
       }
       robot->pos->x = p.x;
       robot->pos->y = p.y;
+      
     } else {
-
+      glist_destruir(camino, free);
       return 0;
     }
     imprimir_mapa(robot);
-    // imprimir_celdaInfo(celdaInfo, N, M);
   }
 
+  glist_destruir(camino, free);
   return 1;
 }
 
@@ -234,6 +254,7 @@ void no_hacer_nada(Nodo a) {
 }
 
 int calcular_ruta(Robot robot) {
+  
   usar_sensor(robot);
 
   Punto inicio = *robot->pos;
@@ -272,6 +293,7 @@ int calcular_ruta(Robot robot) {
   int llegoADestino = 0;
 
   while (!cola_prioridad_es_vacia(cola) && !llegoADestino) {
+
     nodo = cola_prioridad_maximo(cola);
     cola_prioridad_eliminar_maximo(cola);
 
@@ -314,6 +336,7 @@ int calcular_ruta(Robot robot) {
 
   }
 
+
   while (!cola_prioridad_es_vacia(cola)) {
     Nodo nodo = cola_prioridad_maximo(cola);
     cola_prioridad_eliminar_maximo(cola);
@@ -335,7 +358,6 @@ int calcular_ruta(Robot robot) {
 int main() {
   int N, M, sensor_size;
   Punto pos, dest;
-
   scanf("%d%d%d", &N, &M, &sensor_size);
   scanf("%d%d", &pos.x, &pos.y);
   scanf("%d%d", &dest.x, &dest.y);
@@ -343,9 +365,11 @@ int main() {
   Robot robot = robot_crear(pos, dest, N, M);
 
   while (calcular_ruta(robot));
-  // fprintf(stderr, "! %s\n", robot->camino);
 
-  printf("! %s\n", robot->camino);
+  printf("! ");
+  glist_recorrer(robot->camino, (FuncionVisitante)imprimir_char);
+  printf("\n");
+
   fflush(stdout);
 
   robot_destruir(robot);
