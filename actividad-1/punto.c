@@ -5,7 +5,6 @@
 
 Punto punto_crear(int i, int j) {
   Punto nuevoPunto = malloc(sizeof(_Punto));
-  assert(nuevoPunto != NULL);
   nuevoPunto->i = i;
   nuevoPunto->j = j;
   return nuevoPunto;

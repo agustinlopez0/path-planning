@@ -4,21 +4,11 @@
 #include "robot.h"
 #include "mapa.h"
 #include "direccion.h"
-#include "punto.h"
 
 /**
  * @file simulacion.h
  * @brief Funciones relacionadas con la simulación y movimiento del robot en el mapa.
  */
-
-/**
- * @brief Imprime el mapa marcando las celdas visitadas por el robot,
- * además muestra la posicion actual del robot y su destino.
- *
- * @param robot El robot cuyo recorrido se va a mostrar.
- * @param mapa El mapa en el que se va a mostrar el recorrido del robot.
- */
-void mostrar_robot_mapa(Robot robot, Mapa mapa);
 
 /**
  * @brief Retorna 1 si el robot se pudo mover en la dirección indicada
@@ -33,11 +23,10 @@ void mostrar_robot_mapa(Robot robot, Mapa mapa);
 int robot_mover(Robot robot, Mapa mapa, Direccion direccion);
 
 /**
- * @brief Mueve al robot hacia su destino.
+ * @brief Mueve al robot hacia su destino utilizando el algoritmo descripto en el informe.
  *
  * @param robot El robot que se va a mover hacia su destino.
  * @param mapa El mapa en el que se encuentra el robot y su destino.
- * @return 1 si el robot llegó a su destino, 0 si no.
  */
 void robot_ir_a_destino(Robot robot, Mapa mapa);
 

@@ -115,34 +115,6 @@ void imprimir_char(char *a) {
   printf("%c", *a);
 }
 
-void celda_info_imprimir(CeldaInfo ** celdaInfo, int N, int M) {
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < M; j++) {
-      fprintf(stderr, "(%10d {%2d, %2d}) |", celdaInfo[i][j].costo, celdaInfo[i][j].padre.x, celdaInfo[i][j].padre.y);
-    }
-    fprintf(stderr, "\n");
-  }
-  fprintf(stderr, "\n\n");
-}
-void imprimir_mapa(Robot robot) {
-  fprintf(stderr, "\n-------------------\n");
-  for (size_t i = 0; i < mapa_num_filas(robot->mapa); i++) {
-    for (size_t j = 0; j < mapa_num_columnas(robot->mapa); j++) {
-      if (i == (size_t) robot->pos->x && j == (size_t) robot->pos->y) {
-        fprintf(stderr, "R ");
-      } else if (i == (size_t) robot->dest->x && j == (size_t) robot->dest->y) {
-        fprintf(stderr, "D ");
-      } else {
-        fprintf(stderr, "%c ", mapa_leer(robot->mapa, i, j));
-      }
-    }
-    fprintf(stderr, " |\n");
-  }
-  fprintf(stderr, "-------------------\n");
-
-  // usleep(200000);
-}
-
 int main() {
   int N, M, alcanceSensor;
   Punto pos, dest;
@@ -264,9 +236,6 @@ int ir_a_destino(CeldaInfo ** celdaInfo, Robot robot) {
       glist_destruir(camino, free);
       return 0;
     }
-    // usleep(200000);
-    celda_info_imprimir(celdaInfo, mapa_num_filas(robot->mapa), mapa_num_columnas(robot->mapa));
-    imprimir_mapa(robot);
   }
 
   glist_destruir(camino, free);

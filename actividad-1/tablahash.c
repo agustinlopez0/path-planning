@@ -1,5 +1,4 @@
 #include "tablahash.h"
-#include <assert.h>
 #include <stdlib.h>
 
 #define FACTOR_CARGA_UMBRAL 0.7
@@ -31,9 +30,9 @@ TablaHash tablahash_crear(unsigned capacidad, FuncionCopiadora copia,
   tabla->destr = destr;
   tabla->hash = hash;
 
-  for (unsigned idx = 0; idx < capacidad; idx++) {
+  for (unsigned idx = 0; idx < capacidad; idx++)
     tabla->elems[idx].dato = NULL;
-  }
+
 
   return tabla;
 }
@@ -47,7 +46,6 @@ int tablahash_capacidad(TablaHash tabla) {
 }
 
 void tablahash_destruir(TablaHash tabla) {
-
   for (unsigned idx = 0; idx < tabla->capacidad; ++idx)
     if (tabla->elems[idx].dato != NULL)
       tabla->destr(tabla->elems[idx].dato);
@@ -61,8 +59,7 @@ void tablahash_rehash(TablaHash tabla) {
     return;
 
   unsigned nueva_capacidad = tabla->capacidad * 2;
-  CasillaHash *nuevas_casillas =
-      malloc(sizeof(CasillaHash) * nueva_capacidad);
+  CasillaHash *nuevas_casillas = malloc(sizeof(CasillaHash) * nueva_capacidad);
 
   for (unsigned idx = 0; idx < nueva_capacidad; ++idx)
     nuevas_casillas[idx].dato = NULL;
@@ -83,9 +80,8 @@ void tablahash_rehash(TablaHash tabla) {
 
 
 void tablahash_insertar(TablaHash tabla, void *dato) {
-  if ((double) tabla->numElems / tabla->capacidad > FACTOR_CARGA_UMBRAL) {
+  if ((double) tabla->numElems / tabla->capacidad > FACTOR_CARGA_UMBRAL)
     tablahash_rehash(tabla);
-  }
 
   unsigned idx = tabla->hash(dato) % tabla->capacidad;
   unsigned original_idx = idx;
@@ -99,9 +95,9 @@ void tablahash_insertar(TablaHash tabla, void *dato) {
 
     idx = (idx + 1) % tabla->capacidad;
 
-    if (idx == original_idx) {
+    if (idx == original_idx)
       return;
-    }
+  
   }
 
   tabla->numElems++;
@@ -112,14 +108,15 @@ void *tablahash_buscar(TablaHash tabla, void *dato) {
   unsigned idx = tabla->hash(dato) % tabla->capacidad;
   unsigned original_idx = idx;
 
-  while (tabla->elems[idx].dato != NULL) {
+  int vuelta = 0; // Bandera para saber si ya dimos una vuelta completa
+  while (tabla->elems[idx].dato != NULL && !vuelta) {
     if (tabla->comp(tabla->elems[idx].dato, dato) == 0)
       return tabla->elems[idx].dato;
 
     idx = (idx + 1) % tabla->capacidad;
 
     if (idx == original_idx)
-      break;
+      vuelta = 1;
   }
 
   return NULL;

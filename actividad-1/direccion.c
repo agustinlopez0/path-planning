@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "direccion.h"
 
-Direccion *direccion_copiar(Direccion * a) {
+Direccion *direccion_copiar(Direccion *a) {
   Direccion *copia = malloc(sizeof(Direccion));
   *copia = *a;
   return copia;
 }
 
-void direccion_imprimir(Direccion * direccion) {
+void direccion_imprimir(Direccion *direccion) {
   if (*direccion == UP)
     printf("U");
   else if (*direccion == DOWN)
@@ -29,6 +29,6 @@ Direccion direccion_opuesta(Direccion direccion) {
   return RIGHT;
 }
 
-void direccion_destruir(Direccion * a) {
+void direccion_destruir(Direccion *a) {
   free(a);
 }

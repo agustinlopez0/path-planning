@@ -21,7 +21,7 @@ typedef enum {
  * @brief Realiza una copia física de una dirección.
  *
  * @param a Dirección que se va a copiar.
- * @return Direccion* Puntero a la dirección copiada.
+ * @return Puntero a la dirección de la copia.
  */
 Direccion *direccion_copiar(Direccion *a);
 

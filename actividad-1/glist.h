@@ -50,7 +50,7 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy);
  * @param list Lista general de la que se quiere obtener el primer elemento.
  * @return void* Primer elemento de la lista.
  */
-void* glist_primer_elemento(GList list);
+void *glist_primer_elemento(GList list);
 
 /**
  * @brief Elimina el primer elemento de la lista.

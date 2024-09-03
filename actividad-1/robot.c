@@ -21,9 +21,9 @@ int robot_en_destino(Robot robot) {
   return punto_comparar(robot->pos, robot->dest) == 0;
 }
 
-int robot_retroceder(Robot robot) {
+void robot_retroceder(Robot robot) {
   if (pila_es_vacia(robot->movimientos))
-    return 0;
+    return;
 
   // Obtener la última dirección desde la pila
   Direccion *ultima_direccion = pila_tope(robot->movimientos);
@@ -43,7 +43,6 @@ int robot_retroceder(Robot robot) {
       pila_desapilar(robot->movimientos,
                      (FuncionDestructora) direccion_destruir);
 
-  return 1;
 }
 
 void robot_destruir(Robot robot) {

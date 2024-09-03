@@ -2,8 +2,8 @@
 #define __ROBOT_H__
 
 #include "punto.h"
-#include "pila.h"
 #include "glist.h"
+#include "pila.h"
 #include "tablahash.h"
 
 /**
@@ -45,12 +45,11 @@ int robot_en_destino(Robot robot);
  * @brief Retrocede el robot a su posición anterior utilizando la pila de movimientos.
  *
  * @param robot Robot a retroceder.
- * @return 1 si se pudo retroceder, 0 si la pila de movimientos está vacía.
  */
-int robot_retroceder(Robot robot);
+void robot_retroceder(Robot robot);
 
 /**
- * @brief Destruye un robot y libera la memoria ocupada por él.
+ * @brief Destruye un robot y libera la memoria ocupada por sus campos.
  *
  * @param robot Robot a destruir.
  */

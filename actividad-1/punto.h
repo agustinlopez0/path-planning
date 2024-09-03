@@ -53,8 +53,8 @@ Punto punto_copiar(Punto a);
  * @param a Primer punto.
  * @param b Segundo punto.
  * @return 0 si los puntos están alineados respecto al eje x,
- *         un valor positivo si b está a la izquierda de a,
- *         un valor negativo si b está a la derecha de a.
+ *         un valor positivo si a esta a la  derecha  de b,
+ *         un valor negativo si a esta a la izquierda de b.
  */
 int punto_distancia_x(Punto a, Punto b);
 
@@ -64,8 +64,8 @@ int punto_distancia_x(Punto a, Punto b);
  * @param a Primer punto.
  * @param b Segundo punto.
  * @return 0 si los puntos están alineados respecto al eje y,
- *         un valor positivo si b está arriba de a,
- *         un valor negativo si b está abajo de a.
+ *         un valor positivo si a esta  abajo de b,
+ *         un valor negativo si a esta arriba de b.
  */
 int punto_distancia_y(Punto a, Punto b);
 

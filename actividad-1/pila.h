@@ -11,7 +11,7 @@
 
 /**
  * @typedef Pila
- * @brief Definición de pila como utilizando una lista general.
+ * @brief Definición de pila utilizando una lista general.
  */
 typedef GList Pila;
 
@@ -26,7 +26,7 @@ Pila pila_crear(void);
  * @brief Verifica si la pila está vacía.
  *
  * @param pila Pila a verificar.
- * @return 1 si la pila está vacía, 0 en caso contrario.
+ * @return int 1 si la pila está vacía, 0 en caso contrario.
  */
 int pila_es_vacia(Pila pila);
 
