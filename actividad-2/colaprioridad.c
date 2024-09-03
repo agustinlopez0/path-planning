@@ -1,8 +1,6 @@
 #include "colaprioridad.h"
 
-ColaPrioridad cola_prioridad_crear(size_t capacidad,
-                                   FuncionComparadora comp,
-                                   FuncionDestructora destr) {
+ColaPrioridad cola_prioridad_crear(size_t capacidad, FuncionComparadora comp, FuncionDestructora destr) {
   return bheap_crear(capacidad, comp, destr);
 }
 
