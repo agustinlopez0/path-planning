@@ -38,28 +38,4 @@ FileData leer_archivo(const char *nombre_archivo);
  */
 void filedata_destruir(FileData fileData);
 
-/**
- * @brief Verifica si una cadena está compuesta únicamente por caracteres válidos ('#' y '.').
- *
- * @param cadena Cadena a verificar.
- * @return 1 si la cadena es válida, 0 si no lo es.
- */
-int es_cadena_valida(const char *cadena);
-
-/**
- * @brief Cuenta la cantidad de espacios en blanco en una cadena.
- *
- * @param cadena Cadena en la que contar los espacios en blanco.
- * @return Número de espacios en blanco encontrados.
- */
-int cantidad_espacios(const char *cadena);
-
-/**
- * @brief Valida el formato de un archivo de configuración y carga los datos en una estructura FileData.
- *
- * @param f Puntero al archivo de configuración abierto en modo lectura.
- * @param fileData Estructura donde se almacenarán los datos leídos.
- * @return 1 si el formato es válido y los datos se cargan correctamente, 0 si hay errores.
- */
-int validar_formato(FILE * f, FileData fileData);
 #endif /* __LEER_ARCHIVO_H__ */

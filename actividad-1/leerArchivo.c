@@ -12,16 +12,8 @@ void filedata_destruir(FileData fileData) {
   free(fileData);
 }
 
-int es_cadena_valida(const char *cadena) {
-  while (*cadena) {
-    if (*cadena != '#' && *cadena != '.')
-      return 0;
-    cadena++;
-  }
-  return 1;
-}
-
-int cantidad_espacios(const char *cadena) {
+// Cuenta la cantidad de espacios en blanco en una cadena.
+static int cantidad_espacios(const char *cadena) {
   int cont = 0;
   while (*cadena) {
     if (*cadena == ' ')
@@ -31,7 +23,8 @@ int cantidad_espacios(const char *cadena) {
   return cont;
 }
 
-int validar_formato(FILE * f, FileData fileData) {
+// Valida el formato de las 3 primeras líneas del archivo.
+static int validar_formato(FILE * f, FileData fileData) {
   char linea[MAX_BUFFER_SIZE];
 
   // Validar la primera línea
@@ -79,6 +72,16 @@ int validar_formato(FILE * f, FileData fileData) {
 
   fileData->destRobot = punto_crear(destI, destJ);
 
+  return 1;
+}
+
+// Verifica si una cadena está compuesta únicamente por caracteres válidos ('#' y '.').
+static int es_cadena_valida(const char *cadena) {
+  while (*cadena) {
+    if (*cadena != '#' && *cadena != '.')
+      return 0;
+    cadena++;
+  }
   return 1;
 }
 
