@@ -21,12 +21,8 @@ int main(int argc, char *argv[]) {
   Mapa mapa = mapa_crear(fileData->alto, fileData->ancho, fileData->coord);
   free(fileData);
 
-  printf("Recorrido: ");
   robot_ir_a_destino(robot, mapa);
   puts("");
-
-  printf("El robot %s llegó a su destino\n",
-         robot_en_destino(robot) ? "sí" : "no");
 
   mapa_destruir(mapa);
   robot_destruir(robot);
