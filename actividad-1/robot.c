@@ -42,7 +42,7 @@ void robot_retroceder(Robot robot) {
   robot->movimientos =
       pila_desapilar(robot->movimientos,
                      (FuncionDestructora) direccion_destruir);
-
+  direccion_imprimir(&direccion);
 }
 
 void robot_destruir(Robot robot) {
