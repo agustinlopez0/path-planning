@@ -7,4 +7,4 @@ $(EXEC): $(SOURCES)
 	$(CC) $(CFLAGS) $(SOURCES) -o $(EXEC)
 
 clean:
-	rm -f $(BACKUP) $(EXEC)
+	rm -f $(EXEC)
