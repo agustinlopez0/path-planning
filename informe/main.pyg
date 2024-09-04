@@ -1,8 +1,0 @@
-typedef struct {
-    Punto pos;
-    Punto dest;
-    Pila movimientos;
-    TablaHash visitados;
-} _Robot;
-
-typedef _Robot *Robot;
