@@ -49,18 +49,18 @@
 
 \section{Actividad 1}
 
-En esta actividad se presenta el desarrollo e implementación de un algoritmo de navegación para un robot en un entorno desconocido, donde el robot se mueve a ciegas y solo puede detectar los obstáculos al ``chocarse'' con ellos. El objetivo es que el robot llegue a la posición objetivo de manera eficiente, evitando obstáculos y explorando nuevas áreas de forma sistemática.
+En esta actividad, se presenta el desarrollo e implementación de un algoritmo de navegación para un robot en un entorno desconocido donde el robot se mueve a ciegas y solo puede detectar los obstáculos al ``chocarse'' con ellos. El objetivo es que el robot llegue a la posición objetivo de manera eficiente, evitando obstáculos y explorando nuevas áreas de forma sistemática.
 
-A continuación, se detallan los pasos del algoritmo y las estructuras relevantes para su implementación.
+A continuación, se detallan los pasos del algoritmo y estructuras relevantes para su implementación.
 
 \subsection{Descripción del Algoritmo}
 \begin{problem}{Algoritmo}
     El algoritmo para la navegación del robot sigue los siguientes pasos:
 
     \begin{enumerate}
-        \item \textbf{Paso 1:} El robot comienza moviéndose en dirección vertical buscando alinearse con la posición objetivo. Cuando el robot logra llegar a la altura del destino o se encuentra con algún obstáculo, intenta moverse en dirección horizontal siguiendo el mismo principio. Este proceso se repite en bucle hasta que el robot no pueda acercarse más al objetivo utilizando este método.
+        \item \textbf{Paso 1:} El robot comienza moviéndose en dirección vertical buscando alinearse con la posición objetivo. Cuando el robot logra llegar a la altura del destino o se encuentra con algún obstaculo intenta moverse en dirección horizontal siguiendo el mismo principio. Este proceso se repite en bucle hasta que el robot no pueda acercarse más al objetivo utilizando este método.
 
-        \item \textbf{Paso 2:} Cuando el robot llega a una posición en la que no puede avanzar más, desde su posición actual se mueve hacia una celda vecina que no haya sido visitada previamente. Este paso asegura que el robot explore nuevas áreas del mapa y evita el movimiento redundante en regiones ya descubiertas. Después, el robot vuelve al paso 1.
+        \item \textbf{Paso 2:} Cuando el robot llega a una posición en la que no puede avanzar más, desde su posicion actual se mueve hacia una celda vecina que no haya sido visitada previamente. Este paso asegura que el robot explora nuevas áreas del mapa y evita el movimiento redundante en regiones ya descubiertas. Después, el robot vuelve al paso 1.
 
         \item \textbf{Paso 3:} Si no hay celdas vecinas no visitadas, el robot retrocede una posición por la ruta previamente recorrida y regresa al paso 1.
     \end{enumerate}
@@ -104,13 +104,13 @@ Para la implementación del algoritmo, una de las estructuras más importantes e
 
     \item \textbf{Pila \texttt{movimientos}:} Una pila implementada con una lista general simplemente enlazada con un puntero al primer elemento que almacena elementos de tipo \texttt{Direccion*}. Cuando el robot realiza un movimiento en alguna dirección que no sea un retroceso (por ejemplo, hacia la izquierda), se agrega el movimiento a la pila. De este modo, cuando el robot tenga que realizar un retroceso, el movimiento que se ejecute será en la dirección opuesta a la almacenada en el tope de la pila.
 
-    \item \textbf{TablaHash \texttt{visitados}:} Una tabla hash que almacena las posiciones visitadas por el robot. Esta tabla se utiliza para evitar que el robot visite una celda más de una vez (o dos veces si contamos el retroceso) y para determinar si hay celdas sin visitar en el mapa para posteriormente moverse hacia ellas. La elección de la estructura \texttt{TablaHash} se basa en su eficiencia en la búsqueda en tiempo constante, teniendo en cuenta que la búsqueda es algo que ocurre muchas veces mientras se ejecuta el algoritmo. Además, durante la ejecución no se necesita eliminar elementos de la tabla.
+    \item \textbf{TablaHash \texttt{visitados}:} Una tabla hash que almacena las posiciones visitadas por el robot. Esta tabla se utiliza para evitar que el robot visite una celda más de una vez (o dos veces si contamos el retroceso) y para determinar si hay celdas sin visitar en el mapa para posteriormente moverse hacia ellas. La elección de la estructura \texttt{TablaHash} se basa en su eficiencia en la búsqueda en tiempo constante teniendo en cuenta que la búsqueda es algo que ocurre muchas veces mientras se ejecuta el algoritmo, y además en el hecho de que durante la ejecución no se necesita eliminar elementos de la tabla.
 \end{itemize}
 
 
 \section{Actividad 2}
 
-En esta actividad, el objetivo sigue siendo el mismo que en la actividad anterior, pero en este caso el robot cuenta con un sensor que le permite reconocer si hay o no obstáculos en cierta cantidad de celdas hacia las cuatro direcciones cardinales (arriba, abajo, izquierda, derecha). El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) que almacena elementos de tipo \texttt{char} y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando el sensor para obtener información sobre su entorno e intentando optimizar el uso del mismo, dado que se considera costoso.
+En esta actividad el objetivo sigue siendo el mismo que en la actividad anterior, pero en este caso el robot cuenta con un sensor que le permite reconocer si hay o no obstáculos en cierta cantidad de celdas hacia las cuatro direcciones cardinales (arriba, abajo, izquierda, derecha). El robot se desplaza en un mapa representado por una matriz de dimensiones \(N \times M\) que almacena elementos de tipo \texttt{char} y debe llegar a un destino específico desde una posición inicial, evitando obstáculos y utilizando el sensor para obtener información sobre su entorno e intentando optimizar el uso del mismo dado que se considera costoso.
 
 \subsection{Descripción del Algoritmo}
 \begin{problem}{Algoritmo}
@@ -153,7 +153,7 @@ Para la implementación del algoritmo, estas son las estructuras centrales que r
 \begin{itemize}
     \item \textbf{Punto \texttt{*pos} y \texttt{*dest}:} Representan la posición actual y la posición destino del robot, respectivamente al igual que en la actividad 1.
 
-    \item \textbf{Mapa \texttt{*mapa}:} Representa la información que tiene el robot sobre el mapa actual. Es una matriz de de dimensiones \(N \times M\) que almacena elementos de tipo \texttt{char} donde cada celda puede tener uno de los siguientes valores:
+    \item \textbf{Mapa \texttt{*Mapa}:} Representa la información que tiene el robot sobre el mapa actual, es una matriz de char de dimensiones \(N \times M\) donde cada celda puede tener uno de los siguientes valores:
         \begin{enumerate}
             \item \texttt{`?'}: Celda desconocida.
             \item \texttt{`.'}: Celda libre.
@@ -168,46 +168,44 @@ Para la implementación del algoritmo, estas son las estructuras centrales que r
 \subsubsection{CeldaInfo}
 \textbf{Descripción de los campos:}
 \begin{itemize}
-    \item \textbf{Punto \texttt{padre}:} Un punto que representa el nodo padre de una celda en la matriz. Esto permite seguir el camino de regreso desde el destino hasta la posición inicial una vez que el camino más corto ha sido calculado.
-    \item \textbf{int \texttt{costo}:} Representa el costo acumulado de llegar a esta celda desde la posición inicial del robot durante el cálculo de la ruta. Este campo es clave para aplicar el algoritmo, donde se minimiza este costo para encontrar el camino más corto.
+    \item \textbf{Punto \texttt{*padre}:} Representa la posición de la celda previa en el camino óptimo hacia esta celda.
+    \item \textbf{int \texttt{costo}:} Representa el costo acumulado de llegar a esta celda desde la posición inicial del robot al momento de calcular la ruta.
 \end{itemize}
 
 \pagebreak
 \subsection{Algunas detalles relevantes para el cálculo y seguimiento de la ruta óptima}
 
-\subsubsection{Cálculo de Costos}
+\subsubsection{Cálculo de costos:}
+La estructura principal para el cálculo de los costos es la matriz \(N \times M\) de \texttt{CeldaInfo} la cual se inicializa con los valores de costo en \texttt{INT\_MAX} y el puntero a la celda padre como el punto \texttt{(-1, -1)} indicando que no tiene padre. 
 
-El cálculo de costos se basa en una matriz \(N \times M\) de \texttt{CeldaInfo}, que se inicializa con los valores de costo establecidos en \texttt{INT\_MAX} y con el puntero a la celda padre configurado como el punto \texttt{(-1, -1)}, indicando que la celda no tiene un padre asignado.
+Primero, se agrega la posición inicial del robot a la cola de prioridad con costo 0 y se actualiza la matriz de costos con este valor.
 
-El proceso comienza añadiendo la posición inicial del robot a una cola de prioridad con un costo de 0. La matriz de costos se actualiza con este valor inicial.
-
-A continuación, se extraen los elementos de la cola de prioridad y se calculan los costos de las celdas adyacentes utilizando el siguiente criterio:
+Luego, se extraen los elementos de la cola de prioridad y se calculan los costos de las celdas adyacentes de la siguiente manera:
 
 \begin{itemize}
-    \item Para una celda que no es un obstáculo, el costo total \( f(i,j) \) se calcula como la suma del costo acumulado \( g(i,j) \) de llegar a esa celda desde la posición inicial, más una heurística \( h(i,j) \) que estima el costo restante para llegar desde \( c_{i,j} \) hasta el destino. Formalmente, esto se expresa como:
+    \item Si la celda adyacente no es un obstáculo, el costo se calcula como:
     \[
-    f(i,j) = g(i,j) + h(i,j)
+    \text{costo}(\text{celda actual}) + 1 + \text{distancia}(\text{celda actual}, \text{destino}).
     \]
-
-    \item Para una celda desconocida, el costo total \( f(i,j) \) se ajusta añadiendo un valor fijo \( C_{\text{sensor}} \) que representa el costo asociado al uso del sensor. Así, el costo se calcula como:
+    \item Si la celda adyacente es desconocida, el costo es:
     \[
-    f(i,j) = g(i,j) + h(i,j) + C_{\text{sensor}}
+    \text{costo}(\text{celda actual}) + 1 + \text{distancia}(\text{celda actual}, \text{destino}) + C_{\text{sensor}},
     \]
-
-    \item Para una celda que es un obstáculo, se asigna un costo extremadamente alto:
+    donde \( C_{\text{sensor}} \) es un valor fijo que representa el costo de usar el sensor.
+    \item Si la celda adyacente es un obstáculo, el costo se define como:
     \[
     \text{INT\_MAX},
     \]
-    para garantizar que esta celda no se considere en el cálculo de la ruta.
+    de modo que no se considere en el cálculo de la ruta.
 \end{itemize}
 
-Si el costo calculado para una celda es menor que el costo previamente almacenado en la matriz, se actualiza el valor y se modifica el puntero al padre de la celda. Además, se inserta un nodo en la cola de prioridad con el nuevo costo calculado. Este proceso continúa hasta que la cola de prioridad se vacíe o se alcance la celda de destino. Dado que se asume que siempre hay un camino válido desde la posición inicial del robot hasta el destino, la cola de prioridad no debería vaciarse antes de llegar a la celda de destino.
-
+Si el nuevo costo es menor al que se tenía almacenado en la matriz de costos, se actualiza el valor y el padre, también se agrega un nodo a la cola de prioridad con el nuevo costo. Este proceso se repite hasta que la cola de prioridad esté vacía o se llegue a la posición destino.
 
 \subsubsection{Seguimiento de la ruta:}
 
 Una vez que se calcula la ruta óptima, el robot simplemente reconstruye la ruta del destino siguiendo al nodo padre de la matriz de \texttt{CeldaInfo} hasta llegar a la posición inicial. De esta forma, se obtiene la ruta óptima que el robot debe seguir para llegar a su destino.
 
-Cuando el robot comienza a moverse a lo largo de este camino. Si el robot encuentra una celda desconocida, utiliza el sensor para obtener información y luego recalcula el camino desde su posición actual hasta el destino con la nueva información disponible.
+El robot se mueve a lo largo de esta ruta, y si encuentra una celda desconocida utiliza el sensor y vuelve a calcular la ruta óptima con la nueva información, posteriormente se mueve a lo largo de la nueva ruta. Este proceso se repite hasta que el robot llegue a su destino.
+
 
 \end{document}

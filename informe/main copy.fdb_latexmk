@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1725235569 "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main copy.tex" "main copy.pdf" "main copy" 1725235569
+["pdflatex"] 1725399330 "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main copy.tex" "main copy.pdf" "main copy" 1725399331
   "/etc/texmf/web2c/texmf.cnf" 1719803492 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main copy.tex" 1725235568 8754 a74a6a7421601359079397bb615ace51 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -97,9 +97,9 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1724986251 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1724986255 1405645 175fcb3c25f67229901021b651d99df2 ""
-  "coverPage.tex" 1724986417 671 42bb86b484ff9942e825f31a4eb66aae ""
-  "main copy.aux" 1725235569 1179 cbb5dd06cbd8e61ccac87afe8f4b9ddc "pdflatex"
-  "main copy.out" 1725235569 971 a7e8228be95efa847a29b6b9a3c5a5c8 "pdflatex"
+  "coverPage.tex" 1725399330 656 9786e1441fb254e1f5352c4236b0e0c9 ""
+  "main copy.aux" 1725399331 1179 cbb5dd06cbd8e61ccac87afe8f4b9ddc "pdflatex"
+  "main copy.out" 1725399331 971 a7e8228be95efa847a29b6b9a3c5a5c8 "pdflatex"
   "main copy.tex" 1725235568 8754 a74a6a7421601359079397bb615ace51 ""
   "unr.png" 1724976225 83550 1e5d2882a7c07b90a0ed2d57e5f9f248 ""
   (generated)

@@ -4,27 +4,32 @@
 #include "tipos.h"
 
 /**
- * @file glist.h
- * @brief Definición y funciones relacionadas con la estructura GList.
+ * @file ddglist.h
+ * @brief Definición y funciones relacionadas con la estructura DGList.
  */
 
 /**
  * @struct GNode
- * @brief Estructura de un nodo de una lista general simplemente enlazada.
+ * @brief Estructura de un nodo de una lista general simplemente enlazada con un puntero al inicio y otro al final.
  */
 typedef struct _GNode {
     void *data;
     struct _GNode *next;
 } GNode;
 
-typedef GNode *GList; 
+typedef struct {
+    GNode *first;
+    GNode *last;
+} _DGList;
+
+typedef _DGList *DGList;
 
 /**
  * @brief Retorna una lista general vacía.
  *
- * @return GList Lista general vacía.
+ * @return DGList Lista general vacía.
  */
-GList glist_crear(void);
+DGList dglist_crear(void);
 
 /**
  * @brief Retorna 1 si la lista está vacía, 0 en caso contrario.
@@ -32,7 +37,7 @@ GList glist_crear(void);
  * @param list Lista general que se va a verificar.
  * @return int 1 si la lista está vacía, 0 si no lo está.
  */
-int glist_vacia(GList list);
+int dglist_vacia(DGList list);
 
 /**
  * @brief Agrega un elemento al inicio de la lista.
@@ -40,9 +45,8 @@ int glist_vacia(GList list);
  * @param list Lista general a la que se va a agregar el elemento.
  * @param data Dato que se va a agregar.
  * @param copy Función que se utilizará para copiar el dato.
- * @return GList Lista general con el elemento agregado al inicio.
  */
-GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy);
+void dglist_agregar_inicio(DGList list, void *data, FuncionCopiadora copy);
 
 /**
  * @brief Agrega un elemento al final de la lista.
@@ -50,9 +54,8 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopiadora copy);
  * @param list Lista general a la que se va a agregar el elemento.
  * @param data Dato que se va a agregar.
  * @param copy Función que se utilizará para copiar el dato.
- * @return GList Lista general con el elemento agregado al final.
  */
-GList glist_agregar_final(GList list, void *data, FuncionCopiadora copy);
+void dglist_agregar_final(DGList list, void *data, FuncionCopiadora copy);
 
 /**
  * @brief Recorre todos los elementos de la lista aplicando una función de visita.
@@ -60,24 +63,7 @@ GList glist_agregar_final(GList list, void *data, FuncionCopiadora copy);
  * @param list Lista general que se va a recorrer.
  * @param visit Función que se aplicará a cada elemento de la lista.
  */
-void glist_recorrer(GList list, FuncionVisitante visit);
-
-/**
- * @brief Retorna el primer elemento de la lista.
- *
- * @param list Lista general de la que se quiere obtener el primer elemento.
- * @return void* Primer elemento de la lista.
- */
-void* glist_primer_elemento(GList list);
-
-/**
- * @brief Elimina el primer elemento de la lista.
- *
- * @param list Lista general de la que se va a eliminar el primer elemento.
- * @param destroy Función que se utilizará para destruir el dato del primer nodo.
- * @return GList Lista general con el primer elemento eliminado.
- */
-GList glist_eliminar_inicio(GList list, FuncionDestructora destroy);
+void dglist_recorrer(DGList list, FuncionVisitante visit);
 
 /**
  * @brief Destruye una lista general y sus datos utilizando la función pasada como argumento.
@@ -85,6 +71,6 @@ GList glist_eliminar_inicio(GList list, FuncionDestructora destroy);
  * @param list Lista general que se va a destruir.
  * @param destruir Función que se utilizará para destruir los datos de cada nodo.
  */
-void glist_destruir(GList list, FuncionDestructora destruir);
+void dglist_destruir(DGList list, FuncionDestructora destruir);
 
 #endif /* __GLIST_H__ */

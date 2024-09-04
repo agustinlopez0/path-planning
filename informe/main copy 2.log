@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.8.29)  3 SEP 2024 23:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.8.29)  3 SEP 2024 21:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex
-(/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main.tex
+**"/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main copy 2.tex"
+(/mnt/Datos/LCC/212-EDyA_I/TP-Final/informe/main copy 2.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-01-21> (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -426,8 +426,8 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 30.
- (./main.aux)
-\openout1 = `main.aux'.
+ (./main copy 2.aux)
+\openout1 = `"main copy 2.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
@@ -514,9 +514,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 47.
 LaTeX Info: Redefining \pageref on input line 47.
 LaTeX Info: Redefining \nameref on input line 47.
- (./main.out) (./main.out)
+ (./main copy 2.out) (./main copy 2.out)
 \@outlinefile=\write4
-\openout4 = `main.out'.
+\openout4 = `"main copy 2.out"'.
 
 \c@lstlisting=\count311
  (./coverPage.tex
@@ -549,23 +549,23 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
 (mdframed)              on input line 116.
- [2] [3] [4] (./main.aux)
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 363F9FB69597A5D30AA2113E4E686537;2055.
+ [2] [3] [4] (./main copy 2.aux)
+Package rerunfilecheck Info: File `"main copy 2".out' has not changed.
+(rerunfilecheck)             Checksum: BBDE133FA07E5B7423259842B98039AF;2060.
  ) 
 Here is how much of TeX's memory you used:
- 14085 strings out of 480247
- 218044 string characters out of 5896151
- 766501 words of memory out of 5000000
- 31766 multiletter control sequences out of 15000+600000
+ 14087 strings out of 480247
+ 218223 string characters out of 5896151
+ 766519 words of memory out of 5000000
+ 31768 multiletter control sequences out of 15000+600000
  474051 words of font info for 47 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 73i,12n,77p,772b,1245s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/agustin/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (5 pages, 242365 bytes).
+ 73i,12n,77p,779b,1245s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/agustin/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on "main copy 2.pdf" (5 pages, 231555 bytes).
 PDF statistics:
- 192 PDF objects out of 1000 (max. 8388607)
- 158 compressed objects within 2 object streams
+ 187 PDF objects out of 1000 (max. 8388607)
+ 155 compressed objects within 2 object streams
  59 named destinations out of 1000 (max. 500000)
  94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

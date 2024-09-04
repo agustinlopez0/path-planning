@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 EXEC = robot
-SOURCES = robot.c mapa.c colaprioridad.c bheap.c glist.c
+SOURCES = robot.c mapa.c colaprioridad.c bheap.c dglist.c robotAux.c
 SENSOR_EXEC = sensor
 
 $(EXEC): $(SOURCES)
